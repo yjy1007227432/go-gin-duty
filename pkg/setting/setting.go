@@ -3,9 +3,29 @@ package setting
 import (
 	"github.com/go-ini/ini"
 	"log"
+	"time"
 )
 
 var cfg *ini.File
+
+type Database struct {
+	Type        string
+	User        string
+	Password    string
+	Host        string
+	Name        string
+	TablePrefix string
+}
+
+type Server struct {
+	RunMode      string
+	HttpPort     int
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+}
+
+var DatabaseSetting = &Database{}
+var ServerSetting = &Server{}
 
 func Setup() {
 	var err error
@@ -16,5 +36,15 @@ func Setup() {
 		log.Fatalf("setting.Setup, fail to parse 'conf/app.ini': %v", err)
 	}
 
+	mapTo("database", DatabaseSetting)
+	mapTo("server", ServerSetting)
 
+}
+
+// mapTo map section
+func mapTo(section string, v interface{}) {
+	err := cfg.Section(section).MapTo(v) //go-ini 中可以采用 MapTo 的方式来映射结构体,分别将section的模块参数映射到实体类中
+	if err != nil {
+		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
+	}
 }
