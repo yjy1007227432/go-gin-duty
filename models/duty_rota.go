@@ -20,3 +20,22 @@ type DutyRota struct {
 	Backup1            string    `xorm:"default '' VARCHAR(50)"`
 	Backup2            string    `xorm:"default '' VARCHAR(50)"`
 }
+
+func AddDutyRota(data map[string]interface{}) error {
+	rota := DutyRota{
+		Datetime:           data["datetime"].(string),
+		Week:               data["week"].(string),
+		BillingLate:        data["billing_late"].(string),
+		BillingWeekendLate: data["billing_weekend_late"].(string),
+		CrmLate:            data["crm_late"].(string),
+		CreatedOn:          time.Now(),
+		CrmWeekendLate:     data["crm_weekend_late"].(string),
+		CrmDuty:            data["crm_duty"].(string),
+		CreatedBy:          data["created_by"].(string),
+	}
+	if err := db.Create(&rota).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

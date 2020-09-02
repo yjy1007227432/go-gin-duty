@@ -16,3 +16,19 @@ type DutyExchange struct {
 	Backup1       string    `xorm:"default '' VARCHAR(50)"`
 	Backup2       string    `xorm:"default '' VARCHAR(50)"`
 }
+
+func AddDutyExchange(data map[string]interface{}) error {
+	exchange := DutyExchange{
+		RequestTime:   data["request_time"].(string),
+		Proposer:      data["proposer"].(string),
+		Respondent:    data["respondent"].(string),
+		Response:      data["response"].(int),
+		RequestedTime: data["requested_time"].(string),
+		CreatedOn:     time.Now(),
+	}
+	if err := db.Create(&exchange).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -16,3 +16,19 @@ type DutyRest struct {
 	Backup1    string    `xorm:"default '' VARCHAR(50)"`
 	Backup2    string    `xorm:"default '' VARCHAR(50)"`
 }
+
+func AddDutyRest(data map[string]interface{}) error {
+	rest := DutyRest{
+		Datetime:  data["datetime"].(string),
+		Type:      data["type"].(int),
+		Proposer:  data["proposer"].(string),
+		Checker:   data["checker"].(string),
+		Response:  data["response"].(int),
+		CreatedOn: time.Now(),
+	}
+	if err := db.Create(&rest).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
