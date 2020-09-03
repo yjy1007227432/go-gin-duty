@@ -23,6 +23,8 @@ func init() {
 	if err != nil {
 		log.Fatalf("models.Setup err: %v", err)
 	}
+	//设置表名为单数表名
+	db.SingularTable(true)
 }
 
 func CloseDB() {

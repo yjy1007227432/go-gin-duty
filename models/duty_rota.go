@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -38,4 +39,18 @@ func AddDutyRota(data map[string]interface{}) error {
 	}
 
 	return nil
+}
+
+func ExistRotaByDatetime(datetime string) (bool, error) {
+	var rota DutyRota
+	err := db.Select("id").Where("datetime = ? ", datetime).First(&rota).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
+	if rota.Id > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }
