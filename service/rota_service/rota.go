@@ -2,7 +2,10 @@ package rota_service
 
 import (
 	"go-gin-duty-master/models"
+	"io"
 	"time"
+
+	"github.com/360EntSecGroup-Skylar/excelize"
 )
 
 type Rota struct {
@@ -37,4 +40,26 @@ func (t *Rota) Add() error {
 	m["created_by"] = t.CreatedBy
 	err := models.AddDutyRest(m)
 	return err
+}
+
+func (t *Rota) Import(r io.Reader) error {
+
+	var data []string
+
+	xlsx, err := excelize.OpenReader(r)
+	if err != nil {
+		return err
+	}
+
+	rows := xlsx.GetRows("值班表")
+
+	for irow, row := range rows {
+		if irow > 0 {
+			for _, cell := range row {
+				data = append(data, cell)
+			}
+		}
+	}
+
+	return nil
 }
