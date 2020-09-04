@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/astaxie/beego/logs"
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/e"
 	"go-gin-duty-master/pkg/app"
@@ -46,6 +47,29 @@ func AddRota(c *gin.Context) {
 	err = rotaService.Add()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ADD_ROTA_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+func ImportRota(c *gin.Context) {
+	appG := app.Gin{C: c}
+	file, _, err := c.Request.FormFile("file")
+
+	if err != nil {
+		logs.Warn(err)
+		appG.Response(http.StatusInternalServerError, e.ERROR, nil)
+		return
+	}
+
+	rota := rota_service.Rota{}
+
+	err = rota.Import(file)
+
+	if err != nil {
+		logs.Warn(err)
+		appG.Response(http.StatusInternalServerError, e.ERROR_IMPORT_ROTA_FAIL, nil)
 		return
 	}
 

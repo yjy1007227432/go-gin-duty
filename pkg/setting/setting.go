@@ -4,8 +4,6 @@ import (
 	"github.com/go-ini/ini"
 	"log"
 	"time"
-
-	"go-gin-duty-master/conf"
 )
 
 var cfg *ini.File
@@ -32,10 +30,10 @@ var ServerSetting = &Server{}
 func init() {
 	var err error
 	//先导入设置
-	cfg, err = ini.Load(conf.Path())
+	cfg, err = ini.Load("D:\\code\\src\\go-gin-duty-master\\conf\\app.ini")
 	//导入设置失败报错，注意：使用log.Fatal 和 log.Panic 相关的函数时，会调用os.Exit(1)退出程序
 	if err != nil {
-		log.Fatalf("setting.Setup, fail to parse 'app.ini': %v  %v  ", err, conf.Path())
+		log.Fatalf("setting.Setup, fail to parse 'app.ini': %v ", err)
 	}
 
 	mapTo("database", DatabaseSetting)
