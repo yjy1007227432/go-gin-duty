@@ -46,6 +46,21 @@ func (t *Rota) Add() error {
 	return err
 }
 
+func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
+	var (
+		rotas []models.DutyRota
+		err   error
+	)
+
+	rotas, err = models.GetMonth(t.Datetime)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rotas, err
+}
+
 func (t *Rota) Import(r io.Reader) error {
 
 	xlsx, err := excelize.OpenReader(r)

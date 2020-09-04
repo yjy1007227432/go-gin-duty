@@ -14,6 +14,7 @@ var MsgFlags = map[int]string{
 	ERROR_EXIST_ROTA:       "已存在该日期值班情况",
 	ERROR_ADD_ROTA_FAIL:    "插入日期值班情况失败",
 	ERROR_IMPORT_ROTA_FAIL: "导入值班表失败",
+	ERROR_GET_ROTAS_FAIL:   "获取值班表失败",
 
 	ERROR_TYPE_EXCEL: "excel表格标题格式错误",
 }

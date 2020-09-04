@@ -41,6 +41,23 @@ func AddDutyRota(data map[string]interface{}) error {
 	return nil
 }
 
+func GetMonth(month string) ([]DutyRota, error) {
+
+	var (
+		rotas []DutyRota
+		err   error
+	)
+
+	err = db.Where("datetime like ?", month+"%").Find(&rotas).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return rotas, err
+
+}
+
 func ExistRotaByDatetime(datetime string) (bool, error) {
 	var rota DutyRota
 	err := db.Select("id").Where("datetime = ? ", datetime).First(&rota).Error

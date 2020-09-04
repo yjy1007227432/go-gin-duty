@@ -9,6 +9,25 @@ import (
 	"net/http"
 )
 
+func GetRotaByMonth(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	month := c.Query("month")
+
+	rotaService := rota_service.Rota{
+		Datetime: month,
+	}
+	rotas, err := rotaService.GetThisMonth()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
+		"rotas": rotas,
+	})
+}
+
 func AddRota(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}

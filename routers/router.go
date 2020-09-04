@@ -14,12 +14,15 @@ func InitRouter() *gin.Engine {
 	r.POST("/auth", api.GetAuth) //
 
 	app := r.Group("/api")
-	{
-		//导入标签
-		r.POST("/rota/import", api.ImportRota)
-	}
 
 	app.Use(jwt.JWT())
+	{
+		//导入值班表
+		r.POST("/rota/import", api.ImportRota)
+		//获取当月值班表
+		r.POST("/rotas", api.GetRotaByMonth)
+
+	}
 
 	return r
 }
