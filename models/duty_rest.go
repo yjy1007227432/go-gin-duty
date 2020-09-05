@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -10,7 +11,7 @@ type DutyRest struct {
 	Type       int       `xorm:"default 0 comment('申请调休类型，0：上午，1：下午，2：全天') TINYINT(3)"`
 	Proposer   string    `xorm:"default '' comment('申请人') VARCHAR(50)"`
 	Checker    string    `xorm:"default '' comment('审核人') VARCHAR(50)"`
-	Response   int       `xorm:"comment('审核人的批复，状态 0为拒绝、1为同意') TINYINT(1)"`
+	Response   int       `xorm:"comment('审核人的批复，状态 0为默认、1为同意、2为拒绝') TINYINT(1)"`
 	CreatedOn  time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('创建时间') TIMESTAMP"`
 	ResponseOn time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('审批时间') TIMESTAMP"`
 	Backup1    string    `xorm:"default '' VARCHAR(50)"`
@@ -23,7 +24,6 @@ func AddDutyRest(data map[string]interface{}) error {
 		Type:      data["type"].(int),
 		Proposer:  data["proposer"].(string),
 		Checker:   data["checker"].(string),
-		Response:  data["response"].(int),
 		CreatedOn: time.Now(),
 	}
 	if err := db.Create(&rest).Error; err != nil {
@@ -31,4 +31,122 @@ func AddDutyRest(data map[string]interface{}) error {
 	}
 
 	return nil
+}
+
+func GetAll() ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+
+	err = db.Find(&rests).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return rests, err
+
+}
+
+func GetByChecker(checker string) ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+
+	err = db.Where("checker = ? and Response = 0 ", checker).Find(&rests).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return rests, err
+
+}
+
+func EditRest(id int, data interface{}) error {
+	if err := db.Model(&DutyRest{}).Where("id = ? ", id).Updates(data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteAll() error {
+	var (
+		rests []DutyRest
+		err   error
+	)
+
+	err = db.Delete(&rests).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func DeleteByName(name string) error {
+	var (
+		rests []DutyRest
+		err   error
+	)
+	err = db.Where("proposer = ?", name).Delete(&rests).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteById(id int) error {
+	var (
+		rest DutyRest
+		err  error
+	)
+
+	err = db.Where("id = ?", id).Delete(&rest).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetRestByName(name string, state int) ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+	if state == 0 {
+		err = db.Where("proposer = ? and response = ?", name, state).Find(&rests).Error
+	} else {
+		err = db.Where("proposer = ? and response != ?", name, 0).Find(&rests).Error
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rests, nil
+
+}
+func GetRestById(id int) (DutyRest, error) {
+	var (
+		rest DutyRest
+		err  error
+	)
+
+	err = db.Where("id = ?", id).Find(&rest).Error
+
+	if err != nil {
+		return DutyRest{}, err
+	}
+
+	return rest, nil
+
 }

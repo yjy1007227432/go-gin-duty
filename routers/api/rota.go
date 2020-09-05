@@ -28,7 +28,44 @@ func GetRotaByMonth(c *gin.Context) {
 	})
 }
 
-func AddRota(c *gin.Context) {
+func DeleteRotaByMonth(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	month := c.Query("month")
+
+	rotaService := rota_service.Rota{
+		Datetime: month,
+	}
+
+	err := rotaService.DeleteThisMonth()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_ROTAS_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+func DeleteRotaByDay(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	day := c.Query("day")
+
+	rotaService := rota_service.Rota{
+		Datetime: day,
+	}
+
+	err := rotaService.DeleteThisDay()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_ROTAS_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+func AddRotaByDay(c *gin.Context) {
+
 	var (
 		appG = app.Gin{C: c}
 		form AddRotaForm

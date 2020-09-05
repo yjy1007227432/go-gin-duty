@@ -61,6 +61,25 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 	return rotas, err
 }
 
+func (t *Rota) DeleteThisMonth() error {
+	err := models.DeleteMonth(t.Datetime)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *Rota) DeleteThisDay() error {
+
+	err := models.DeleteDay(t.Datetime)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (t *Rota) Import(r io.Reader) error {
 
 	xlsx, err := excelize.OpenReader(r)

@@ -56,6 +56,20 @@ func UpdateAuth(data map[string]interface{}) error {
 	return nil
 }
 
+func IsAdmin(username string) (int, error) {
+	auth := DutyAuth{
+		Username: username,
+	}
+
+	err := db.Select("is_administrator").Where(&auth).Find(&auth).Error
+
+	if err != nil {
+		log.Printf("IsAdmin err: %v", err)
+	}
+
+	return auth.IsAdministrator, nil
+}
+
 func DeleteAuthById(id int) error {
 	auth := DutyAuth{Id: id}
 	err := db.Delete(&auth)
@@ -85,4 +99,20 @@ func CheckAuth(username, password string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func GetNameByUsername(username string) (string, error) {
+
+	var auth DutyAuth
+	err := db.Select("name").Where(DutyAuth{Username: username}).First(&auth).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return "", err
+	}
+
+	if auth.Id > 0 {
+		return auth.Name, nil
+	}
+
+	return "", nil
 }

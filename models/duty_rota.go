@@ -58,6 +58,40 @@ func GetMonth(month string) ([]DutyRota, error) {
 
 }
 
+func DeleteMonth(month string) error {
+
+	var (
+		rotas []DutyRota
+		err   error
+	)
+
+	err = db.Where("datetime like ?", month+"%").Delete(&rotas).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return err
+	}
+
+	return nil
+
+}
+
+func DeleteDay(day string) error {
+
+	var (
+		rotas []DutyRota
+		err   error
+	)
+
+	err = db.Where("datetime = ?", day).Delete(&rotas).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return err
+	}
+
+	return nil
+
+}
+
 func ExistRotaByDatetime(datetime string) (bool, error) {
 	var rota DutyRota
 	err := db.Select("id").Where("datetime = ? ", datetime).First(&rota).Error

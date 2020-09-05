@@ -32,3 +32,15 @@ func AddDutyExchange(data map[string]interface{}) error {
 
 	return nil
 }
+
+func GetExchangeAll() ([]DutyExchange, error) {
+	var (
+		exchanges []DutyExchange
+		err       error
+	)
+	if err = db.Find(&exchanges).Error; err != nil {
+		return nil, err
+	}
+
+	return exchanges, nil
+}

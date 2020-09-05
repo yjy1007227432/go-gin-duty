@@ -16,6 +16,7 @@ type Rest struct {
 	ResponseOn time.Time
 	Backup1    string
 	Backup2    string
+	State      int
 }
 
 func (t *Rest) Add() error {
@@ -25,7 +26,48 @@ func (t *Rest) Add() error {
 	m["request_time"] = t.Datetime
 	m["proposer"] = t.Proposer
 	m["checker"] = t.Checker
-	m["response"] = t.Response
 	err := models.AddDutyRest(m)
+	return err
+}
+
+func (t *Rest) GetAll() ([]models.DutyRest, error) {
+	rests, err := models.GetAll()
+	return rests, err
+}
+
+func (t *Rest) GetRestById() (models.DutyRest, error) {
+	rest, err := models.GetRestById(t.Id)
+	return rest, err
+}
+
+func (t *Rest) GetByChecker() ([]models.DutyRest, error) {
+	rests, err := models.GetByChecker(t.Checker)
+	return rests, err
+}
+
+func (t *Rest) Edit() error {
+	data := make(map[string]interface{})
+	data["response"] = t.Response
+
+	return models.EditRest(t.Id, data)
+}
+
+func (t *Rest) DeleteAll() error {
+	err := models.DeleteAll()
+	return err
+}
+
+func (t *Rest) GetRestsByName() ([]models.DutyRest, error) {
+	rests, err := models.GetRestByName(t.Proposer, t.State)
+	return rests, err
+}
+
+func (t *Rest) DeleteById() error {
+	err := models.DeleteById(t.Id)
+	return err
+}
+
+func (t *Rest) DeleteByName() error {
+	err := models.DeleteByName(t.Proposer)
 	return err
 }
