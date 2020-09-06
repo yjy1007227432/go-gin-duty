@@ -18,6 +18,7 @@ func AddMyExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	token := c.Query("token")
+	respondent := c.Query("respondent")
 	username, err := util.DecrpytToken(token)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
@@ -25,6 +26,30 @@ func AddMyExchange(c *gin.Context) {
 	}
 
 	name, err := auth_service.Auth.GetNameByUsername(username)
+
+	if name == respondent {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
+		return
+	}
+
+	nameGroup, err := auth_service.Auth.GetGroupByName(name)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
+		return
+	}
+	respondentGroup, err := auth_service.Auth.GetGroupByName(respondent)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
+		return
+	}
+	if nameGroup != respondentGroup {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
+		return
+	}
+
+	//todo
+	//换班日期得存在在调休表中
+	//两个换班日期的值班人员得是申请人与被申请人
 
 	var exchange = &exchange_service.Exchange{}
 	err = c.Bind(exchange)
@@ -239,6 +264,8 @@ func ExamineExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
 		return
 	}
+	//todo
+	//同意换班之后更新值班表
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }

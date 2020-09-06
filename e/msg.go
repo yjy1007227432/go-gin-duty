@@ -33,6 +33,8 @@ var MsgFlags = map[int]string{
 	ERROR_NOT_EXAMINA_RESTS_FAIL: "已审批的调休申请无法重复审批",
 	ERROR_EXAMINE_RESTS_FAIL:     "非审核人，调休申请无法审批",
 	ERROR_UPDATE_RESTS_FAIL:      "更新调休申请表失败",
+	ERROR_REST_WEEKEND_FAIL:      "周末调啥休？？？？",
+	ERROR_ROTA_REST_FAIL:         "值班不允许调休",
 
 	ERROR_GET_VACATION_FAIL:    "获取调休信息失败",
 	ERROR_DELETE_VACATION_FAIL: "清空调休信息失败",
@@ -46,6 +48,7 @@ var MsgFlags = map[int]string{
 	ERROR_RESPONCE_EXCHANGE_FAIL:    "非本人的换班申请无法审批",
 	ERROR_EXIST_EXCHANGE_FAIL:       "已存在涉及相同日期的未处理换班请求表",
 	ERROR_ADD_EXCHANGE_FAIL:         "新增换班请求失败",
+	ERROR_EXCHANGE_SAME_FAIL:        "非同组人员或者本人与本人不能换班",
 }
 
 // GetMsg get error information based on Code

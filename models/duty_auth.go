@@ -70,6 +70,20 @@ func IsAdmin(username string) (int, error) {
 	return auth.IsAdministrator, nil
 }
 
+func GetGroup(name string) (string, error) {
+	auth := DutyAuth{
+		Name: name,
+	}
+
+	err := db.Select("group").Where(&auth).Find(&auth).Error
+
+	if err != nil {
+		log.Printf("GetGroup err: %v", err)
+	}
+
+	return auth.Group, nil
+}
+
 func DeleteAuthById(id int) error {
 	auth := DutyAuth{Id: id}
 	err := db.Delete(&auth)

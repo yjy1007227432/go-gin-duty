@@ -7,9 +7,11 @@ import (
 	"go-gin-duty-master/pkg/app"
 	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/rest_service"
+	"go-gin-duty-master/service/rota_service"
 	"go-gin-duty-master/util"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -136,6 +138,17 @@ func AddRest(c *gin.Context) {
 		return
 	}
 
+	rota, err := rota_service.Rota{
+		Datetime: datetime,
+	}.GetRotaByDay()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	if rota.Week == "星期六" || rota.Week == "星期日" {
+		appG.Response(http.StatusInternalServerError, e.ERROR_REST_WEEKEND_FAIL, nil)
+		return
+	}
 	token := c.Query("token")
 
 	username, err := util.DecrpytToken(token)
@@ -146,6 +159,11 @@ func AddRest(c *gin.Context) {
 	}
 
 	name, err := auth_service.Auth.GetNameByUsername(username)
+
+	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDuty, name) || strings.Contains(rota.CrmLate, name) {
+		appG.Response(http.StatusInternalServerError, e.ERROR_ROTA_REST_FAIL, nil)
+		return
+	}
 
 	var rest = &rest_service.Rest{}
 	err = c.Bind(rest)

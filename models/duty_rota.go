@@ -58,6 +58,19 @@ func GetMonth(month string) ([]DutyRota, error) {
 
 }
 
+func GetRotaByDay(day string) (DutyRota, error) {
+
+	var (
+		rota DutyRota
+		err  error
+	)
+	err = db.Where("datetime = ?", day).Find(&rota).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return DutyRota{}, err
+	}
+	return rota, err
+}
+
 func DeleteMonth(month string) error {
 
 	var (

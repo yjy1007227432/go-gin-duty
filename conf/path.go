@@ -2,10 +2,32 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"github.com/nsqio/go-nsq"
+)
+
+var (
+	//nsqd的地址，使用了tcp监听的端口
+	tcpNsqdAddrr = "127.0.0.1:4160"
 )
 
 func main() {
-	fmt.Print(time.Now().Format("2006-01-02"))
-	fmt.Println("2020-08-07" > "2020-09-06")
+	//初始化配置
+	config := nsq.NewConfig()
+	for i := 0; i < 100; i++ {
+		//创建100个生产者
+		tPro, err := nsq.NewProducer(tcpNsqdAddrr, config)
+		if err != nil {
+			fmt.Println(err)
+		}
+		//主题
+		topic := "Insert"
+		//主题内容
+		tCommand := "new data!"
+		//发布消息
+		err = tPro.Publish(topic, []byte(tCommand))
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
 }

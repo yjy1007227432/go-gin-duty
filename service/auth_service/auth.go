@@ -5,8 +5,13 @@ import (
 )
 
 type Auth struct {
-	Username string
-	Password string
+	Id              int
+	Name            string
+	Telephone       string
+	Group           string
+	Username        string
+	Password        string
+	IsAdministrator int
 }
 
 func (a *Auth) Check() (bool, error) {
@@ -19,4 +24,8 @@ func (a *Auth) GetNameByUsername() (string, error) {
 
 func (a *Auth) IsAdmin() (int, error) {
 	return models.IsAdmin(a.Username)
+}
+
+func (a *Auth) GetGroupByName() (string, error) {
+	return models.GetGroup(a.Name)
 }

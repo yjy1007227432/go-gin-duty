@@ -61,6 +61,21 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 	return rotas, err
 }
 
+func (t *Rota) GetRotaByDay() (models.DutyRota, error) {
+	var (
+		rota models.DutyRota
+		err  error
+	)
+
+	rota, err = models.GetRotaByDay(t.Datetime)
+
+	if err != nil {
+		return models.DutyRota{}, err
+	}
+
+	return rota, err
+}
+
 func (t *Rota) DeleteThisMonth() error {
 	err := models.DeleteMonth(t.Datetime)
 	if err != nil {

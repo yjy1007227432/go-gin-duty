@@ -3,11 +3,15 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/middleware/jwt"
+	"go-gin-duty-master/servers"
 
 	"go-gin-duty-master/routers/api"
 )
 
 func InitRouter() *gin.Engine {
+
+	// 运行 nsq
+	servers.NsqRun()
 
 	r := gin.Default()
 	r.POST("/auth", api.GetAuth) //
@@ -40,6 +44,8 @@ func InitRouter() *gin.Engine {
 
 	app.Use(jwt.JWT()).Use(jwt.ADMIN())
 	{
+		//新增员工信息表
+
 		//导入值班表
 		r.POST("/rota/import", api.ImportRota)
 		//删除月值班表
