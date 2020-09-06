@@ -5,6 +5,8 @@ var MsgFlags = map[int]string{
 	ERROR:          "fail",
 	INVALID_PARAMS: "请求参数错误",
 
+	ERROR_TIME_EARLY_FAIL: "无法更新更早时间的信息",
+
 	ERROR_AUTH_CHECK_TOKEN_FAIL:    "Token鉴权失败",
 	ERROR_AUTH_CHECK_TOKEN_TIMEOUT: "Token已超时",
 	ERROR_AUTH_TOKEN:               "Token生成失败",
@@ -36,7 +38,14 @@ var MsgFlags = map[int]string{
 	ERROR_DELETE_VACATION_FAIL: "清空调休信息失败",
 	ERROR_EDIT_VACATION_FAIL:   "修改调休信息失败",
 
-	ERROR_GET_EXCHANGE_FAIL: "获取换班申请表信息失败",
+	ERROR_GET_EXCHANGE_FAIL:         "获取换班申请表信息失败",
+	ERROR_NOT_CHANGE_EXCHANGE_FAIL:  "已审批的换班申请无法删除",
+	ERROR_DELETE_EXCHANGE_FAIL:      "删除调休申请失败",
+	ERROR_NOT_EXAMINA_EXCHANGE_FAIL: "已审批的换班申请无法重复审批",
+	ERROR_UPDATE_EXCHANGE_FAIL:      "更新换班申请表失败",
+	ERROR_RESPONCE_EXCHANGE_FAIL:    "非本人的换班申请无法审批",
+	ERROR_EXIST_EXCHANGE_FAIL:       "已存在涉及相同日期的未处理换班请求表",
+	ERROR_ADD_EXCHANGE_FAIL:         "新增换班请求失败",
 }
 
 // GetMsg get error information based on Code

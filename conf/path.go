@@ -1,15 +1,11 @@
-package conf
+package main
 
 import (
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
+	"fmt"
+	"time"
 )
 
-func Path() {
-	file, _ := exec.LookPath(os.Args[0])
-	path, _ := filepath.Abs(file)
-	index := strings.LastIndex(path, string(os.PathSeparator))
-	path = path[:index]
+func main() {
+	fmt.Print(time.Now().Format("2006-01-02"))
+	fmt.Println("2020-08-07" > "2020-09-06")
 }

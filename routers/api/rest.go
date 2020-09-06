@@ -10,6 +10,7 @@ import (
 	"go-gin-duty-master/util"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func GetRests(c *gin.Context) {
@@ -70,6 +71,14 @@ func ExamineRest(c *gin.Context) {
 
 	id := c.Query("Id")
 
+	datetime := c.Query("datetime")
+
+	nowDay := time.Now().Format("2006-01-02")
+	if datetime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
+
 	response, _ := strconv.Atoi(c.Query("response"))
 
 	idInt, _ := strconv.Atoi(id)
@@ -119,6 +128,13 @@ func ExamineRest(c *gin.Context) {
 
 func AddRest(c *gin.Context) {
 	appG := app.Gin{C: c}
+
+	datetime := c.Query("datetime")
+	nowDay := time.Now().Format("2006-01-02")
+	if datetime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
 
 	token := c.Query("token")
 
@@ -183,9 +199,7 @@ func GetMyRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	state := c.Query("state")
-
 	stateInt, _ := strconv.Atoi(state)
-
 	token := c.Query("token")
 	username, err := util.DecrpytToken(token)
 	if err != nil {

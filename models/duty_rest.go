@@ -25,6 +25,7 @@ func AddDutyRest(data map[string]interface{}) error {
 		Proposer:  data["proposer"].(string),
 		Checker:   data["checker"].(string),
 		CreatedOn: time.Now(),
+		Response:  0,
 	}
 	if err := db.Create(&rest).Error; err != nil {
 		return err
@@ -123,9 +124,9 @@ func GetRestByName(name string, state int) ([]DutyRest, error) {
 		err   error
 	)
 	if state == 0 {
-		err = db.Where("proposer = ? and response = ?", name, state).Find(&rests).Error
+		err = db.Where("proposer = ? and response = 0", name).Find(&rests).Error
 	} else {
-		err = db.Where("proposer = ? and response != ?", name, 0).Find(&rests).Error
+		err = db.Where("proposer = ? and response != 0", name).Find(&rests).Error
 	}
 
 	if err != nil {
