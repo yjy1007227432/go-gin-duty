@@ -59,7 +59,6 @@ func GetMonth(month string) ([]DutyRota, error) {
 }
 
 func GetRotaByDay(day string) (DutyRota, error) {
-
 	var (
 		rota DutyRota
 		err  error

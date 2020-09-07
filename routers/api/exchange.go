@@ -7,6 +7,8 @@ import (
 	"go-gin-duty-master/pkg/app"
 	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/exchange_service"
+	"go-gin-duty-master/service/rota_service"
+	"strings"
 	"time"
 
 	"go-gin-duty-master/util"
@@ -47,10 +49,6 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 
-	//todo
-	//换班日期得存在在调休表中
-	//两个换班日期的值班人员得是申请人与被申请人
-
 	var exchange = &exchange_service.Exchange{}
 	err = c.Bind(exchange)
 	exchange.Proposer = name
@@ -59,8 +57,52 @@ func AddMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
 		return
 	}
+	//todo
+	//换班日期得存在在调休表中
+	//两个换班日期的值班人员得是申请人与被申请人
+	IsExistRequest, err := rota_service.Rota{
+		Datetime: exchange.RequestTime,
+	}.ExistByDatetime()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	IsExistRequested, err := rota_service.Rota{
+		Datetime: exchange.RequestedTime,
+	}.ExistByDatetime()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	if IsExistRequest && IsExistRequested == false {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
+		return
+	}
+	rotaRequest, err := rota_service.Rota{
+		Datetime: exchange.RequestTime,
+	}.GetRotaByDay()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	rotaRequested, err := rota_service.Rota{
+		Datetime: exchange.RequestedTime,
+	}.GetRotaByDay()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	if !(strings.Contains(rotaRequest.CrmLate, name) || strings.Contains(rotaRequest.BillingLate, name)) {
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_ROTAS_FAIL, nil)
+		return
+	}
+	if !(strings.Contains(rotaRequested.CrmLate, respondent) || strings.Contains(rotaRequested.BillingLate, respondent)) {
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_ROTAS_FAIL, nil)
+		return
+	}
 	//不能有涉及到这两天的未处理换班请求
 	isExist, err := exchange.IsExistDay()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
 		return

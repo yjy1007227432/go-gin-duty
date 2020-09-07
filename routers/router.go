@@ -21,15 +21,20 @@ func InitRouter() *gin.Engine {
 	{
 		//获取当月值班表
 		r.POST("/rotas/getMonth", api.GetRotaByMonth)
+
 		//获取本人调休申请表信息(未审批/已审批)
 		r.POST("/rests/getMe", api.GetMyRest)
+
 		//新增本人调休申请表信息
 		r.POST("/rests/addMyRest", api.AddRest)
+		//todo  周末和法定节假日
+
 		//删除本人未审批调休申请表信息
 		r.POST("/rests/deleteMyRest", api.DeleteRest)
 
 		//获取所有调休信息
 		r.POST("/vacation/getAll", api.GetAllVacation)
+
 		//查看本人的换班请求表(未审批/已审批)
 		r.POST("/exchange/myExchange", api.GetMyExchange)
 		//删除本人的未审批换班请求表
@@ -63,17 +68,14 @@ func InitRouter() *gin.Engine {
 		r.POST("/rests/getAll", api.GetNeedExamineRests)
 		//审批调休申请表
 		r.POST("/rests/examineRest", api.ExamineRest)
-
 		//清空所有调休信息
 		r.POST("/vacation/deleteAll", api.DeleteAllVacation)
 		//删除某人调休信息
 		r.POST("/vacation/deleteByName", api.DeleteVacationByName)
 		//修改某人调休信息
 		r.POST("/vacation/editByName", api.EditVacationByName)
-
 		//查看所有的换班请求表
 		r.POST("/exchange/getAll", api.GetAllExchange)
-
 		//清空所有的换班请求表
 		r.POST("/exchange/deleteAll", api.DeleteAllExchange)
 

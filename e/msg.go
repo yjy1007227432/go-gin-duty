@@ -24,6 +24,7 @@ var MsgFlags = map[int]string{
 	ERROR_IMPORT_ROTA_FAIL:  "导入值班表失败",
 	ERROR_GET_ROTAS_FAIL:    "获取值班表失败",
 	ERROR_DELETE_ROTAS_FAIL: "删除当月值班表失败",
+	ERROR_NOT_ROTAS_FAIL:    "非当天值班人员",
 
 	ERROR_TYPE_EXCEL: "excel表格标题格式错误",
 
