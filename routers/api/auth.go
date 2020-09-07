@@ -65,3 +65,42 @@ func GetAuth(c *gin.Context) {
 		"token": token,
 	})
 }
+
+//注册
+func Register(c *gin.Context) {
+	appG := app.Gin{C: c}
+	//获取用户名、密码
+	name := c.Query("name")
+	password := c.Query("password")
+	//判断用户是否存在
+	//存在输出状态1
+	//不存在创建用户，保存密码与用户名
+	Bool, err := auth_service.Auth{
+		Name:     name,
+		Password: password,
+	}.IsExistName()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
+		return
+	}
+	if Bool {
+		appG.Response(http.StatusOK, e.ERROR_EXIST_AUTH, nil)
+		return
+	} else {
+		auth := auth_service.Auth{}
+		err = c.Bind(&auth)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
+			return
+		}
+		err = auth.AddAuth()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_ADD_AUTH_FAIL, nil)
+			return
+		}
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"msg": "用户创建成功",
+	})
+
+}

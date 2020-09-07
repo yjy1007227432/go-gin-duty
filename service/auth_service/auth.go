@@ -14,6 +14,17 @@ type Auth struct {
 	IsAdministrator int
 }
 
+func (a *Auth) AddAuth() error {
+	data := make(map[string]interface{})
+	data["name"] = a.Name
+	data["telephone"] = a.Telephone
+	data["group"] = a.Group
+	data["username"] = a.Username
+	data["password"] = a.Password
+	data["created_by"] = a.Name
+	return models.AddAuth(data)
+}
+
 func (a *Auth) Check() (bool, error) {
 	return models.CheckAuth(a.Username, a.Password)
 }
@@ -28,4 +39,8 @@ func (a *Auth) IsAdmin() (int, error) {
 
 func (a *Auth) GetGroupByName() (string, error) {
 	return models.GetGroup(a.Name)
+}
+
+func (a *Auth) IsExistName() (bool, error) {
+	return models.IsExistName(a.Username, a.Password)
 }

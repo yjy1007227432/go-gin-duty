@@ -61,6 +61,14 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 	return rotas, err
 }
 
+//
+//func (t *Rota) Edit() error {
+//	data := make(map[string]interface{})
+//	data["response"] = t.
+//
+//	return models.EditRest(t.Datetime, data)
+//}
+
 func (t *Rota) GetRotaByDay() (models.DutyRota, error) {
 	var (
 		rota models.DutyRota
@@ -87,6 +95,34 @@ func (t *Rota) DeleteThisMonth() error {
 func (t *Rota) DeleteThisDay() error {
 
 	err := models.DeleteDay(t.Datetime)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Rota) UpdateCrmLate() error {
+
+	data := make(map[string]interface{})
+	data["crm_late"] = t.CrmLate
+
+	err := models.UpdateRotaByDateTime(t.Datetime, data)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Rota) UpdateBillingLate() error {
+
+	data := make(map[string]interface{})
+	data["billing_late"] = t.BillingLate
+
+	err := models.UpdateRotaByDateTime(t.Datetime, data)
 
 	if err != nil {
 		return err

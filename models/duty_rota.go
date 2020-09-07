@@ -87,6 +87,13 @@ func DeleteMonth(month string) error {
 
 }
 
+func UpdateRotaByDateTime(dateTime string, data interface{}) error {
+	if err := db.Model(&DutyRest{}).Where("datetime = ? ", dateTime).Updates(data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func DeleteDay(day string) error {
 
 	var (

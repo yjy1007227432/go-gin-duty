@@ -13,6 +13,8 @@ const (
 	ERROR_AUTH                     = 20004
 	ERROR_DECRYPT_TOKEN_FAIL       = 20005
 	ERROR_NOT_ADMIN                = 20006
+	ERROR_EXIST_AUTH               = 20007
+	ERROR_ADD_AUTH_FAIL            = 20008
 
 	ERROR_EXIST_ROTA_FAIL   = 30001
 	ERROR_EXIST_ROTA        = 30002

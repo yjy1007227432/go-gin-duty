@@ -12,6 +12,8 @@ var MsgFlags = map[int]string{
 	ERROR_AUTH_TOKEN:               "Token生成失败",
 	ERROR_AUTH:                     "Token错误",
 	ERROR_DECRYPT_TOKEN_FAIL:       "解析Token失败",
+	ERROR_EXIST_AUTH:               "用户名密码已存在",
+	ERROR_ADD_AUTH_FAIL:            "添加个人信息失败",
 
 	ERROR_BIND_DATA_FAIL: "绑定数据失败失败",
 

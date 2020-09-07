@@ -308,6 +308,43 @@ func ExamineExchange(c *gin.Context) {
 	}
 	//todo
 	//同意换班之后更新值班表
+	nameGroup, err := auth_service.Auth.GetGroupByName(name)
+	if nameGroup == "crm" {
+		err = rota_service.Rota{
+			Datetime: exchange.RequestTime,
+			CrmLate:  exchange.Respondent,
+		}.UpdateCrmLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+
+		err = rota_service.Rota{
+			Datetime: exchange.RequestedTime,
+			CrmLate:  exchange.Proposer,
+		}.UpdateCrmLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+	} else {
+		err = rota_service.Rota{
+			Datetime:    exchange.RequestTime,
+			BillingLate: exchange.Respondent,
+		}.UpdateBillingLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+		err = rota_service.Rota{
+			Datetime:    exchange.RequestedTime,
+			BillingLate: exchange.Proposer,
+		}.UpdateBillingLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }

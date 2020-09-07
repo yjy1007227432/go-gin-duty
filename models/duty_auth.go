@@ -29,7 +29,7 @@ func AddAuth(data map[string]interface{}) error {
 		Group:           data["group"].(string),
 		Username:        data["username"].(string),
 		Password:        data["password"].(string),
-		IsAdministrator: data["is_administrator"].(int),
+		IsAdministrator: 0,
 		CreatedOn:       time.Now(),
 		CreatedBy:       data["created_by"].(string),
 	}
@@ -118,7 +118,7 @@ func CheckAuth(username, password string) (bool, error) {
 func GetNameByUsername(username string) (string, error) {
 
 	var auth DutyAuth
-	err := db.Select("name").Where(DutyAuth{Username: username}).First(&auth).Error
+	err := db.Select("id").Where(DutyAuth{Username: username}).First(&auth).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return "", err
@@ -129,4 +129,20 @@ func GetNameByUsername(username string) (string, error) {
 	}
 
 	return "", nil
+}
+
+func IsExistName(username string, password string) (bool, error) {
+
+	var auth DutyAuth
+	err := db.Select("id").Where(DutyAuth{Username: username, Password: password}).First(&auth).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
+	if auth.Id > 0 {
+		return false, nil
+	}
+
+	return true, nil
 }

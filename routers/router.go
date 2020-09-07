@@ -15,8 +15,9 @@ func InitRouter() *gin.Engine {
 
 	r := gin.Default()
 	r.POST("/auth", api.GetAuth) //
-	app := r.Group("/api")
+	r.POST("/register", api.Register)
 
+	app := r.Group("/api")
 	app.Use(jwt.JWT())
 	{
 		//获取当月值班表
@@ -49,7 +50,6 @@ func InitRouter() *gin.Engine {
 
 	app.Use(jwt.JWT()).Use(jwt.ADMIN())
 	{
-		//新增员工信息表
 
 		//导入值班表
 		r.POST("/rota/import", api.ImportRota)
