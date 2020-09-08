@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/middleware/jwt"
 	"go-gin-duty-master/servers"
+	"time"
 
 	"go-gin-duty-master/routers/api"
 )
@@ -17,7 +18,7 @@ func InitRouter() *gin.Engine {
 	r.POST("/auth", api.GetAuth) //
 	r.POST("/register", api.Register)
 
-	app := r.Group("/api")
+	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 2))
 	app.Use(jwt.JWT())
 	{
 		//获取当月值班表

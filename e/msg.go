@@ -4,6 +4,7 @@ var MsgFlags = map[int]string{
 	SUCCESS:        "ok",
 	ERROR:          "fail",
 	INVALID_PARAMS: "请求参数错误",
+	QUESTTIMEOUT:   "超时",
 
 	ERROR_TIME_EARLY_FAIL: "无法更新更早时间的信息",
 

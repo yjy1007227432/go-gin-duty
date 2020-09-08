@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="--新增多个接口">
+      <change afterPath="$PROJECT_DIR$/middleware/jwt/timeoutHandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e/cache.go" beforeDir="false" afterPath="$PROJECT_DIR$/e/cache.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/path.go" beforeDir="false" afterPath="$PROJECT_DIR$/conf/path.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/e/code.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/e/msg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/jwt/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/jwt/jwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/duty_auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/duty_rota.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_rota.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/exchange.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/auth_service/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/auth_service/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/rota_service/rota.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/rota_service/rota.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,17 +61,18 @@
     <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\code\src\go-gin-duty\service\duty_vacation" />
-      <recent name="G:\code\src\go-gin-duty\conf" />
-      <recent name="G:\code\src\go-gin-duty\pkg\setting" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\code\src\go-gin-duty-master\pkg\setting" />
       <recent name="G:\code\src\go-gin-duty\pkg\setting" />
       <recent name="D:\code\src\go-gin-duty-master" />
       <recent name="D:\code\src\go-gin-duty-master\util" />
       <recent name="D:\code\src\go-gin-duty-master\service" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\code\src\go-gin-duty\middleware\jwt" />
+      <recent name="G:\code\src\go-gin-duty\service\duty_vacation" />
+      <recent name="G:\code\src\go-gin-duty\conf" />
+      <recent name="G:\code\src\go-gin-duty\pkg\setting" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -155,38 +150,6 @@
         <item itemvalue="Go Test.TestImport in go-gin-duty-master/test (1)" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="TestHistory">
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 02m 43s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 03m 44s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 04m 43s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 27m 45s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 28m 56s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 29m 49s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 51m 48s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestImport_in_go-gin-duty-master_test - 2020.09.04 at 15h 51m 55s.xml">
-      <configuration name="TestImport in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestGetThisMonth_in_go-gin-duty-master_test - 2020.09.04 at 17h 25m 50s.xml">
-      <configuration name="TestGetThisMonth in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestGetThisMonth_in_go-gin-duty-master_test - 2020.09.04 at 17h 26m 30s.xml">
-      <configuration name="TestGetThisMonth in go-gin-duty-master/test" configurationId="GoTestRunConfiguration" />
-    </history-entry>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
