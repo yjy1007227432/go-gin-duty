@@ -5,7 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/e"
 	"go-gin-duty-master/pkg/app"
+	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/rota_service"
+	"go-gin-duty-master/util"
 	"net/http"
 )
 
@@ -77,7 +79,19 @@ func AddRotaByDay(c *gin.Context) {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-
+	token := c.Query("token")
+	username, err := util.DecrpytToken(token)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
+		return
+	}
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
+		return
+	}
 	rotaService := rota_service.Rota{
 		Datetime:           form.Datetime,
 		Week:               form.Week,
@@ -86,7 +100,7 @@ func AddRotaByDay(c *gin.Context) {
 		CrmLate:            form.CrmLate,
 		CrmWeekendLate:     form.CrmWeekendLate,
 		CrmDuty:            form.CrmDuty,
-		CreatedBy:          form.CreatedBy,
+		CreatedBy:          name,
 	}
 
 	exists, err := rotaService.ExistByDatetime()
@@ -133,12 +147,12 @@ func ImportRota(c *gin.Context) {
 }
 
 type AddRotaForm struct {
-	Datetime           string `form:"datetime '' comment('日期') VARCHAR(50)"`
-	Week               string `form:"week '' comment('日期') VARCHAR(50)"`
-	BillingLate        string `form:"billing_late '' comment('计费晚班人员') VARCHAR(50)"`
-	BillingWeekendLate string `form:"billing_weekend_late '' comment('计费周末晚班人员') VARCHAR(50)"`
-	CrmLate            string `form:"crm_late '' comment('crm晚班人员') VARCHAR(50)"`
-	CrmWeekendLate     string `form:"crm_weekend_late '' comment('crm周末晚班人员') VARCHAR(50)"`
-	CrmDuty            string `form:"crm_duty '' comment('crm值班人员') VARCHAR(50)"`
-	CreatedBy          string `form:"created_by '' comment('创建人') VARCHAR(100)"`
+	Datetime           string `form:"datetime"`
+	Week               string `form:"week"`
+	BillingLate        string `form:"billing_late"`
+	BillingWeekendLate string `form:"billing_weekend_late"`
+	CrmLate            string `form:"crm_late"`
+	CrmWeekendLate     string `form:"crm_weekend_late"`
+	CrmDuty            string `form:"crm_duty"`
+	CreatedBy          string `form:"created_by"`
 }

@@ -107,7 +107,6 @@ func CheckAuth(username, password string) (bool, error) {
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
-
 	if auth.Id > 0 {
 		return true, nil
 	}

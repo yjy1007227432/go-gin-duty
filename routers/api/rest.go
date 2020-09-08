@@ -50,7 +50,9 @@ func GetNeedExamineRests(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
@@ -91,15 +93,17 @@ func ExamineRest(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
 
-	rest, err := rest_service.Rest{
+	rest, err := (&rest_service.Rest{
 		Id: idInt,
-	}.GetRestById()
+	}).GetRestById()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
@@ -115,10 +119,10 @@ func ExamineRest(c *gin.Context) {
 		return
 	}
 
-	err = rest_service.Rest{
+	err = (&rest_service.Rest{
 		Id:       idInt,
 		Response: response,
-	}.Edit()
+	}).Edit()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_RESTS_FAIL, nil)
@@ -138,13 +142,15 @@ func AddRest(c *gin.Context) {
 		return
 	}
 
-	rota, err := rota_service.Rota{
+	rota, err := (&rota_service.Rota{
 		Datetime: datetime,
-	}.GetRotaByDay()
+	}).GetRotaByDay()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
 	}
+
 	if rota.Week == "星期六" || rota.Week == "星期日" {
 		appG.Response(http.StatusInternalServerError, e.ERROR_REST_WEEKEND_FAIL, nil)
 		return
@@ -158,7 +164,9 @@ func AddRest(c *gin.Context) {
 		return
 	}
 
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 
 	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDuty, name) || strings.Contains(rota.CrmLate, name) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ROTA_REST_FAIL, nil)
@@ -224,16 +232,18 @@ func GetMyRest(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
 
-	rests, err := rest_service.Rest{
+	rests, err := (&rest_service.Rest{
 		Proposer: name,
 		State:    stateInt,
-	}.GetRestsByName()
+	}).GetRestsByName()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)

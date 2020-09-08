@@ -24,9 +24,9 @@ func ADMIN() gin.HandlerFunc {
 			code = e.ERROR_DECRYPT_TOKEN_FAIL
 		}
 
-		isAdmin, err = auth_service.Auth{
+		isAdmin, err = (&auth_service.Auth{
 			Username: username,
-		}.IsAdmin()
+		}).IsAdmin()
 
 		if isAdmin == 0 {
 			code = e.ERROR_NOT_ADMIN

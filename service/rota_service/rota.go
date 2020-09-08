@@ -129,7 +129,7 @@ func (t *Rota) Import(r io.Reader) error {
 						BillingLate:        row[2],
 						BillingWeekendLate: row[2],
 						CrmLate:            row[3],
-						CrmWeekendLate:     row[4],
+						CrmWeekendLate:     row[3],
 						CrmDuty:            row[4],
 					}
 				} else {

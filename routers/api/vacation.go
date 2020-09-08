@@ -73,9 +73,9 @@ func EditVacationByName(c *gin.Context) {
 		return
 	}
 
-	vaca, err := duty_vacation.Vacation{
+	vaca, err := (&duty_vacation.Vacation{
 		Name: vacation.Name,
-	}.GetByName()
+	}).GetByName()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_VACATION_FAIL, nil)

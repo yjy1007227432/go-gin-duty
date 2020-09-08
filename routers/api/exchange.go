@@ -27,19 +27,25 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 
 	if name == respondent {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
 		return
 	}
 
-	nameGroup, err := auth_service.Auth.GetGroupByName(name)
+	nameGroup, err := (&auth_service.Auth{
+		Name: name,
+	}).GetGroupByName()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
-	respondentGroup, err := auth_service.Auth.GetGroupByName(respondent)
+	respondentGroup, err := (&auth_service.Auth{
+		Name: respondent,
+	}).GetGroupByName()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
@@ -60,16 +66,16 @@ func AddMyExchange(c *gin.Context) {
 	//todo
 	//换班日期得存在在调休表中
 	//两个换班日期的值班人员得是申请人与被申请人
-	IsExistRequest, err := rota_service.Rota{
+	IsExistRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
-	}.ExistByDatetime()
+	}).ExistByDatetime()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
 	}
-	IsExistRequested, err := rota_service.Rota{
+	IsExistRequested, err := (&rota_service.Rota{
 		Datetime: exchange.RequestedTime,
-	}.ExistByDatetime()
+	}).ExistByDatetime()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
@@ -78,16 +84,16 @@ func AddMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
 		return
 	}
-	rotaRequest, err := rota_service.Rota{
+	rotaRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
-	}.GetRotaByDay()
+	}).GetRotaByDay()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
 	}
-	rotaRequested, err := rota_service.Rota{
+	rotaRequested, err := (&rota_service.Rota{
 		Datetime: exchange.RequestedTime,
-	}.GetRotaByDay()
+	}).GetRotaByDay()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
@@ -123,14 +129,13 @@ func AddMyExchange(c *gin.Context) {
 
 func GetAllExchange(c *gin.Context) {
 
+	appG := app.Gin{C: c}
 	var (
 		exchanges []models.DutyExchange
 		err       error
 	)
 
-	appG := app.Gin{C: c}
-
-	exchanges, err = exchange_service.Exchange{}.GetAll()
+	exchanges, err = (&exchange_service.Exchange{}).GetAll()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
@@ -144,7 +149,7 @@ func GetAllExchange(c *gin.Context) {
 func DeleteAllExchange(c *gin.Context) {
 
 	appG := app.Gin{C: c}
-	err := exchange_service.Exchange{}.DeleteAll()
+	err := (&exchange_service.Exchange{}).DeleteAll()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_EXCHANGE_FAIL, nil)
@@ -168,16 +173,18 @@ func GetMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
 
-	exchanges, err = exchange_service.Exchange{
+	exchanges, err = (&exchange_service.Exchange{
 		Proposer: name,
 		Response: stateInt,
-	}.GetMyExchange()
+	}).GetMyExchange()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
@@ -203,16 +210,18 @@ func GetNeedExamineExchanges(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
 
-	exchanges, err = exchange_service.Exchange{
+	exchanges, err = (&exchange_service.Exchange{
 		Respondent: name,
 		Response:   stateInt,
-	}.GetMyExamineExchange()
+	}).GetMyExamineExchange()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
@@ -274,15 +283,17 @@ func ExamineExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
 		return
 	}
-	name, err := auth_service.Auth.GetNameByUsername(username)
+	name, err := (&auth_service.Auth{
+		Username: username,
+	}).GetNameByUsername()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
 	}
 
-	exchange, err := exchange_service.Exchange{
+	exchange, err := (&exchange_service.Exchange{
 		Id: idInt,
-	}.GetExchangeById()
+	}).GetExchangeById()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
@@ -297,10 +308,10 @@ func ExamineExchange(c *gin.Context) {
 		return
 	}
 
-	err = exchange_service.Exchange{
+	err = (&exchange_service.Exchange{
 		Id:       idInt,
 		Response: response,
-	}.Edit()
+	}).Edit()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
