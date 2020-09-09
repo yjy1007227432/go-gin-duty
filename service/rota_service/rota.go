@@ -13,18 +13,18 @@ import (
 )
 
 type Rota struct {
-	Id                 int
-	Datetime           string
-	Week               string
-	BillingLate        string
-	BillingWeekendLate string
-	CrmLate            string
-	CrmWeekendLate     string
-	CrmDuty            string
-	CreatedOn          time.Time
-	CreatedBy          string
-	ModifiedOn         time.Time
-	ModifiedBy         string
+	Id                 int       `json:"id"`
+	Datetime           string    `json:"datetime"`
+	Week               string    `json:"week"`
+	BillingLate        string    `json:"billing_late"`
+	BillingWeekendLate string    `json:"billing_weekend_late"`
+	CrmLate            string    `json:"crm_late"`
+	CrmWeekendLate     string    `json:"crm_weekend_late"`
+	CrmDuty            string    `json:"crm_duty"`
+	CreatedOn          time.Time `json:"created_on"`
+	CreatedBy          string    `json:"created_on"`
+	ModifiedOn         time.Time `json:"modified_on"`
+	ModifiedBy         string    `json:"modified_by"`
 }
 
 func (t *Rota) ExistByDatetime() (bool, error) {
@@ -61,6 +61,14 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 	return rotas, err
 }
 
+//
+//func (t *Rota) Edit() error {
+//	data := make(map[string]interface{})
+//	data["response"] = t.
+//
+//	return models.EditRest(t.Datetime, data)
+//}
+
 func (t *Rota) GetRotaByDay() (models.DutyRota, error) {
 	var (
 		rota models.DutyRota
@@ -87,6 +95,34 @@ func (t *Rota) DeleteThisMonth() error {
 func (t *Rota) DeleteThisDay() error {
 
 	err := models.DeleteDay(t.Datetime)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Rota) UpdateCrmLate() error {
+
+	data := make(map[string]interface{})
+	data["crm_late"] = t.CrmLate
+
+	err := models.UpdateRotaByDateTime(t.Datetime, data)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Rota) UpdateBillingLate() error {
+
+	data := make(map[string]interface{})
+	data["billing_late"] = t.BillingLate
+
+	err := models.UpdateRotaByDateTime(t.Datetime, data)
 
 	if err != nil {
 		return err

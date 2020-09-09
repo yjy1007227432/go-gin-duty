@@ -4,6 +4,7 @@ var MsgFlags = map[int]string{
 	SUCCESS:        "ok",
 	ERROR:          "fail",
 	INVALID_PARAMS: "请求参数错误",
+	QUESTTIMEOUT:   "超时",
 
 	ERROR_TIME_EARLY_FAIL: "无法更新更早时间的信息",
 
@@ -12,11 +13,15 @@ var MsgFlags = map[int]string{
 	ERROR_AUTH_TOKEN:               "Token生成失败",
 	ERROR_AUTH:                     "Token错误",
 	ERROR_DECRYPT_TOKEN_FAIL:       "解析Token失败",
+	ERROR_EXIST_AUTH:               "用户名密码已存在",
+	ERROR_ADD_AUTH_FAIL:            "添加个人信息失败",
+	ERROR_GET_NAME_FAIL:            "获取用户名失败",
 
 	ERROR_BIND_DATA_FAIL: "绑定数据失败失败",
 
-	ERROR_GET_AUTH_FAIL: "获取个人信息失败",
-	ERROR_NOT_ADMIN:     "无管理员权限",
+	ERROR_GET_AUTH_FAIL:   "获取个人信息失败",
+	ERROR_NOT_ADMIN:       "无管理员权限",
+	ERROR_EXIST_USER_AUTH: "相同用户已存在",
 
 	ERROR_EXIST_ROTA_FAIL:   "获取已存在值班日期失败",
 	ERROR_EXIST_ROTA:        "已存在该日期值班情况",
@@ -36,6 +41,7 @@ var MsgFlags = map[int]string{
 	ERROR_UPDATE_RESTS_FAIL:      "更新调休申请表失败",
 	ERROR_REST_WEEKEND_FAIL:      "周末调啥休？？？？",
 	ERROR_ROTA_REST_FAIL:         "值班不允许调休",
+	ERROR_EXIST_RESTS_FAIL:       "相同日期的调休表已存在",
 
 	ERROR_GET_VACATION_FAIL:    "获取调休信息失败",
 	ERROR_DELETE_VACATION_FAIL: "清空调休信息失败",

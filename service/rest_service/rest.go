@@ -6,17 +6,15 @@ import (
 )
 
 type Rest struct {
-	Id         int
-	Datetime   string
-	Type       int
-	Proposer   string
-	Checker    string
-	Response   int
-	CreatedOn  time.Time
-	ResponseOn time.Time
-	Backup1    string
-	Backup2    string
-	State      int
+	Id         int       `form:"id"  json:"id"`
+	Datetime   string    `form:"datetime"  json:"datetime" `
+	Type       int       ` form:"type"   json:"type"  `
+	Proposer   string    `form:"proposer"   json:"proposer" `
+	Checker    string    `form:"checker"  json:"checker" `
+	Response   int       `form:"response"  json:"response" `
+	CreatedOn  time.Time `form:"created_on"  json:"created_on"  `
+	ResponseOn time.Time `form:"response_on"  json:"response_on" `
+	State      int       `form:"state"   json:"state"`
 }
 
 func (t *Rest) Add() error {
@@ -28,6 +26,11 @@ func (t *Rest) Add() error {
 	m["checker"] = t.Checker
 	err := models.AddDutyRest(m)
 	return err
+}
+
+func (t *Rest) CheckIsExist() (bool, error) {
+	IsExist, err := models.CheckIsExist(t.Datetime, t.Proposer)
+	return IsExist, err
 }
 
 func (t *Rest) GetAll() ([]models.DutyRest, error) {

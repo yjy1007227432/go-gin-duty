@@ -7,13 +7,13 @@ import (
 )
 
 type DutyAuth struct {
-	Id              int       `xorm:"not null pk autoincr INT(10)"`
-	Name            string    `xorm:"default '' comment('姓名') VARCHAR(50)"`
-	Telephone       string    `xorm:"default '' comment('电话') VARCHAR(50)"`
-	Group           string    `xorm:"default '' comment('所属组：计费:calculate  crm:crm') VARCHAR(50)"`
-	Username        string    `xorm:"default '' comment('账号') VARCHAR(50)"`
-	Password        string    `xorm:"default '' comment('密码') VARCHAR(50)"`
-	IsAdministrator int       `xorm:"default 0 comment('是否管理员，0：否，1：是') TINYINT(3)"`
+	Id              int       `form:"id"  json:"id"`
+	Name            string    `form:"name" json:"name"`
+	Telephone       string    `form:"telephone" json:"telephone"`
+	Group           string    `form:"group" json:"group"`
+	Username        string    `form:"username"  json:"username"`
+	Password        string    `form:"password"  json:"password"`
+	IsAdministrator int       `form:"is_administrator" json:"is_administrator"`
 	CreatedOn       time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('创建时间') TIMESTAMP"`
 	CreatedBy       string    `xorm:"default '' comment('创建人') VARCHAR(50)"`
 	ModifiedOn      time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('修改时间') TIMESTAMP"`
@@ -29,7 +29,7 @@ func AddAuth(data map[string]interface{}) error {
 		Group:           data["group"].(string),
 		Username:        data["username"].(string),
 		Password:        data["password"].(string),
-		IsAdministrator: data["is_administrator"].(int),
+		IsAdministrator: 0,
 		CreatedOn:       time.Now(),
 		CreatedBy:       data["created_by"].(string),
 	}
@@ -74,7 +74,6 @@ func GetGroup(name string) (string, error) {
 	auth := DutyAuth{
 		Name: name,
 	}
-
 	err := db.Select("group").Where(&auth).Find(&auth).Error
 
 	if err != nil {
@@ -114,18 +113,49 @@ func CheckAuth(username, password string) (bool, error) {
 	return false, nil
 }
 
-func GetNameByUsername(username string) (string, error) {
-
+func GetNameByUsername(username string) (string, string, error) {
 	var auth DutyAuth
-	err := db.Select("name").Where(DutyAuth{Username: username}).First(&auth).Error
+	err := db.Select("id,name,telephone,`group`").Where(&DutyAuth{Username: username}).First(&auth).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return "", err
+		return "", "", err
 	}
 
 	if auth.Id > 0 {
-		return auth.Name, nil
+		return auth.Name, auth.Group, nil
 	}
 
-	return "", nil
+	return "", "", nil
+}
+
+func IsExistUser(name string) (bool, error) {
+
+	var auth DutyAuth
+	err := db.Select("id").Where(DutyAuth{Name: name}).First(&auth).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
+	if auth.Id > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+func IsExistName(username string, password string) (bool, error) {
+
+	var auth DutyAuth
+	err := db.Select("id").Where(DutyAuth{Username: username, Password: password}).First(&auth).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
+	if auth.Id > 0 {
+		return false, nil
+	}
+
+	return true, nil
 }

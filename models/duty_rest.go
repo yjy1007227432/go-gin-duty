@@ -20,7 +20,7 @@ type DutyRest struct {
 
 func AddDutyRest(data map[string]interface{}) error {
 	rest := DutyRest{
-		Datetime:  data["datetime"].(string),
+		Datetime:  data["request_time"].(string),
 		Type:      data["type"].(int),
 		Proposer:  data["proposer"].(string),
 		Checker:   data["checker"].(string),
@@ -41,13 +41,30 @@ func GetAll() ([]DutyRest, error) {
 	)
 
 	err = db.Find(&rests).Error
-
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-
 	return rests, err
+}
 
+func CheckIsExist(datetime, proposer string) (bool, error) {
+	var (
+		rest DutyRest
+		err  error
+	)
+	err = db.Where(DutyRest{
+		Datetime: datetime,
+		Proposer: proposer,
+	}).First(&rest).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+	if rest.Id > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }
 
 func GetByChecker(checker string) ([]DutyRest, error) {

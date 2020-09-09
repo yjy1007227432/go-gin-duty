@@ -18,34 +18,21 @@ import (
 
 func AddMyExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
-
-	token := c.Query("token")
 	respondent := c.Query("respondent")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
 
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
+	name := (&util.GetName{C: *c}).GetName()
 
 	if name == respondent {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
 		return
 	}
 
-	nameGroup, err := (&auth_service.Auth{
-		Name: name,
-	}).GetGroupByName()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	nameGroup := (&util.GetName{C: *c}).GetName()
+
 	respondentGroup, err := (&auth_service.Auth{
 		Name: respondent,
 	}).GetGroupByName()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
 		return
@@ -63,9 +50,7 @@ func AddMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
 		return
 	}
-	//todo
-	//换班日期得存在在调休表中
-	//两个换班日期的值班人员得是申请人与被申请人
+
 	IsExistRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
 	}).ExistByDatetime()
@@ -87,6 +72,7 @@ func AddMyExchange(c *gin.Context) {
 	rotaRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
 	}).GetRotaByDay()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
@@ -167,19 +153,8 @@ func GetMyExchange(c *gin.Context) {
 
 	state := c.Query("state")
 	stateInt, _ := strconv.Atoi(state)
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+
+	name := (&util.GetName{C: *c}).GetName()
 
 	exchanges, err = (&exchange_service.Exchange{
 		Proposer: name,
@@ -204,19 +179,7 @@ func GetNeedExamineExchanges(c *gin.Context) {
 
 	state := c.Query("state")
 	stateInt, _ := strconv.Atoi(state)
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	name := (&util.GetName{C: *c}).GetName()
 
 	exchanges, err = (&exchange_service.Exchange{
 		Respondent: name,
@@ -235,7 +198,7 @@ func GetNeedExamineExchanges(c *gin.Context) {
 func DeleteExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	id := c.Query("Id")
+	id := c.Query("id")
 
 	idInt, _ := strconv.Atoi(id)
 
@@ -277,19 +240,7 @@ func ExamineExchange(c *gin.Context) {
 	response, _ := strconv.Atoi(c.Query("response"))
 	idInt, _ := strconv.Atoi(id)
 
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	name := (&util.GetName{C: *c}).GetName()
 
 	exchange, err := (&exchange_service.Exchange{
 		Id: idInt,
@@ -319,6 +270,45 @@ func ExamineExchange(c *gin.Context) {
 	}
 	//todo
 	//同意换班之后更新值班表
+	nameGroup, err := (&auth_service.Auth{
+		Name: name,
+	}).GetGroupByName()
+	if nameGroup == "crm" {
+		err = (&rota_service.Rota{
+			Datetime: exchange.RequestTime,
+			CrmLate:  exchange.Respondent,
+		}).UpdateCrmLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+
+		err = (&rota_service.Rota{
+			Datetime: exchange.RequestedTime,
+			CrmLate:  exchange.Proposer,
+		}).UpdateCrmLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+	} else {
+		err = (&rota_service.Rota{
+			Datetime:    exchange.RequestTime,
+			BillingLate: exchange.Respondent,
+		}).UpdateBillingLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+		err = (&rota_service.Rota{
+			Datetime:    exchange.RequestedTime,
+			BillingLate: exchange.Proposer,
+		}).UpdateBillingLate()
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
+	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }

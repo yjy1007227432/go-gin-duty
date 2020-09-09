@@ -5,7 +5,6 @@ import (
 	"go-gin-duty-master/e"
 	"go-gin-duty-master/models"
 	"go-gin-duty-master/pkg/app"
-	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/rest_service"
 	"go-gin-duty-master/service/rota_service"
 	"go-gin-duty-master/util"
@@ -44,19 +43,8 @@ func GetNeedExamineRests(c *gin.Context) {
 	)
 	appG := app.Gin{C: c}
 
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	name := (&util.GetName{C: *c}).GetName()
+
 	restService := rest_service.Rest{
 		Checker: name,
 	}
@@ -87,19 +75,7 @@ func ExamineRest(c *gin.Context) {
 
 	idInt, _ := strconv.Atoi(id)
 
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	name := (&util.GetName{C: *c}).GetName()
 
 	rest, err := (&rest_service.Rest{
 		Id: idInt,
@@ -155,33 +131,35 @@ func AddRest(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_REST_WEEKEND_FAIL, nil)
 		return
 	}
-	token := c.Query("token")
 
-	username, err := util.DecrpytToken(token)
-
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
+	name := (&util.GetName{C: *c}).GetName()
 
 	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDuty, name) || strings.Contains(rota.CrmLate, name) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ROTA_REST_FAIL, nil)
 		return
 	}
 
-	var rest = &rest_service.Rest{}
-	err = c.Bind(rest)
+	var rest = &rest_service.Rest{
+		Proposer: name,
+		Response: 0,
+	}
 
+	err = c.Bind(rest)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
 		return
 	}
 
-	rest.Proposer = name
+	IsExist, err := rest.CheckIsExist()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
+		return
+	}
+	if IsExist == true {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_RESTS_FAIL, nil)
+		return
+	}
+
 	err = rest.Add()
 
 	if err != nil {
@@ -195,7 +173,7 @@ func AddRest(c *gin.Context) {
 func DeleteRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	id := c.Query("Id")
+	id := c.Query("id")
 
 	idInt, _ := strconv.Atoi(id)
 
@@ -204,6 +182,7 @@ func DeleteRest(c *gin.Context) {
 	}
 
 	rest1, err := rest.GetRestById()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
 		return
@@ -226,23 +205,12 @@ func GetMyRest(c *gin.Context) {
 
 	state := c.Query("state")
 	stateInt, _ := strconv.Atoi(state)
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+
+	name := (&util.GetName{C: *c}).GetName()
 
 	rests, err := (&rest_service.Rest{
 		Proposer: name,
-		State:    stateInt,
+		Response: stateInt,
 	}).GetRestsByName()
 
 	if err != nil {

@@ -37,7 +37,6 @@ func JWT() gin.HandlerFunc {
 				"msg":  e.GetMsg(code),
 				"data": data,
 			})
-
 			c.Abort()
 			return
 		}

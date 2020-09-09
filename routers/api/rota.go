@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/e"
 	"go-gin-duty-master/pkg/app"
-	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/rota_service"
 	"go-gin-duty-master/util"
 	"net/http"
@@ -79,19 +78,7 @@ func AddRotaByDay(c *gin.Context) {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-	token := c.Query("token")
-	username, err := util.DecrpytToken(token)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_DECRYPT_TOKEN_FAIL, nil)
-		return
-	}
-	name, err := (&auth_service.Auth{
-		Username: username,
-	}).GetNameByUsername()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_AUTH_FAIL, nil)
-		return
-	}
+	name := (&util.GetName{C: *c}).GetName()
 	rotaService := rota_service.Rota{
 		Datetime:           form.Datetime,
 		Week:               form.Week,

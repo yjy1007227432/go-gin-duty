@@ -2,11 +2,10 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-gin-duty-master/e"
 	"go-gin-duty-master/middleware/jwt"
-	"go-gin-duty-master/pkg/app"
+	"time"
+
 	"go-gin-duty-master/routers/api"
-	"net/http"
 )
 
 func InitRouter() *gin.Engine {
@@ -16,37 +15,27 @@ func InitRouter() *gin.Engine {
 
 	r := gin.Default()
 	r.POST("/auth", api.GetAuth) //
+	r.POST("/register", api.Register)
 
-	//测试
-	r.POST("/auth1", func(c *gin.Context) {
-		appG := app.Gin{C: c}
-		appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
-			"token": "111",
-		})
-	}) //
+	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 2))
 
-	app := r.Group("/api")
-
-	app.Use(jwt.JWT())
+	app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
 		//获取当月值班表
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
 
 		//获取本人调休申请表信息(未审批/已审批)
 		app.POST("/rests/getMe", api.GetMyRest)
-
 		//新增本人调休申请表信息
 		app.POST("/rests/addMyRest", api.AddRest)
 		//todo  周末和法定节假日
-
 		//删除本人未审批调休申请表信息
 		app.POST("/rests/deleteMyRest", api.DeleteRest)
-
 		//获取所有调休信息
 		app.POST("/vacation/getAll", api.GetAllVacation)
-
 		//查看本人的换班请求表(未审批/已审批)
 		app.POST("/exchange/myExchange", api.GetMyExchange)
+
 		//删除本人的未审批换班请求表
 		app.POST("/exchange/deleteMyExchange", api.DeleteExchange)
 		//回复换班申请表
@@ -60,6 +49,7 @@ func InitRouter() *gin.Engine {
 	app.Use(jwt.JWT()).Use(jwt.ADMIN())
 	{
 		//新增员工信息表
+		app.POST("/auth/AddAuth", api.AddAuth)
 
 		//导入值班表
 		app.POST("/rota/import", api.ImportRota)

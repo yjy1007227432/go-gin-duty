@@ -6,11 +6,11 @@ import (
 )
 
 type Vacation struct {
-	Id                   int
-	Name                 string
-	RemainVacation       int
-	RemainAnnualVacation int
-	UpdateTime           time.Time
+	Id                   int       `json:"id"`
+	Name                 string    `json:"name"`
+	RemainVacation       int       `json:"remain_vacation"`
+	RemainAnnualVacation int       `json:"remain_annual_vacation"`
+	UpdateTime           time.Time `json:"update_time"`
 }
 
 func (t *Vacation) GetAll() ([]models.DutyVacation, error) {

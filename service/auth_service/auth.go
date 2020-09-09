@@ -5,20 +5,32 @@ import (
 )
 
 type Auth struct {
-	Id              int
-	Name            string
-	Telephone       string
-	Group           string
-	Username        string
-	Password        string
-	IsAdministrator int
+	Id              int    `form:"id"  json:"id"`
+	Name            string `form:"name" json:"name"`
+	Telephone       string `form:"telephone" json:"telephone"`
+	Group           string `form:"group" json:"group"`
+	Username        string `form:"username"  json:"username"`
+	Password        string `form:"password"  json:"password"`
+	IsAdministrator int    `form:"is_administrator" json:"is_administrator"`
+	CreatedBy       string `form:"created_by"  json:"created_by"`
+}
+
+func (a *Auth) AddAuth() error {
+	data := make(map[string]interface{})
+	data["name"] = a.Name
+	data["telephone"] = a.Telephone
+	data["group"] = a.Group
+	data["username"] = a.Username
+	data["password"] = a.Password
+	data["created_by"] = a.Name
+	return models.AddAuth(data)
 }
 
 func (a *Auth) Check() (bool, error) {
 	return models.CheckAuth(a.Username, a.Password)
 }
 
-func (a *Auth) GetNameByUsername() (string, error) {
+func (a *Auth) GetNameByUsername() (string, string, error) {
 	return models.GetNameByUsername(a.Username)
 }
 
@@ -28,4 +40,12 @@ func (a *Auth) IsAdmin() (int, error) {
 
 func (a *Auth) GetGroupByName() (string, error) {
 	return models.GetGroup(a.Name)
+}
+
+func (a *Auth) IsExistName() (bool, error) {
+	return models.IsExistName(a.Username, a.Password)
+}
+
+func (a *Auth) IsExistUser() (bool, error) {
+	return models.IsExistUser(a.Name)
 }

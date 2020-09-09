@@ -6,14 +6,14 @@ import (
 )
 
 type Exchange struct {
-	Id            int
-	RequestTime   string
-	Proposer      string
-	Respondent    string
-	RequestedTime string
-	Response      int
-	CreatedOn     time.Time
-	ResponseOn    time.Time
+	Id            int       `json:"id"`
+	RequestTime   string    `json:"request_time"`
+	Proposer      string    `json:"proposer"`
+	Respondent    string    `json:"respondent"`
+	RequestedTime string    `json:"requested_time"`
+	Response      int       `json:"response"`
+	CreatedOn     time.Time `json:"created_on"`
+	ResponseOn    time.Time `json:"response_on"`
 }
 
 func (t *Exchange) GetAll() ([]models.DutyExchange, error) {
