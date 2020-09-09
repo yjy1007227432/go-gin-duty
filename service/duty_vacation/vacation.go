@@ -8,14 +8,30 @@ import (
 type Vacation struct {
 	Id                   int       `json:"id"`
 	Name                 string    `json:"name"`
-	RemainVacation       int       `json:"remain_vacation"`
-	RemainAnnualVacation int       `json:"remain_annual_vacation"`
+	RemainVacation       float64   `json:"remain_vacation"`
+	RemainAnnualVacation float64   `json:"remain_annual_vacation"`
 	UpdateTime           time.Time `json:"update_time"`
 }
 
 func (t *Vacation) GetAll() ([]models.DutyVacation, error) {
 	vacations, err := models.GetVacationAll()
 	return vacations, err
+}
+
+func (t *Vacation) AddOne() error {
+	vacation, _ := models.GetVacationByName(t.Name)
+	data := make(map[string]interface{})
+	data["remain_vacation"] = vacation.RemainVacation - 1
+	err := models.EditRest(vacation.Id, data)
+	return err
+}
+
+func (t *Vacation) AddHalf() error {
+	vacation, _ := models.GetVacationByName(t.Name)
+	data := make(map[string]interface{})
+	data["remain_vacation"] = vacation.RemainVacation - 0.5
+	err := models.EditRest(vacation.Id, data)
+	return err
 }
 
 func (t *Vacation) GetByName() (models.DutyVacation, error) {

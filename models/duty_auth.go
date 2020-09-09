@@ -74,7 +74,7 @@ func GetGroup(name string) (string, error) {
 	auth := DutyAuth{
 		Name: name,
 	}
-	err := db.Select("group").Where(&auth).Find(&auth).Error
+	err := db.Select("`group`").Where(&auth).Find(&auth).Error
 
 	if err != nil {
 		log.Printf("GetGroup err: %v", err)

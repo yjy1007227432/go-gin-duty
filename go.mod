@@ -10,6 +10,8 @@ require (
 	github.com/go-ini/ini v1.60.2
 	github.com/jinzhu/gorm v1.9.16
 	github.com/nsqio/go-nsq v1.0.8
+	github.com/prometheus/common v0.10.0
+	github.com/robfig/cron v1.2.0
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	gopkg.in/ini.v1 v1.60.2 // indirect
 )

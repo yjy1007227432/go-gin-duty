@@ -27,7 +27,7 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 
-	nameGroup := (&util.GetName{C: *c}).GetName()
+	nameGroup := (&util.GetName{C: *c}).GetGroup()
 
 	respondentGroup, err := (&auth_service.Auth{
 		Name: respondent,
@@ -42,8 +42,8 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 
-	var exchange = &exchange_service.Exchange{}
-	err = c.Bind(exchange)
+	var exchange = exchange_service.Exchange{}
+	err = c.Bind(&exchange)
 	exchange.Proposer = name
 
 	if err != nil {
@@ -54,6 +54,7 @@ func AddMyExchange(c *gin.Context) {
 	IsExistRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
 	}).ExistByDatetime()
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return

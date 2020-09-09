@@ -168,3 +168,33 @@ func GetRestById(id int) (DutyRest, error) {
 	return rest, nil
 
 }
+
+func GetRestByDay(dateTime string) ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+
+	err = db.Where("dateTime = ? and response = 1", dateTime).Find(&rests).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rests, nil
+
+}
+
+func AgreeMorningAndFullDay(dateTime string, data interface{}) error {
+	if err := db.Model(&DutyRest{}).Where("datetime = ? and type != 1 and response = 0", dateTime).Updates(data).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func AgreeAfternoon(dateTime string, data interface{}) error {
+	if err := db.Model(&DutyRest{}).Where("datetime = ? and type == 1 and response = 0", dateTime).Updates(data).Error; err != nil {
+		return err
+	}
+	return nil
+}

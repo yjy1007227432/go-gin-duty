@@ -43,6 +43,27 @@ func (t *Rest) GetRestById() (models.DutyRest, error) {
 	return rest, err
 }
 
+func (t *Rest) GetRestByDay() ([]models.DutyRest, error) {
+	rests, err := models.GetRestByDay(t.Datetime)
+	return rests, err
+}
+
+func (t *Rest) AgreeMorningAndFullDay() error {
+	var m map[string]interface{}     //声明变量，不分配内存
+	m = make(map[string]interface{}) //必可不少，分配内存
+	m["response"] = 2
+	err := models.AgreeMorningAndFullDay(t.Datetime, m)
+	return err
+}
+
+func (t *Rest) AgreeAfternoon() error {
+	var m map[string]interface{}     //声明变量，不分配内存
+	m = make(map[string]interface{}) //必可不少，分配内存
+	m["response"] = 2
+	err := models.AgreeAfternoon(t.Datetime, m)
+	return err
+}
+
 func (t *Rest) GetByChecker() ([]models.DutyRest, error) {
 	rests, err := models.GetByChecker(t.Checker)
 	return rests, err
