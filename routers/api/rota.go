@@ -80,14 +80,14 @@ func AddRotaByDay(c *gin.Context) {
 	}
 	name := (&util.GetName{C: *c}).GetName()
 	rotaService := rota_service.Rota{
-		Datetime:           form.Datetime,
-		Week:               form.Week,
-		BillingLate:        form.BillingLate,
-		BillingWeekendLate: form.BillingWeekendLate,
-		CrmLate:            form.CrmLate,
-		CrmWeekendLate:     form.CrmWeekendLate,
-		CrmDuty:            form.CrmDuty,
-		CreatedBy:          name,
+		Datetime:          form.Datetime,
+		Week:              form.Week,
+		BillingLate:       form.BillingLate,
+		BillingWeekendDay: form.BillingWeekendDay,
+		CrmLate:           form.CrmLate,
+		CrmWeekendDay:     form.CrmWeekendDay,
+		CrmDutySpecial:    form.CrmDutySpecial,
+		CreatedBy:         name,
 	}
 
 	exists, err := rotaService.ExistByDatetime()
@@ -134,12 +134,12 @@ func ImportRota(c *gin.Context) {
 }
 
 type AddRotaForm struct {
-	Datetime           string `form:"datetime"`
-	Week               string `form:"week"`
-	BillingLate        string `form:"billing_late"`
-	BillingWeekendLate string `form:"billing_weekend_late"`
-	CrmLate            string `form:"crm_late"`
-	CrmWeekendLate     string `form:"crm_weekend_late"`
-	CrmDuty            string `form:"crm_duty"`
-	CreatedBy          string `form:"created_by"`
+	Datetime          string `form:"datetime"`
+	Week              string `form:"week"`
+	BillingLate       string `form:"billing_late"`
+	BillingWeekendDay string `form:"billing_weekend_day"`
+	CrmLate           string `form:"crm_late"`
+	CrmWeekendDay     string `form:"crm_weekend_day"`
+	CrmDutySpecial    string `form:"crm_duty_special"`
+	CreatedBy         string `form:"created_by"`
 }

@@ -12,6 +12,7 @@ type Exchange struct {
 	Respondent    string    `form:"respondent"   json:"respondent"`
 	RequestedTime string    `form:"requested_time"  json:"requested_time"`
 	Response      int       `form:"response"   json:"response"`
+	ExchangeType  int       `form:"exchange_type"   json:"exchange_type"`
 	CreatedOn     time.Time `form:"created_on"    json:"created_on"`
 	ResponseOn    time.Time `form:"response_on"    json:"response_on"`
 }
@@ -23,7 +24,7 @@ func (t *Exchange) GetAll() ([]models.DutyExchange, error) {
 
 func (t *Exchange) AddExchange() error {
 
-	return models.AddExchange(t.RequestTime, t.Proposer, t.Respondent, t.RequestedTime, 0)
+	return models.AddExchange(t.RequestTime, t.Proposer, t.Respondent, t.RequestedTime, t.ExchangeType)
 
 }
 

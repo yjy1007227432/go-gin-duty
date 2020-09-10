@@ -8,7 +8,6 @@ import (
 	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/exchange_service"
 	"go-gin-duty-master/service/rota_service"
-	"strings"
 	"time"
 
 	"go-gin-duty-master/util"
@@ -22,11 +21,13 @@ func AddMyExchange(c *gin.Context) {
 
 	name := (&util.GetName{C: *c}).GetName()
 
+	//自身不能换班
 	if name == respondent {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
 		return
 	}
 
+	//必须是同组人员才可以换班
 	nameGroup := (&util.GetName{C: *c}).GetGroup()
 
 	respondentGroup, err := (&auth_service.Auth{
@@ -43,54 +44,10 @@ func AddMyExchange(c *gin.Context) {
 	}
 
 	var exchange = exchange_service.Exchange{}
-	err = c.Bind(&exchange)
 	exchange.Proposer = name
-
+	err = c.Bind(&exchange)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
-		return
-	}
-
-	IsExistRequest, err := (&rota_service.Rota{
-		Datetime: exchange.RequestTime,
-	}).ExistByDatetime()
-
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
-		return
-	}
-	IsExistRequested, err := (&rota_service.Rota{
-		Datetime: exchange.RequestedTime,
-	}).ExistByDatetime()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
-		return
-	}
-	if IsExistRequest && IsExistRequested == false {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
-		return
-	}
-	rotaRequest, err := (&rota_service.Rota{
-		Datetime: exchange.RequestTime,
-	}).GetRotaByDay()
-
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
-		return
-	}
-	rotaRequested, err := (&rota_service.Rota{
-		Datetime: exchange.RequestedTime,
-	}).GetRotaByDay()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
-		return
-	}
-	if !(strings.Contains(rotaRequest.CrmLate, name) || strings.Contains(rotaRequest.BillingLate, name)) {
-		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_ROTAS_FAIL, nil)
-		return
-	}
-	if !(strings.Contains(rotaRequested.CrmLate, respondent) || strings.Contains(rotaRequested.BillingLate, respondent)) {
-		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_ROTAS_FAIL, nil)
 		return
 	}
 	//不能有涉及到这两天的未处理换班请求
@@ -104,6 +61,38 @@ func AddMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_EXCHANGE_FAIL, nil)
 		return
 	}
+
+	//换班的日期存在在值班表中
+	IsExistRequest, err := (&rota_service.Rota{
+		Datetime: exchange.RequestTime,
+	}).ExistByDatetime()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	IsExistRequested, err := (&rota_service.Rota{
+		Datetime: exchange.RequestedTime,
+	}).ExistByDatetime()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+		return
+	}
+	if IsExistRequest && IsExistRequested == false {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
+		return
+	}
+	//换班的日期得的确存在申请人值班与被申请人值班
+	IsExist, err := rota_service.CheckTwoExist(name, respondent, exchange.RequestTime, exchange.RequestedTime, nameGroup, exchange.ExchangeType)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_CHECK_ROTAS_EXIST_FAIL, nil)
+		return
+	}
+	if IsExist != true {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
+		return
+	}
+
 	err = exchange.AddExchange()
 
 	if err != nil {

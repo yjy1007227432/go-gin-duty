@@ -39,9 +39,6 @@ func ComputeVacation() {
 	}
 }
 
-//todo 年休计算
-//值班计算
-
 //8:30 同意当天上午的调休以及全天的调休
 func AgreeMorningAndFullDay() {
 	nowDay := time.Now().Format("2006-01-02")
@@ -65,3 +62,7 @@ func AgreeAfternoon() {
 		log.Errorf("AgreeAfternoon run error: \v", err)
 	}
 }
+
+//8:30 同意当天白天的换班以及全天以及特殊班的换班
+//todo
+//17:30 同意当天晚班换班

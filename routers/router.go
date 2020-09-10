@@ -23,7 +23,6 @@ func InitRouter() *gin.Engine {
 	{
 		//获取当月值班表
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
-
 		//获取本人调休申请表信息(未审批/已审批)
 		app.POST("/rests/getMe", api.GetMyRest)
 		//新增本人调休申请表信息

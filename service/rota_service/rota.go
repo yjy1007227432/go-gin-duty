@@ -7,24 +7,25 @@ import (
 	"io"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 )
 
 type Rota struct {
-	Id                 int       `json:"id"`
-	Datetime           string    `json:"datetime"`
-	Week               string    `json:"week"`
-	BillingLate        string    `json:"billing_late"`
-	BillingWeekendLate string    `json:"billing_weekend_late"`
-	CrmLate            string    `json:"crm_late"`
-	CrmWeekendLate     string    `json:"crm_weekend_late"`
-	CrmDuty            string    `json:"crm_duty"`
-	CreatedOn          time.Time `json:"created_on"`
-	CreatedBy          string    `json:"created_on"`
-	ModifiedOn         time.Time `json:"modified_on"`
-	ModifiedBy         string    `json:"modified_by"`
+	Id                int       `json:"id"`
+	Datetime          string    `json:"datetime"`
+	Week              string    `json:"week"`
+	BillingLate       string    `json:"billing_late"`
+	BillingWeekendDay string    `json:"billing_weekend_day"`
+	CrmLate           string    `json:"crm_late"`
+	CrmWeekendDay     string    `json:"crm_weekend_day"`
+	CrmDutySpecial    string    `json:"crm_duty_special"`
+	CreatedOn         time.Time `json:"created_on"`
+	CreatedBy         string    `json:"created_on"`
+	ModifiedOn        time.Time `json:"modified_on"`
+	ModifiedBy        string    `json:"modified_by"`
 }
 
 func (t *Rota) ExistByDatetime() (bool, error) {
@@ -37,10 +38,10 @@ func (t *Rota) Add() error {
 	m["datetime"] = t.Datetime
 	m["week"] = t.Week
 	m["billing_late"] = t.BillingLate
-	m["billing_weekend_late"] = t.BillingWeekendLate
+	m["billing_weekend_late"] = t.BillingWeekendDay
 	m["crm_late"] = t.CrmLate
-	m["crm_weekend_late"] = t.CrmWeekendLate
-	m["crm_duty"] = t.CrmDuty
+	m["crm_weekend_late"] = t.CrmWeekendDay
+	m["crm_duty"] = t.CrmDutySpecial
 	m["created_by"] = t.CreatedBy
 	err := models.AddDutyRota(m)
 	return err
@@ -160,23 +161,23 @@ func (t *Rota) Import(r io.Reader) error {
 				var rota = Rota{}
 				if row[1] == "星期六" || row[1] == "星期日" {
 					rota = Rota{
-						Datetime:           convertToFormatDay(row[0]),
-						Week:               row[1],
-						BillingLate:        row[2],
-						BillingWeekendLate: row[2],
-						CrmLate:            row[3],
-						CrmWeekendLate:     row[3],
-						CrmDuty:            row[4],
+						Datetime:          convertToFormatDay(row[0]),
+						Week:              row[1],
+						BillingLate:       row[2],
+						BillingWeekendDay: row[2],
+						CrmLate:           row[3],
+						CrmWeekendDay:     row[3] + "、" + row[4],
+						CrmDutySpecial:    "",
 					}
 				} else {
 					rota = Rota{
-						Datetime:           convertToFormatDay(row[0]),
-						Week:               row[1],
-						BillingLate:        row[2],
-						BillingWeekendLate: "",
-						CrmLate:            row[3],
-						CrmWeekendLate:     "",
-						CrmDuty:            row[4],
+						Datetime:          convertToFormatDay(row[0]),
+						Week:              row[1],
+						BillingLate:       row[2],
+						BillingWeekendDay: "",
+						CrmLate:           row[3],
+						CrmWeekendDay:     "",
+						CrmDutySpecial:    row[4],
 					}
 				}
 				exists, err := rota.ExistByDatetime()
@@ -221,4 +222,48 @@ func correctTitle(str1, str2 []string) bool {
 
 	return reflect.DeepEqual(str1, title1) && reflect.DeepEqual(str2, title2)
 
+}
+
+//判断两个特定日期是否存在两个特定员工的值班表
+func CheckTwoExist(requestMen, requestedMen, requestDay, requestedDay, group string, exchangeType int) (bool, error) {
+	rotaRequest, err := Rota{
+		Datetime: requestDay,
+	}.GetRotaByDay()
+	rotaRequested, err := Rota{
+		Datetime: requestedDay,
+	}.GetRotaByDay()
+	if err != nil {
+		return false, err
+	}
+	if group == "calculate" && exchangeType == 1 {
+		IsExist := strings.Contains(rotaRequest.BillingLate, requestMen) && strings.Contains(rotaRequested.BillingLate, requestedMen)
+		return IsExist, nil
+	}
+	if group == "calculate" && exchangeType == 2 {
+		IsExist := strings.Contains(rotaRequest.BillingWeekendDay, requestMen) && strings.Contains(rotaRequested.BillingWeekendDay, requestedMen)
+		return IsExist, nil
+	}
+	if group == "crm" && exchangeType == 1 {
+		IsExist := strings.Contains(rotaRequest.CrmLate, requestMen) && strings.Contains(rotaRequested.CrmLate, requestedMen)
+		return IsExist, nil
+	}
+	if group == "crm" && exchangeType == 2 {
+		IsExist := strings.Contains(rotaRequest.CrmWeekendDay, requestMen) && strings.Contains(rotaRequested.CrmWeekendDay, requestedMen)
+		return IsExist, nil
+	}
+	if group == "calculate" && exchangeType == 4 {
+		IsExist := strings.Contains(rotaRequest.BillingWeekendDay, requestMen) && strings.Contains(rotaRequest.BillingLate, requestMen) &&
+			strings.Contains(rotaRequested.BillingWeekendDay, requestedMen) && strings.Contains(rotaRequested.BillingLate, requestedMen)
+		return IsExist, nil
+	}
+	if group == "crm" && exchangeType == 4 {
+		IsExist := strings.Contains(rotaRequest.CrmWeekendDay, requestMen) && strings.Contains(rotaRequest.CrmLate, requestMen) &&
+			strings.Contains(rotaRequested.CrmWeekendDay, requestedMen) && strings.Contains(rotaRequested.CrmLate, requestedMen)
+		return IsExist, nil
+	}
+	if exchangeType == 3 {
+		IsExist := strings.Contains(rotaRequest.CrmDutySpecial, requestMen) && strings.Contains(rotaRequested.CrmDutySpecial, requestedMen)
+		return IsExist, nil
+	}
+	return false, errors.New("未知错误")
 }

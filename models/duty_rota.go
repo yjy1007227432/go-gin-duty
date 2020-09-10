@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"go-gin-duty-master/service/rota_service"
+	"strings"
 	"time"
 )
 

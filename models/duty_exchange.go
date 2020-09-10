@@ -12,6 +12,7 @@ type DutyExchange struct {
 	Respondent    string    `xorm:"default '' comment('被申请对象') VARCHAR(50)"`
 	RequestedTime string    `xorm:"default '' comment('被申请交换日期') VARCHAR(50)"`
 	Response      int       `xorm:"comment('被申请对象的回应，状态 0为未回应、1为同意、2为拒绝') TINYINT(1)"`
+	ExchangeType  int       `xorm:"comment('换班类型，1，晚班，2,周末白班，3，crm工作日特殊班'，4，周末全天班) TINYINT(1)"`
 	CreatedOn     time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('创建时间') TIMESTAMP"`
 	ResponseOn    time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('回应时间') TIMESTAMP"`
 	Backup1       string    `xorm:"default '' VARCHAR(50)"`
@@ -46,12 +47,13 @@ func GetExchangeAll() ([]DutyExchange, error) {
 	return exchanges, nil
 }
 
-func AddExchange(requestTime, proposer, Respondent, RequestedTime string, response int) error {
+func AddExchange(requestTime, proposer, Respondent, RequestedTime string, ExchangeType int) error {
 	exchange := DutyExchange{
 		RequestTime:   requestTime,
 		Proposer:      proposer,
 		Respondent:    Respondent,
 		RequestedTime: RequestedTime,
+		ExchangeType:  ExchangeType,
 		Response:      0,
 	}
 	if err := db.Create(&exchange).Error; err != nil {
@@ -63,7 +65,7 @@ func AddExchange(requestTime, proposer, Respondent, RequestedTime string, respon
 
 func IsExistDay(requestTime, requestedTime string) (bool, error) {
 	var exchange DutyExchange
-	err := db.Select("id").Where("request_time = ? or requested_time = ? ", requestTime, requestedTime).First(&exchange).Error
+	err := db.Select("id").Where("request_time in (?) or requested_time in (?) ", []string{requestTime, requestedTime}).First(&exchange).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
