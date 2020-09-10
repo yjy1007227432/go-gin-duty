@@ -8,35 +8,39 @@ import (
 )
 
 //每天晚上23点跑定时任务
+//todo 年休计算
 func ComputeVacation() {
 	nowDay := time.Now().Format("2006-01-02")
 
 	rests, err := (&rest_service.Rest{
 		Datetime: nowDay,
-	}).GetRestByDay()
+	}).GetRestByDayAgree()
 
 	if err != nil {
 		log.Errorf("ComputeVacation  GetRestByDay  run error: \v", err)
 	}
 
 	for _, rest := range rests {
-		if rest.Type == 1 {
-			err := duty_vacation.Vacation{
+		if rest.Type == 2 {
+			err := (&duty_vacation.Vacation{
 				Name: rest.Proposer,
-			}.AddOne()
+			}).AddOne(rest.VacationType)
 			if err != nil {
 				log.Errorf("ComputeVacation AddOne run error: \v", err)
 			}
 		} else {
-			err := duty_vacation.Vacation{
+			err := (&duty_vacation.Vacation{
 				Name: rest.Proposer,
-			}.AddHalf()
+			}).AddHalf(rest.VacationType)
 			if err != nil {
 				log.Errorf("ComputeVacation AddOne run error: \v", err)
 			}
 		}
 	}
 }
+
+//todo 年休计算
+//值班计算
 
 //8:30 同意当天上午的调休以及全天的调休
 func AgreeMorningAndFullDay() {

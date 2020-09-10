@@ -45,7 +45,7 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
 	}
 
-	app.Use(jwt.JWT()).Use(jwt.ADMIN())
+	app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
 	{
 		//新增员工信息表
 		app.POST("/auth/AddAuth", api.AddAuth)

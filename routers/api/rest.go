@@ -134,7 +134,7 @@ func AddRest(c *gin.Context) {
 
 	name := (&util.GetName{C: *c}).GetName()
 
-	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDuty, name) || strings.Contains(rota.CrmLate, name) {
+	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDutySpecial, name) || strings.Contains(rota.CrmLate, name) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ROTA_REST_FAIL, nil)
 		return
 	}

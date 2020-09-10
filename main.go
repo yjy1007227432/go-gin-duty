@@ -3,13 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 	"go-gin-duty-master/pkg/setting"
 	"go-gin-duty-master/routers"
 	"go-gin-duty-master/service/timely_task"
 	"log"
 	"net/http"
-
-	"github.com/robfig/cron"
 )
 
 func main() {

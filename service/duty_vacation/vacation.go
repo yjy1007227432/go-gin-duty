@@ -18,19 +18,30 @@ func (t *Vacation) GetAll() ([]models.DutyVacation, error) {
 	return vacations, err
 }
 
-func (t *Vacation) AddOne() error {
+func (t *Vacation) AddOne(vacationType int) error {
 	vacation, _ := models.GetVacationByName(t.Name)
 	data := make(map[string]interface{})
-	data["remain_vacation"] = vacation.RemainVacation - 1
-	err := models.EditRest(vacation.Id, data)
+	switch vacationType {
+	case 0:
+		data["remain_vacation"] = vacation.RemainVacation - 1
+	case 1:
+		data["remain_annual_vacation"] = vacation.RemainAnnualVacation - 1
+	}
+
+	err := models.EditVacation(vacation.Id, data)
 	return err
 }
 
-func (t *Vacation) AddHalf() error {
+func (t *Vacation) AddHalf(vacationType int) error {
 	vacation, _ := models.GetVacationByName(t.Name)
 	data := make(map[string]interface{})
-	data["remain_vacation"] = vacation.RemainVacation - 0.5
-	err := models.EditRest(vacation.Id, data)
+	switch vacationType {
+	case 0:
+		data["remain_vacation"] = vacation.RemainVacation - 0.5
+	case 1:
+		data["remain_annual_vacation"] = vacation.RemainAnnualVacation - 0.5
+	}
+	err := models.EditVacation(vacation.Id, data)
 	return err
 }
 

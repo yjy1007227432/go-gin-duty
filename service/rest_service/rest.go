@@ -6,15 +6,16 @@ import (
 )
 
 type Rest struct {
-	Id         int       `form:"id"  json:"id"`
-	Datetime   string    `form:"datetime"  json:"datetime" `
-	Type       int       ` form:"type"   json:"type"  `
-	Proposer   string    `form:"proposer"   json:"proposer" `
-	Checker    string    `form:"checker"  json:"checker" `
-	Response   int       `form:"response"  json:"response" `
-	CreatedOn  time.Time `form:"created_on"  json:"created_on"  `
-	ResponseOn time.Time `form:"response_on"  json:"response_on" `
-	State      int       `form:"state"   json:"state"`
+	Id           int       `form:"id"  json:"id"`
+	Datetime     string    `form:"datetime"  json:"datetime" `
+	Type         int       ` form:"type"   json:"type"  `
+	VacationType int       ` form:"vacation_type"   json:"vacation_type"  `
+	Proposer     string    `form:"proposer"   json:"proposer" `
+	Checker      string    `form:"checker"  json:"checker" `
+	Response     int       `form:"response"  json:"response" `
+	CreatedOn    time.Time `form:"created_on"  json:"created_on"  `
+	ResponseOn   time.Time `form:"response_on"  json:"response_on" `
+	State        int       `form:"state"   json:"state"`
 }
 
 func (t *Rest) Add() error {
@@ -24,6 +25,7 @@ func (t *Rest) Add() error {
 	m["request_time"] = t.Datetime
 	m["proposer"] = t.Proposer
 	m["checker"] = t.Checker
+	m["vacation_type"] = t.VacationType
 	err := models.AddDutyRest(m)
 	return err
 }
@@ -43,8 +45,8 @@ func (t *Rest) GetRestById() (models.DutyRest, error) {
 	return rest, err
 }
 
-func (t *Rest) GetRestByDay() ([]models.DutyRest, error) {
-	rests, err := models.GetRestByDay(t.Datetime)
+func (t *Rest) GetRestByDayAgree() ([]models.DutyRest, error) {
+	rests, err := models.GetRestByDayAgree(t.Datetime)
 	return rests, err
 }
 

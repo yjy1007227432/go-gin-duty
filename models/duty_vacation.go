@@ -63,7 +63,7 @@ func DeleteVacationByName(name string) error {
 }
 
 func EditVacation(id int, data interface{}) error {
-	if err := db.Model(&DutyRest{}).Where("id = ? ", id).Updates(data).Error; err != nil {
+	if err := db.Model(&DutyVacation{}).Where("id = ? ", id).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil
