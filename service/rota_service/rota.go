@@ -226,12 +226,12 @@ func correctTitle(str1, str2 []string) bool {
 
 //判断两个特定日期是否存在两个特定员工的值班表
 func CheckTwoExist(requestMen, requestedMen, requestDay, requestedDay, group string, exchangeType int) (bool, error) {
-	rotaRequest, err := Rota{
+	rotaRequest, err := (&Rota{
 		Datetime: requestDay,
-	}.GetRotaByDay()
-	rotaRequested, err := Rota{
+	}).GetRotaByDay()
+	rotaRequested, err := (&Rota{
 		Datetime: requestedDay,
-	}.GetRotaByDay()
+	}).GetRotaByDay()
 	if err != nil {
 		return false, err
 	}

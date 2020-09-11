@@ -17,6 +17,9 @@ func main() {
 	c.AddFunc("0 0 23 * * ?", timely_task.ComputeVacation)
 	c.AddFunc("0 30 8 * * ?", timely_task.AgreeMorningAndFullDay)
 	c.AddFunc("0 0 14 * * ?", timely_task.AgreeAfternoon)
+
+	c.AddFunc("0 30 8 * * ?", timely_task.AgreeDay)
+	c.AddFunc("0 30 17 * * ?", timely_task.AgreeLate)
 	c.Start()
 	defer c.Stop()
 

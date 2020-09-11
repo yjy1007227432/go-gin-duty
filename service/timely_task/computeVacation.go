@@ -2,7 +2,9 @@ package timely_task
 
 import (
 	"github.com/prometheus/common/log"
+	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/service/duty_vacation"
+	"go-gin-duty-master/service/exchange_service"
 	"go-gin-duty-master/service/rest_service"
 	"time"
 )
@@ -64,5 +66,59 @@ func AgreeAfternoon() {
 }
 
 //8:30 同意当天白天的换班以及全天以及特殊班的换班
-//todo
+func AgreeDay() {
+	nowDay := time.Now().Format("2006-01-02")
+	exchanges, err := (&exchange_service.Exchange{
+		RequestTime: nowDay,
+	}).GetExchangeByDate()
+
+	for _, exchange := range exchanges {
+		if exchange.ExchangeType != 1 {
+			_, group, err := (&auth_service.Auth{
+				Username: exchange.Proposer,
+			}).GetNameByUsername()
+			if err != nil {
+				log.Errorf("AgreeDay run error: \v", err)
+				return
+			}
+			err = (&exchange_service.Exchange{
+				Id:       exchange.Id,
+				Response: 1,
+			}).ExchangeTwo(group)
+		}
+	}
+	if err != nil {
+		log.Errorf("AgreeDay run error: \v", err)
+		return
+	}
+	return
+}
+
 //17:30 同意当天晚班换班
+func AgreeLate() {
+	nowDay := time.Now().Format("2006-01-02")
+	exchanges, err := (&exchange_service.Exchange{
+		RequestTime: nowDay,
+	}).GetExchangeByDate()
+
+	for _, exchange := range exchanges {
+		if exchange.ExchangeType == 1 {
+			_, group, err := (&auth_service.Auth{
+				Username: exchange.Proposer,
+			}).GetNameByUsername()
+			if err != nil {
+				log.Errorf("AgreeDay run error: \v", err)
+				return
+			}
+			err = (&exchange_service.Exchange{
+				Id:       exchange.Id,
+				Response: 1,
+			}).ExchangeTwo(group)
+		}
+	}
+	if err != nil {
+		log.Errorf("AgreeDay run error: \v", err)
+		return
+	}
+	return
+}

@@ -22,10 +22,13 @@ func (t *Exchange) GetAll() ([]models.DutyExchange, error) {
 	return exchanges, err
 }
 
+func (t *Exchange) GetExchangeByDate() ([]models.DutyExchange, error) {
+	exchanges, err := models.GetExchangeByDate(t.RequestTime)
+	return exchanges, err
+}
+
 func (t *Exchange) AddExchange() error {
-
 	return models.AddExchange(t.RequestTime, t.Proposer, t.Respondent, t.RequestedTime, t.ExchangeType)
-
 }
 
 func (t *Exchange) IsExistDay() (bool, error) {
@@ -57,9 +60,9 @@ func (t *Exchange) DeleteById() error {
 	err := models.DeleteExchangeById(t.Id)
 	return err
 }
-func (t *Exchange) Edit() error {
+func (t *Exchange) ExchangeTwo(group string) error {
 	data := make(map[string]interface{})
 	data["response"] = t.Response
 
-	return models.EditExchange(t.Id, data)
+	return models.ExchangeTwo(t.Id, group, data)
 }

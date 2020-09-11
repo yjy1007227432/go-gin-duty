@@ -1,9 +1,11 @@
 package main
 
 import (
-	"go-gin-duty-master/service/timely_task"
+	"fmt"
+	"time"
 )
 
 func main() {
-	timely_task.AgreeAfternoon()
+	nowDay := time.Now().AddDate(0, 0, 1).Format("2006-01-02")
+	fmt.Print(nowDay)
 }

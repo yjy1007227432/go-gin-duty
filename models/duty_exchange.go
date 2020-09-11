@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"strings"
 	"time"
 )
 
@@ -41,6 +42,18 @@ func GetExchangeAll() ([]DutyExchange, error) {
 		err       error
 	)
 	if err = db.Find(&exchanges).Error; err != nil {
+		return nil, err
+	}
+
+	return exchanges, nil
+}
+
+func GetExchangeByDate(nowDay string) ([]DutyExchange, error) {
+	var (
+		exchanges []DutyExchange
+		err       error
+	)
+	if err = db.Where("request_time = ? or  requested_time = ?", nowDay).Find(&exchanges).Error; err != nil {
 		return nil, err
 	}
 
@@ -150,9 +163,62 @@ func DeleteExchangeById(id int) error {
 	return nil
 }
 
-func EditExchange(id int, data interface{}) error {
-	if err := db.Model(&DutyExchange{}).Where("id = ? ", id).Updates(data).Error; err != nil {
+func ExchangeTwo(id int, group string, data interface{}) error {
+	response := data.(map[string]interface{})["response"].(int)
+	exchange := DutyExchange{}
+	rotaRequest := DutyRota{}
+	//查询申请换班人的值班日期值班表
+	err := db.Where("datetime = ?", exchange.RequestTime).First(&rotaRequest).Error
+	rotaRequested := DutyRota{}
+	//查询被申请换班人的值班日期值班表
+	err = db.Where("datetime = ?", exchange.RequestedTime).First(&rotaRequested).Error
+
+	//事务操作
+	conn := db.Begin()
+	//同意换班之后更新值班表
+	err = db.Model(&DutyExchange{}).Where("id = ? ", id).Updates(data).Error
+	err = db.Where("id = ?", id).First(&exchange).Error
+
+	//更新申请表
+	exchange.Response = response
+	err = db.Model(&exchange).Update(exchange).Error
+
+	if response == 2 {
+		return err
+	} else {
+		if group == "crm" {
+			if exchange.ExchangeType == 1 || exchange.ExchangeType == 4 {
+				strings.Replace(rotaRequest.CrmLate, exchange.Proposer, exchange.Respondent, 1)
+				strings.Replace(rotaRequested.CrmLate, exchange.Respondent, exchange.Proposer, 1)
+			}
+			if exchange.ExchangeType == 2 || exchange.ExchangeType == 4 {
+				strings.Replace(rotaRequest.CrmWeekendDay, exchange.Proposer, exchange.Respondent, 1)
+				strings.Replace(rotaRequested.CrmWeekendDay, exchange.Respondent, exchange.Proposer, 1)
+			}
+			if exchange.ExchangeType == 3 {
+				strings.Replace(rotaRequest.CrmDutySpecial, exchange.Proposer, exchange.Respondent, 1)
+				strings.Replace(rotaRequested.CrmDutySpecial, exchange.Respondent, exchange.Proposer, 1)
+			}
+			if group == "calculate" {
+				if exchange.ExchangeType == 1 || exchange.ExchangeType == 4 {
+					strings.Replace(rotaRequest.BillingLate, exchange.Proposer, exchange.Respondent, 1)
+					strings.Replace(rotaRequested.BillingLate, exchange.Respondent, exchange.Proposer, 1)
+				}
+				if exchange.ExchangeType == 2 || exchange.ExchangeType == 4 {
+					strings.Replace(rotaRequest.BillingWeekendDay, exchange.Proposer, exchange.Respondent, 1)
+					strings.Replace(rotaRequested.BillingWeekendDay, exchange.Respondent, exchange.Proposer, 1)
+				}
+			}
+
+		}
+	}
+	err = db.Model(&DutyRota{}).Update(&rotaRequest).Error
+	err = db.Model(&DutyRota{}).Update(&rotaRequested).Error
+
+	if err != nil {
 		return err
 	}
+	//提交事务
+	conn.Commit()
 	return nil
 }

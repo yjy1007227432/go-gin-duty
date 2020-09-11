@@ -56,6 +56,7 @@ CREATE TABLE `duty_exchange` (
  `proposer` varchar(50) DEFAULT '' COMMENT '申请人',
  `respondent` varchar(50) DEFAULT '' COMMENT '被申请对象',
  `requested_time` varchar(50) DEFAULT '' COMMENT '被申请交换日期',
+ `exchange_type`  int     COMMENT '换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班',
  `response` tinyint(1) COMMENT '被申请对象的回应，状态 0为拒绝、1为同意',
  `created_on` timestamp   DEFAULT NOW()  COMMENT '创建时间',
  `response_on` timestamp   DEFAULT NOW()  COMMENT '回应时间',
