@@ -61,7 +61,7 @@ func GetNeedExamineRests(c *gin.Context) {
 func ExamineRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	id := c.Query("Id")
+	id := c.Query("id")
 
 	datetime := c.Query("datetime")
 
@@ -210,7 +210,7 @@ func GetMyRest(c *gin.Context) {
 
 	rests, err := (&rest_service.Rest{
 		Proposer: name,
-		Response: stateInt,
+		State:    stateInt,
 	}).GetRestsByName()
 
 	if err != nil {

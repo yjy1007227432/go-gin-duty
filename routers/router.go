@@ -21,26 +21,26 @@ func InitRouter() *gin.Engine {
 
 	app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
-		//获取当月值班表
+		//获取当月值班表 1
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
-		//获取本人调休申请表信息(未审批/已审批)
+		//获取本人调休申请表信息(未审批/已审批) 1
 		app.POST("/rests/getMe", api.GetMyRest)
-		//新增本人调休申请表信息
+		//新增本人调休申请表信息 //todo
 		app.POST("/rests/addMyRest", api.AddRest)
 		//todo  周末和法定节假日
-		//删除本人未审批调休申请表信息
+		//删除本人未审批调休申请表信息 1
 		app.POST("/rests/deleteMyRest", api.DeleteRest)
-		//获取所有调休信息
+		//获取所有调休信息 1
 		app.POST("/vacation/getAll", api.GetAllVacation)
-		//查看本人的换班请求表(未审批/已审批)
+		//查看本人的换班请求表(未审批/已审批) 1
 		app.POST("/exchange/myExchange", api.GetMyExchange)
-		//删除本人的未审批换班请求表
+		//删除本人的未审批换班请求表 1
 		app.POST("/exchange/deleteMyExchange", api.DeleteExchange)
-		//回复换班申请表
+		//回复换班申请表 1
 		app.POST("/exchange/examineExchange", api.ExamineExchange)
-		//查看本人回复的换班申请表信息(未审批/已审批)
+		//查看本人回复的换班申请表信息(未审批/已审批) 1
 		app.POST("/exchange/getMyExamine", api.GetNeedExamineExchanges)
-		//新增本人换班申请表信息
+		//新增本人换班申请表信息 1
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
 	}
 
@@ -48,13 +48,13 @@ func InitRouter() *gin.Engine {
 	{
 		//新增员工信息表
 		app.POST("/auth/AddAuth", api.AddAuth)
-		//导入值班表
+		//导入值班表  1
 		app.POST("/rota/import", api.ImportRota)
-		//删除月值班表
+		//删除月值班表 1
 		app.POST("/rotas/deleteMonth", api.DeleteRotaByMonth)
-		//删除日值班表
+		//删除日值班表 1
 		app.POST("/rotas/deleteDay", api.DeleteRotaByDay)
-		//添加日值班表
+		//添加日值班表 1
 		app.POST("/rotas/addDay", api.AddRotaByDay)
 		//删除所有调休申请表信息
 		app.POST("/rests/deleteAll", api.DeleteRests)
@@ -64,15 +64,15 @@ func InitRouter() *gin.Engine {
 		app.POST("/rests/getNeedExamine", api.GetNeedExamineRests)
 		//审批调休申请表
 		app.POST("/rests/examineRest", api.ExamineRest)
-		//清空所有调休信息
+		//清空所有调休信息 1
 		app.POST("/vacation/deleteAll", api.DeleteAllVacation)
-		//删除某人调休信息
+		//删除某人调休信息 1
 		app.POST("/vacation/deleteByName", api.DeleteVacationByName)
-		//修改某人调休信息
+		//修改某人调休信息 1
 		app.POST("/vacation/editByName", api.EditVacationByName)
-		//查看所有的换班请求表
+		//查看所有的换班请求表 1
 		app.POST("/exchange/getAll", api.GetAllExchange)
-		//清空所有的换班请求表
+		//清空所有的换班请求表 1
 		app.POST("/exchange/deleteAll", api.DeleteAllExchange)
 
 	}

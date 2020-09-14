@@ -50,7 +50,7 @@ func DeleteRotaByMonth(c *gin.Context) {
 func DeleteRotaByDay(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	day := c.Query("day")
+	day := c.Query("datetime")
 
 	rotaService := rota_service.Rota{
 		Datetime: day,
@@ -113,6 +113,7 @@ func AddRotaByDay(c *gin.Context) {
 func ImportRota(c *gin.Context) {
 	appG := app.Gin{C: c}
 	file, _, err := c.Request.FormFile("file")
+	name := (&util.GetName{C: *c}).GetName()
 
 	if err != nil {
 		logs.Warn(err)
@@ -122,11 +123,11 @@ func ImportRota(c *gin.Context) {
 
 	rota := rota_service.Rota{}
 
-	err = rota.Import(file)
+	err = rota.Import(file, name)
 
 	if err != nil {
 		logs.Warn(err)
-		appG.Response(http.StatusInternalServerError, e.ERROR_IMPORT_ROTA_FAIL, nil)
+		c.JSON(http.StatusInternalServerError, gin.H{"Code": "", "Msg": err.Error(), "Data": nil})
 		return
 	}
 

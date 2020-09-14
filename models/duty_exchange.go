@@ -78,7 +78,7 @@ func AddExchange(requestTime, proposer, Respondent, RequestedTime string, Exchan
 
 func IsExistDay(requestTime, requestedTime string) (bool, error) {
 	var exchange DutyExchange
-	err := db.Select("id").Where("request_time in (?) or requested_time in (?) ", []string{requestTime, requestedTime}).First(&exchange).Error
+	err := db.Select("id").Where("(request_time in (?) or requested_time in (?)) && response =0  ", []string{requestTime, requestedTime}, []string{requestTime, requestedTime}).First(&exchange).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}
@@ -166,9 +166,10 @@ func DeleteExchangeById(id int) error {
 func ExchangeTwo(id int, group string, data interface{}) error {
 	response := data.(map[string]interface{})["response"].(int)
 	exchange := DutyExchange{}
+	err := db.Where("id = ?", id).Find(&exchange).Error
 	rotaRequest := DutyRota{}
 	//查询申请换班人的值班日期值班表
-	err := db.Where("datetime = ?", exchange.RequestTime).First(&rotaRequest).Error
+	err = db.Where("datetime = ?", exchange.RequestTime).First(&rotaRequest).Error
 	rotaRequested := DutyRota{}
 	//查询被申请换班人的值班日期值班表
 	err = db.Where("datetime = ?", exchange.RequestedTime).First(&rotaRequested).Error
@@ -179,34 +180,30 @@ func ExchangeTwo(id int, group string, data interface{}) error {
 	err = db.Model(&DutyExchange{}).Where("id = ? ", id).Updates(data).Error
 	err = db.Where("id = ?", id).First(&exchange).Error
 
-	//更新申请表
-	exchange.Response = response
-	err = db.Model(&exchange).Update(exchange).Error
-
 	if response == 2 {
 		return err
 	} else {
 		if group == "crm" {
 			if exchange.ExchangeType == 1 || exchange.ExchangeType == 4 {
-				strings.Replace(rotaRequest.CrmLate, exchange.Proposer, exchange.Respondent, 1)
-				strings.Replace(rotaRequested.CrmLate, exchange.Respondent, exchange.Proposer, 1)
+				rotaRequest.CrmLate = strings.Replace(rotaRequest.CrmLate, exchange.Proposer, exchange.Respondent, 1)
+				rotaRequested.CrmLate = strings.Replace(rotaRequested.CrmLate, exchange.Respondent, exchange.Proposer, 1)
 			}
 			if exchange.ExchangeType == 2 || exchange.ExchangeType == 4 {
-				strings.Replace(rotaRequest.CrmWeekendDay, exchange.Proposer, exchange.Respondent, 1)
-				strings.Replace(rotaRequested.CrmWeekendDay, exchange.Respondent, exchange.Proposer, 1)
+				rotaRequest.CrmWeekendDay = strings.Replace(rotaRequest.CrmWeekendDay, exchange.Proposer, exchange.Respondent, 1)
+				rotaRequested.CrmWeekendDay = strings.Replace(rotaRequested.CrmWeekendDay, exchange.Respondent, exchange.Proposer, 1)
 			}
 			if exchange.ExchangeType == 3 {
-				strings.Replace(rotaRequest.CrmDutySpecial, exchange.Proposer, exchange.Respondent, 1)
-				strings.Replace(rotaRequested.CrmDutySpecial, exchange.Respondent, exchange.Proposer, 1)
+				rotaRequest.CrmDutySpecial = strings.Replace(rotaRequest.CrmDutySpecial, exchange.Proposer, exchange.Respondent, 1)
+				rotaRequested.CrmDutySpecial = strings.Replace(rotaRequested.CrmDutySpecial, exchange.Respondent, exchange.Proposer, 1)
 			}
 			if group == "calculate" {
 				if exchange.ExchangeType == 1 || exchange.ExchangeType == 4 {
-					strings.Replace(rotaRequest.BillingLate, exchange.Proposer, exchange.Respondent, 1)
-					strings.Replace(rotaRequested.BillingLate, exchange.Respondent, exchange.Proposer, 1)
+					rotaRequest.BillingLate = strings.Replace(rotaRequest.BillingLate, exchange.Proposer, exchange.Respondent, 1)
+					rotaRequested.BillingLate = strings.Replace(rotaRequested.BillingLate, exchange.Respondent, exchange.Proposer, 1)
 				}
 				if exchange.ExchangeType == 2 || exchange.ExchangeType == 4 {
-					strings.Replace(rotaRequest.BillingWeekendDay, exchange.Proposer, exchange.Respondent, 1)
-					strings.Replace(rotaRequested.BillingWeekendDay, exchange.Respondent, exchange.Proposer, 1)
+					rotaRequest.BillingWeekendDay = strings.Replace(rotaRequest.BillingWeekendDay, exchange.Proposer, exchange.Respondent, 1)
+					rotaRequested.BillingWeekendDay = strings.Replace(rotaRequested.BillingWeekendDay, exchange.Respondent, exchange.Proposer, 1)
 				}
 			}
 
@@ -214,6 +211,10 @@ func ExchangeTwo(id int, group string, data interface{}) error {
 	}
 	err = db.Model(&DutyRota{}).Update(&rotaRequest).Error
 	err = db.Model(&DutyRota{}).Update(&rotaRequested).Error
+
+	//更新申请表
+	exchange.Response = response
+	err = db.Model(&exchange).Update(exchange).Error
 
 	if err != nil {
 		return err

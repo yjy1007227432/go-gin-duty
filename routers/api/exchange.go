@@ -21,6 +21,18 @@ func AddMyExchange(c *gin.Context) {
 
 	name := (&util.GetName{C: *c}).GetName()
 
+	nowDay := time.Now().Format("2006-01-02")
+
+	//如果过了八点半，则视为下一天
+	if time.Now().Format("15:04") > "08:30" {
+		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
+	}
+	//只能审批之前的换班申请
+	if c.Query("request_time") <= nowDay || c.Query("requested_time") <= nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
+
 	//自身不能换班
 	if name == respondent {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_SAME_FAIL, nil)
@@ -78,8 +90,8 @@ func AddMyExchange(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
 	}
-	if IsExistRequest && IsExistRequested == false {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
+	if IsExistRequest == false || IsExistRequested == false {
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
 		return
 	}
 	//换班的日期得的确存在申请人值班与被申请人值班
@@ -89,7 +101,7 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 	if IsExist != true {
-		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_ROTA, nil)
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
 		return
 	}
 
@@ -141,14 +153,14 @@ func GetMyExchange(c *gin.Context) {
 	)
 	appG := app.Gin{C: c}
 
-	state := c.Query("state")
-	stateInt, _ := strconv.Atoi(state)
+	state := c.Query("response")
+	response, _ := strconv.Atoi(state)
 
 	name := (&util.GetName{C: *c}).GetName()
 
 	exchanges, err = (&exchange_service.Exchange{
 		Proposer: name,
-		Response: stateInt,
+		Response: response,
 	}).GetMyExchange()
 
 	if err != nil {
@@ -192,11 +204,18 @@ func DeleteExchange(c *gin.Context) {
 
 	idInt, _ := strconv.Atoi(id)
 
+	name := (&util.GetName{C: *c}).GetName()
+
 	var exchange = &exchange_service.Exchange{
 		Id: idInt,
 	}
 
 	exchange1, err := exchange.GetExchangeById()
+
+	if name != exchange1.Proposer {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_NOT_ME_EXCHANGE_FAIL, nil)
+		return
+	}
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
@@ -218,7 +237,7 @@ func DeleteExchange(c *gin.Context) {
 func ExamineExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	id, _ := strconv.Atoi(c.Query("Id"))
+	id, _ := strconv.Atoi(c.Query("id"))
 	response, _ := strconv.Atoi(c.Query("response"))
 	name := (&util.GetName{C: *c}).GetName()
 	group := (&util.GetName{C: *c}).GetGroup()
@@ -226,6 +245,11 @@ func ExamineExchange(c *gin.Context) {
 	exchange, err := (&exchange_service.Exchange{
 		Id: id,
 	}).GetExchangeById()
+
+	if exchange.Response != 0 {
+		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXAMINA_EXCHANGE_FAIL, nil)
+		return
+	}
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)

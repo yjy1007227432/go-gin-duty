@@ -132,7 +132,7 @@ func (t *Rota) UpdateBillingLate() error {
 	return nil
 }
 
-func (t *Rota) Import(r io.Reader) error {
+func (t *Rota) Import(r io.Reader, name string) error {
 
 	xlsx, err := excelize.OpenReader(r)
 	if err != nil {
@@ -187,6 +187,7 @@ func (t *Rota) Import(r io.Reader) error {
 				} else if exists {
 					logs.Info("导入失败，表格日期值班情况已存在")
 				} else {
+					rota.CreatedBy = name
 					err = rota.Add()
 				}
 				if err != nil {

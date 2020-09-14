@@ -25,6 +25,7 @@ var MsgFlags = map[int]string{
 
 	ERROR_EXIST_ROTA_FAIL:        "获取已存在值班日期失败",
 	ERROR_EXIST_ROTA:             "已存在该日期值班情况",
+	ERROR_NOT_EXIST_ROTA:         "不存在该日期值班情况",
 	ERROR_ADD_ROTA_FAIL:          "插入日期值班情况失败",
 	ERROR_IMPORT_ROTA_FAIL:       "导入值班表失败",
 	ERROR_GET_ROTAS_FAIL:         "获取值班表失败",
@@ -48,15 +49,16 @@ var MsgFlags = map[int]string{
 	ERROR_DELETE_VACATION_FAIL: "清空调休信息失败",
 	ERROR_EDIT_VACATION_FAIL:   "修改调休信息失败",
 
-	ERROR_GET_EXCHANGE_FAIL:         "获取换班申请表信息失败",
-	ERROR_NOT_CHANGE_EXCHANGE_FAIL:  "已审批的换班申请无法删除",
-	ERROR_DELETE_EXCHANGE_FAIL:      "删除调休申请失败",
-	ERROR_NOT_EXAMINA_EXCHANGE_FAIL: "已审批的换班申请无法重复审批",
-	ERROR_UPDATE_EXCHANGE_FAIL:      "更新换班申请表失败",
-	ERROR_RESPONCE_EXCHANGE_FAIL:    "非本人的换班申请无法审批",
-	ERROR_EXIST_EXCHANGE_FAIL:       "已存在涉及相同日期的未处理换班请求表",
-	ERROR_ADD_EXCHANGE_FAIL:         "新增换班请求失败",
-	ERROR_EXCHANGE_SAME_FAIL:        "非同组人员或者本人与本人不能换班",
+	ERROR_GET_EXCHANGE_FAIL:           "获取换班申请表信息失败",
+	ERROR_NOT_CHANGE_EXCHANGE_FAIL:    "已审批的换班申请无法删除",
+	ERROR_DELETE_EXCHANGE_FAIL:        "删除调休申请失败",
+	ERROR_NOT_EXAMINA_EXCHANGE_FAIL:   "已审批的换班申请无法重复审批",
+	ERROR_UPDATE_EXCHANGE_FAIL:        "更新换班申请表失败",
+	ERROR_RESPONCE_EXCHANGE_FAIL:      "非本人的换班申请无法审批",
+	ERROR_DELETE_NOT_ME_EXCHANGE_FAIL: "非本人的换班申请无法删除",
+	ERROR_EXIST_EXCHANGE_FAIL:         "已存在涉及相同日期的未处理换班请求表",
+	ERROR_ADD_EXCHANGE_FAIL:           "新增换班请求失败",
+	ERROR_EXCHANGE_SAME_FAIL:          "非同组人员或者本人与本人不能换班",
 }
 
 // GetMsg get error information based on Code

@@ -39,7 +39,7 @@ CREATE TABLE `duty_rota` (
   `billing_weekend_day` varchar(50) DEFAULT '' COMMENT '计费周末白班人员',
   `crm_late` varchar(50) DEFAULT '' COMMENT 'crm晚班人员',
   `crm_weekend_day` varchar(50) DEFAULT '' COMMENT 'crm周末白班人员',
-  `crm_special` varchar(50) DEFAULT '' COMMENT 'crm工作日特殊班值班人员',
+  `crm_duty_special` varchar(50) DEFAULT '' COMMENT 'crm工作日特殊班值班人员',
   `created_on` timestamp   DEFAULT NOW() COMMENT '创建时间',
   `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
   `modified_on` timestamp   DEFAULT NOW()  COMMENT '修改时间',
