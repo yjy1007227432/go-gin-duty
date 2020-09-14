@@ -9,4 +9,10 @@ const (
 	CHANNEL_NAME = "test-channel"
 
 	PrefixUrl = "http://127.0.0.1:8081"
+
+	//redis 缓存
+	CACHE_ROAT     = "ARTICLE"
+	CACHE_REST     = "TAG"
+	CACHE_EXCHANGH = "EXCHANGE"
+	CACHE_VACATION = "VACATION"
 )

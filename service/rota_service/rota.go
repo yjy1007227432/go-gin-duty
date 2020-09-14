@@ -1,9 +1,12 @@
 package rota_service
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/astaxie/beego/logs"
 	"go-gin-duty-master/models"
+	"go-gin-duty-master/pkg/gredis"
+	"go-gin-duty-master/service/cache_service"
 	"io"
 	"reflect"
 	"strconv"
@@ -48,6 +51,20 @@ func (t *Rota) Add() error {
 }
 
 func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
+	var cacheRotas []models.DutyRota
+	cache := cache_service.CacheRota{
+		Month: t.Datetime,
+	}
+	key := cache.GetRotasKeyByMonth()
+	if gredis.Exists(key) {
+		data, err := gredis.Get(key)
+		if err != nil {
+		} else {
+			json.Unmarshal(data, &cacheRotas)
+			return cacheRotas, nil
+		}
+	}
+
 	var (
 		rotas []models.DutyRota
 		err   error
@@ -58,8 +75,10 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 	if err != nil {
 		return nil, err
 	}
+	gredis.Set(key, rotas, 3600)
 
 	return rotas, err
+
 }
 
 //
@@ -71,6 +90,20 @@ func (t *Rota) GetThisMonth() ([]models.DutyRota, error) {
 //}
 
 func (t *Rota) GetRotaByDay() (models.DutyRota, error) {
+	var cacheRota *models.DutyRota
+	cache := cache_service.CacheRota{
+		Datetime: t.Datetime,
+	}
+	key := cache.GetRotasKeyByDay()
+	if gredis.Exists(key) {
+		data, err := gredis.Get(key)
+		if err != nil {
+		} else {
+			json.Unmarshal(data, &cacheRota)
+			return *cacheRota, nil
+		}
+	}
+
 	var (
 		rota models.DutyRota
 		err  error
@@ -81,7 +114,7 @@ func (t *Rota) GetRotaByDay() (models.DutyRota, error) {
 	if err != nil {
 		return models.DutyRota{}, err
 	}
-
+	gredis.Set(key, rota, 3600)
 	return rota, err
 }
 

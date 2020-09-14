@@ -24,6 +24,15 @@ type Server struct {
 	WriteTimeout time.Duration
 }
 
+type Redis struct {
+	Host        string
+	Password    string
+	MaxIdle     int
+	MaxActive   int
+	IdleTimeout time.Duration
+}
+
+var RedisSetting = &Redis{}
 var DatabaseSetting = &Database{}
 var ServerSetting = &Server{}
 
@@ -38,6 +47,7 @@ func init() {
 
 	mapTo("database", DatabaseSetting)
 	mapTo("server", ServerSetting)
+	mapTo("redis", RedisSetting)
 
 }
 
