@@ -15,6 +15,11 @@ func GetRotaByMonth(c *gin.Context) {
 
 	month := c.Query("month")
 
+	//参数验证
+	if month == "" {
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
+
 	rotaService := rota_service.Rota{
 		Datetime: month,
 	}
@@ -34,6 +39,11 @@ func DeleteRotaByMonth(c *gin.Context) {
 
 	month := c.Query("month")
 
+	//参数验证
+	if month == "" {
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
+
 	rotaService := rota_service.Rota{
 		Datetime: month,
 	}
@@ -51,6 +61,11 @@ func DeleteRotaByDay(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	day := c.Query("datetime")
+
+	//参数验证
+	if day == "" {
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
 
 	rotaService := rota_service.Rota{
 		Datetime: day,
@@ -71,13 +86,12 @@ func AddRotaByDay(c *gin.Context) {
 		appG = app.Gin{C: c}
 		form AddRotaForm
 	)
-
-	httpCode, errCode := app.BindAndValid(c, &form)
-
-	if errCode != e.SUCCESS {
-		appG.Response(httpCode, errCode, nil)
+	err := c.Bind(&form)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
 		return
 	}
+
 	name := (&util.GetName{C: *c}).GetName()
 	rotaService := rota_service.Rota{
 		Datetime:          form.Datetime,
@@ -113,6 +127,12 @@ func AddRotaByDay(c *gin.Context) {
 func ImportRota(c *gin.Context) {
 	appG := app.Gin{C: c}
 	file, _, err := c.Request.FormFile("file")
+
+	//参数验证
+	if file == nil {
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
+
 	name := (&util.GetName{C: *c}).GetName()
 
 	if err != nil {
@@ -135,8 +155,8 @@ func ImportRota(c *gin.Context) {
 }
 
 type AddRotaForm struct {
-	Datetime          string `form:"datetime"`
-	Week              string `form:"week"`
+	Datetime          string `form:"datetime" binding:"required"`
+	Week              string `form:"week" binding:"required"`
 	BillingLate       string `form:"billing_late"`
 	BillingWeekendDay string `form:"billing_weekend_day"`
 	CrmLate           string `form:"crm_late"`

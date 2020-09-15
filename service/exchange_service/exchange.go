@@ -7,12 +7,12 @@ import (
 
 type Exchange struct {
 	Id            int       `form:"id"  json:"id"`
-	RequestTime   string    `form:"request_time"  json:"request_time"`
-	Proposer      string    `form:"proposer"   json:"proposer"`
-	Respondent    string    `form:"respondent"   json:"respondent"`
+	RequestTime   string    `form:"request_time"  json:"request_time" binding:"required"`
+	Proposer      string    `form:"proposer"   json:"proposer" binding:"required"`
+	Respondent    string    `form:"respondent"   json:"respondent" binding:"required"`
 	RequestedTime string    `form:"requested_time"  json:"requested_time"`
 	Response      int       `form:"response"   json:"response"`
-	ExchangeType  int       `form:"exchange_type"   json:"exchange_type"`
+	ExchangeType  int       `form:"exchange_type"   json:"exchange_type" binding:"required"`
 	CreatedOn     time.Time `form:"created_on"    json:"created_on"`
 	ResponseOn    time.Time `form:"response_on"    json:"response_on"`
 }

@@ -16,6 +16,7 @@ var MsgFlags = map[int]string{
 	ERROR_EXIST_AUTH:               "用户名密码已存在",
 	ERROR_ADD_AUTH_FAIL:            "添加个人信息失败",
 	ERROR_GET_NAME_FAIL:            "获取用户名失败",
+	NOT_NIL_TOKEN:                  "Token 不能为空",
 
 	ERROR_BIND_DATA_FAIL: "绑定数据失败失败",
 
@@ -32,6 +33,7 @@ var MsgFlags = map[int]string{
 	ERROR_DELETE_ROTAS_FAIL:      "删除当月值班表失败",
 	ERROR_NOT_ROTAS_FAIL:         "非当天值班人员",
 	ERROR_CHECK_ROTAS_EXIST_FAIL: "检测值班人员是否有值班失败",
+	NOT_NIL_MONTH:                "参数不能为空",
 
 	ERROR_TYPE_EXCEL: "excel表格标题格式错误",
 

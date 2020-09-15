@@ -63,7 +63,10 @@ func GetAuth(c *gin.Context) {
 
 	username := c.Query("username") //
 	password := c.Query("password")
-
+	//参数验证
+	if username == "" || password == "" {
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
 	a := auth{Username: username, Password: password}
 	ok, err := valid.Valid(&a) //首先验证参数的有效性
 

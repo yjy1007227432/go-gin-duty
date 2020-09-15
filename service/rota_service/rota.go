@@ -123,6 +123,7 @@ func (t *Rota) DeleteThisMonth() error {
 	if err != nil {
 		return err
 	}
+	gredis.LikeDeletes(t.Datetime)
 	return nil
 }
 
@@ -133,7 +134,7 @@ func (t *Rota) DeleteThisDay() error {
 	if err != nil {
 		return err
 	}
-
+	gredis.LikeDeletes(t.Datetime)
 	return nil
 }
 
@@ -147,7 +148,7 @@ func (t *Rota) UpdateCrmLate() error {
 	if err != nil {
 		return err
 	}
-
+	gredis.LikeDeletes(t.Datetime)
 	return nil
 }
 
@@ -161,7 +162,7 @@ func (t *Rota) UpdateBillingLate() error {
 	if err != nil {
 		return err
 	}
-
+	gredis.LikeDeletes(t.Datetime)
 	return nil
 }
 
@@ -222,6 +223,7 @@ func (t *Rota) Import(r io.Reader, name string) error {
 				} else {
 					rota.CreatedBy = name
 					err = rota.Add()
+					gredis.LikeDeletes(rota.Datetime)
 				}
 				if err != nil {
 					return err

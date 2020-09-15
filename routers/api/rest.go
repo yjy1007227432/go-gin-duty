@@ -204,6 +204,7 @@ func GetMyRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	state := c.Query("state")
+
 	stateInt, _ := strconv.Atoi(state)
 
 	name := (&util.GetName{C: *c}).GetName()

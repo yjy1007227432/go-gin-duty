@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron"
+	"go-gin-duty-master/pkg/gredis"
 	"go-gin-duty-master/pkg/setting"
 	"go-gin-duty-master/routers"
 	"go-gin-duty-master/service/timely_task"
@@ -13,6 +14,8 @@ import (
 
 func main() {
 	//定时任务
+
+	gredis.Setup()
 	c := cron.New() // 新建一个定时任务对象
 	c.AddFunc("0 0 23 * * ?", timely_task.ComputeVacation)
 	c.AddFunc("0 30 8 * * ?", timely_task.AgreeMorningAndFullDay)

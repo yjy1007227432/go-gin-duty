@@ -153,7 +153,8 @@ func GetMyExchange(c *gin.Context) {
 	)
 	appG := app.Gin{C: c}
 
-	state := c.Query("response")
+	state := c.Query("state")
+
 	response, _ := strconv.Atoi(state)
 
 	name := (&util.GetName{C: *c}).GetName()
@@ -180,7 +181,9 @@ func GetNeedExamineExchanges(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	state := c.Query("state")
+
 	stateInt, _ := strconv.Atoi(state)
+
 	name := (&util.GetName{C: *c}).GetName()
 
 	exchanges, err = (&exchange_service.Exchange{
@@ -201,6 +204,11 @@ func DeleteExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	id := c.Query("id")
+
+	if id == "" {
+		appG.Response(http.StatusInternalServerError, e.INVALID_PARAMS, nil)
+		return
+	}
 
 	idInt, _ := strconv.Atoi(id)
 
@@ -237,8 +245,17 @@ func DeleteExchange(c *gin.Context) {
 func ExamineExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	id, _ := strconv.Atoi(c.Query("id"))
-	response, _ := strconv.Atoi(c.Query("response"))
+	ID := c.Query("id")
+	Response := c.Query("response")
+
+	if ID == "" || Response == "" {
+		appG.Response(http.StatusInternalServerError, e.INVALID_PARAMS, nil)
+		return
+	}
+
+	id, _ := strconv.Atoi(ID)
+	response, _ := strconv.Atoi(Response)
+
 	name := (&util.GetName{C: *c}).GetName()
 	group := (&util.GetName{C: *c}).GetGroup()
 

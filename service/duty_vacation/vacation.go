@@ -7,9 +7,9 @@ import (
 
 type Vacation struct {
 	Id                   int       `json:"id"`
-	Name                 string    `json:"name"`
-	RemainVacation       float64   `json:"remain_vacation"`
-	RemainAnnualVacation float64   `json:"remain_annual_vacation"`
+	Name                 string    `json:"name" binding:"required"`
+	RemainVacation       float64   `json:"remain_vacation" binding:"required"`
+	RemainAnnualVacation float64   `json:"remain_annual_vacation" binding:"required"`
 	UpdateTime           time.Time `json:"update_time"`
 }
 

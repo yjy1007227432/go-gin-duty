@@ -6,11 +6,11 @@ import (
 
 type Auth struct {
 	Id              int    `form:"id"  json:"id"`
-	Name            string `form:"name" json:"name"`
-	Telephone       string `form:"telephone" json:"telephone"`
-	Group           string `form:"group" json:"group"`
-	Username        string `form:"username"  json:"username"`
-	Password        string `form:"password"  json:"password"`
+	Name            string `form:"name" json:"name" binding:"required"`
+	Telephone       string `form:"telephone" json:"telephone" binding:"required"`
+	Group           string `form:"group" json:"group" binding:"required"`
+	Username        string `form:"username"  json:"username" binding:"required"`
+	Password        string `form:"password"  json:"password" binding:"required"`
 	IsAdministrator int    `form:"is_administrator" json:"is_administrator"`
 	CreatedBy       string `form:"created_by"  json:"created_by"`
 }

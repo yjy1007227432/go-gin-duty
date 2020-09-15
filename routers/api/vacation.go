@@ -45,9 +45,14 @@ func DeleteAllVacation(c *gin.Context) {
 
 func DeleteVacationByName(c *gin.Context) {
 
+	appG := app.Gin{C: c}
+
 	name := c.Query("name")
 
-	appG := app.Gin{C: c}
+	if name == "" {
+		appG.Response(http.StatusInternalServerError, e.INVALID_PARAMS, nil)
+		return
+	}
 
 	vacationService := &duty_vacation.Vacation{
 		Name: name,
