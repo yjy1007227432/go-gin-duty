@@ -14,6 +14,10 @@ import (
 	"time"
 )
 
+// @Summary 获取所有调休申请表信息
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/getAll   [post]
 func GetRests(c *gin.Context) {
 
 	var (
@@ -36,6 +40,10 @@ func GetRests(c *gin.Context) {
 	})
 }
 
+// @Summary 查看需要本人审核的未审核调休申请表信息
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/getNeedExamine   [post]
 func GetNeedExamineRests(c *gin.Context) {
 	var (
 		rests []models.DutyRest
@@ -58,18 +66,16 @@ func GetNeedExamineRests(c *gin.Context) {
 	})
 }
 
+// @Summary 审批调休申请表
+// @Produce  json
+// @Param id query int true "Id"
+// @Param response query string true "Response"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/examineRest   [post]
 func ExamineRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
 	id := c.Query("id")
-
-	datetime := c.Query("datetime")
-
-	nowDay := time.Now().Format("2006-01-02")
-	if datetime < nowDay {
-		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
-		return
-	}
 
 	response, _ := strconv.Atoi(c.Query("response"))
 
@@ -80,6 +86,12 @@ func ExamineRest(c *gin.Context) {
 	rest, err := (&rest_service.Rest{
 		Id: idInt,
 	}).GetRestById()
+
+	nowDay := time.Now().Format("2006-01-02")
+	if rest.Datetime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
@@ -108,10 +120,17 @@ func ExamineRest(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 新增本人调休申请表信息
+// @Produce  json
+// @Param request_time query string true "RequestTime"
+// @Param type query int true "Type"
+// @Param vacation_type query int true "VacationType"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/addMyRest [post]
 func AddRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	datetime := c.Query("datetime")
+	datetime := c.Query("request_time")
 	nowDay := time.Now().Format("2006-01-02")
 	if datetime < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
@@ -170,6 +189,11 @@ func AddRest(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 删除本人未审批调休申请表信息
+// @Produce  json
+// @Param  id query int true "Id"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/deleteMyRest [post]
 func DeleteRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -200,6 +224,11 @@ func DeleteRest(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 获取本人调休申请表信息(未审批/已审批)
+// @Produce  json
+// @Param state query int true "state"
+// @Success 200 {string} string	 "{"code":200,"data":{rest},"msg":"ok"}"
+// @Router /api/rests/getMe [post]
 func GetMyRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -223,6 +252,10 @@ func GetMyRest(c *gin.Context) {
 	})
 }
 
+// @Summary 删除所有调休申请表信息
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/deleteAll   [post]
 func DeleteRests(c *gin.Context) {
 	appG := app.Gin{C: c}
 

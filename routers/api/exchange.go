@@ -15,6 +15,13 @@ import (
 	"strconv"
 )
 
+// @Summary 新增本人换班申请表信息
+// @Produce  json
+// @Param respondent query string true "Respondent"
+// @Param requested_time query string true "RequestedTime"
+// @Param exchange_type query string true "ExchangeType"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/addMyExchange [post]
 func AddMyExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 	respondent := c.Query("respondent")
@@ -115,6 +122,10 @@ func AddMyExchange(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 查看所有的换班请求表
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/getAll   [post]
 func GetAllExchange(c *gin.Context) {
 
 	appG := app.Gin{C: c}
@@ -134,6 +145,10 @@ func GetAllExchange(c *gin.Context) {
 	})
 }
 
+// @Summary 清空所有的换班请求表
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/deleteAll [post]
 func DeleteAllExchange(c *gin.Context) {
 
 	appG := app.Gin{C: c}
@@ -146,6 +161,11 @@ func DeleteAllExchange(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 查看本人的换班请求表(未审批/已审批)
+// @Produce  json
+// @Param  state query int true "State"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/myExchange [post]
 func GetMyExchange(c *gin.Context) {
 	var (
 		exchanges []models.DutyExchange
@@ -173,6 +193,11 @@ func GetMyExchange(c *gin.Context) {
 	})
 }
 
+// @Summary 查看本人回复的换班申请表信息(未审批/已审批)
+// @Produce  json
+// @Param state query int true "State"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/getMyExamine [post]
 func GetNeedExamineExchanges(c *gin.Context) {
 	var (
 		exchanges []models.DutyExchange
@@ -200,6 +225,11 @@ func GetNeedExamineExchanges(c *gin.Context) {
 	})
 }
 
+// @Summary 删除本人的未审批换班请求表
+// @Produce  json
+// @Param id query int true "Id"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/deleteMyExchange [post]
 func DeleteExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -242,6 +272,12 @@ func DeleteExchange(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 回复换班申请表
+// @Produce  json
+// @Param  id query int true "Id"
+// @Param  response query  int true "Response"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/exchange/examineExchange [post]
 func ExamineExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 

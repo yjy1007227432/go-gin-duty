@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+// @Summary 获取所有员工的调休信息
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/vacation/getAll [post]
 func GetAllVacation(c *gin.Context) {
 	var (
 		vacations []models.DutyVacation
@@ -28,6 +32,10 @@ func GetAllVacation(c *gin.Context) {
 	})
 }
 
+// @Summary 清空所有调休信息
+// @Produce  json
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/vacation/deleteAll   [post]
 func DeleteAllVacation(c *gin.Context) {
 
 	appG := app.Gin{C: c}
@@ -43,6 +51,11 @@ func DeleteAllVacation(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 删除某人调休信息
+// @Produce  json
+// @Param  name query string true "Name"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/vacation/deleteByName   [post]
 func DeleteVacationByName(c *gin.Context) {
 
 	appG := app.Gin{C: c}
@@ -67,6 +80,13 @@ func DeleteVacationByName(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
+// @Summary 修改某人调休信息
+// @Produce  json
+// @Param  name query int true "Name"
+// @Param  remain_vacation  query float64 true "RemainVacation"
+// @Param  remain_annual_vacation query float64 true "RemainAnnualVacation"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/vacation/editByName   [post]
 func EditVacationByName(c *gin.Context) {
 	appG := app.Gin{C: c}
 

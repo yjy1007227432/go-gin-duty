@@ -2,6 +2,11 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "go-gin-duty-master/docs"
+
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go-gin-duty-master/middleware/jwt"
 	"time"
 
@@ -12,10 +17,11 @@ func InitRouter() *gin.Engine {
 
 	// 运行 nsq
 	//	servers.NsqRun()
-
 	r := gin.Default()
 	r.POST("/auth", api.GetAuth) //
 	r.POST("/register", api.Register)
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 2))
 
