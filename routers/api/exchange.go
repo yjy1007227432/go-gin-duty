@@ -17,9 +17,10 @@ import (
 
 // @Summary 新增本人换班申请表信息
 // @Produce  json
-// @Param respondent query string true "Respondent"
-// @Param requested_time query string true "RequestedTime"
-// @Param exchange_type query string true "ExchangeType"
+// @Param respondent query string true "申请对象"
+// @Param request_time query string true "申请时间"
+// @Param requested_time query string true "被申请时间"
+// @Param exchange_type query string true "换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/addMyExchange [post]
 func AddMyExchange(c *gin.Context) {
@@ -163,7 +164,7 @@ func DeleteAllExchange(c *gin.Context) {
 
 // @Summary 查看本人的换班请求表(未审批/已审批)
 // @Produce  json
-// @Param  state query int true "State"
+// @Param  state query int true "状态 0：未审批 1：已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/myExchange [post]
 func GetMyExchange(c *gin.Context) {
@@ -195,7 +196,7 @@ func GetMyExchange(c *gin.Context) {
 
 // @Summary 查看本人回复的换班申请表信息(未审批/已审批)
 // @Produce  json
-// @Param state query int true "State"
+// @Param state query int true "状态 0：未审批 1：已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/getMyExamine [post]
 func GetNeedExamineExchanges(c *gin.Context) {
@@ -229,7 +230,7 @@ func GetNeedExamineExchanges(c *gin.Context) {
 // @Produce  json
 // @Param id query int true "Id"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/exchange/deleteMyExchange [post]
+// @Router /api/exchange/deleteMyExchange{id} [post]
 func DeleteExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -275,7 +276,7 @@ func DeleteExchange(c *gin.Context) {
 // @Summary 回复换班申请表
 // @Produce  json
 // @Param  id query int true "Id"
-// @Param  response query  int true "Response"
+// @Param  response query  int true "回复，状态 0为默认、1为拒绝、2为同意"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/examineExchange [post]
 func ExamineExchange(c *gin.Context) {

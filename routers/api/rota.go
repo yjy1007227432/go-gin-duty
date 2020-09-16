@@ -12,9 +12,9 @@ import (
 
 // @Summary 获取当月值班表
 // @Produce  json
-// @Param month query string true "Month"
+// @Param month query string true "月份，例如：2020-09"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/getMonth [post]
+// @Router /api/rotas/getMonth{month} [post]
 func GetRotaByMonth(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -41,9 +41,9 @@ func GetRotaByMonth(c *gin.Context) {
 
 // @Summary 删除月值班表
 // @Produce  json
-// @Param month query string true "Month"
+// @Param month query string true "月份，例如：2020-09"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/deleteMonth   [post]
+// @Router /api/rotas/deleteMonth{month}   [post]
 func DeleteRotaByMonth(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -69,9 +69,9 @@ func DeleteRotaByMonth(c *gin.Context) {
 
 // @Summary 删除日值班表
 // @Produce  json
-// @Param datetime query string true "Datetime"
+// @Param datetime query string true "日期，例如：2020-09-01"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/deleteDay   [post]
+// @Router /api/rotas/deleteDay{datetime}   [post]
 func DeleteRotaByDay(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -97,12 +97,13 @@ func DeleteRotaByDay(c *gin.Context) {
 
 // @Summary 添加日值班表
 // @Produce  json
-// @Param datetime query string true "Datetime"
-// @Param week query string true "Week"
-// @Param billing_late query string true "BillingLate"
-// @Param billing_weekend_day query string true "BillingWeekendDay"
-// @Param crm_weekend_day query string true "CrmWeekendDay"
-// @Param crm_duty_special query string true "CrmDutySpecial"
+// @Param datetime query string true "日期"
+// @Param week query string true "星期"
+// @Param billing_late query string true "计费晚班人员"
+// @Param billing_weekend_day query string true "计费周末白班人员"
+// @Param crm_late query string true "crm晚班人员"
+// @Param crm_weekend_day query string true "crm周末白班人员"
+// @Param crm_duty_special query string true "crm工作日特殊班值班人员"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rotas/addDay   [post]
 func AddRotaByDay(c *gin.Context) {
@@ -151,7 +152,7 @@ func AddRotaByDay(c *gin.Context) {
 
 // @Summary 导入值班表
 // @Produce  json
-// @Param file query string true "File"
+// @Param file query string true "excel表格文件"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rota/import   [post]
 func ImportRota(c *gin.Context) {

@@ -53,7 +53,7 @@ func DeleteAllVacation(c *gin.Context) {
 
 // @Summary 删除某人调休信息
 // @Produce  json
-// @Param  name query string true "Name"
+// @Param  name query string true "姓名"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/vacation/deleteByName   [post]
 func DeleteVacationByName(c *gin.Context) {
@@ -82,9 +82,9 @@ func DeleteVacationByName(c *gin.Context) {
 
 // @Summary 修改某人调休信息
 // @Produce  json
-// @Param  name query int true "Name"
-// @Param  remain_vacation  query float64 true "RemainVacation"
-// @Param  remain_annual_vacation query float64 true "RemainAnnualVacation"
+// @Param  name query int true "姓名"
+// @Param  remain_vacation  query float64 true "剩余调休"
+// @Param  remain_annual_vacation query float64 true "剩余年休"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/vacation/editByName   [post]
 func EditVacationByName(c *gin.Context) {

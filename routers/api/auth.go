@@ -18,12 +18,13 @@ type auth struct {
 
 // @Summary 新增个人用户
 // @Produce  json
-// @Param username query string true "Username"
-// @Param password query string true "Password"
-// @Param name query string true "Name"
-// @Param group query string true "Group"
-// @Param telephone query string true "Telephone"
+// @Param username query string true "用户名"
+// @Param password query string true "密码"
+// @Param name query string true "姓名"
+// @Param group query string true "组：crm/calculate"
+// @Param telephone query string true "电话"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Failure 500 {string} string	 "{"code":500,"data":{},"msg":"ok"}"
 // @Router /api/auth/AddAuth   [post]
 func AddAuth(c *gin.Context) {
 	appG := app.Gin{C: c}
@@ -59,8 +60,8 @@ func AddAuth(c *gin.Context) {
 
 // @Summary 通过用户名密码获取token
 // @Produce  json
-// @Param username query string true "Username"
-// @Param password query string true "Password"
+// @Param username query string true "用户名"
+// @Param password query string true "密码"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /auth   [post]
 func GetAuth(c *gin.Context) {
@@ -111,11 +112,11 @@ func GetAuth(c *gin.Context) {
 
 // @Summary 注册个人用户
 // @Produce  json
-// @Param username query string true "Username"
-// @Param password query string true "Password"
-// @Param name query string true "Name"
-// @Param group query string true "Group"
-// @Param telephone query string true "Telephone"
+// @Param username query string true "用户名"
+// @Param password query string true "密码"
+// @Param name query string true "名字"
+// @Param group query string true "组：crm/calculate"
+// @Param telephone query string true "电话"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /register   [post]
 func Register(c *gin.Context) {

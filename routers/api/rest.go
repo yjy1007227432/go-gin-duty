@@ -69,7 +69,7 @@ func GetNeedExamineRests(c *gin.Context) {
 // @Summary 审批调休申请表
 // @Produce  json
 // @Param id query int true "Id"
-// @Param response query string true "Response"
+// @Param response query string true "回复，状态 0为默认、1为拒绝、2为同意"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rests/examineRest   [post]
 func ExamineRest(c *gin.Context) {
@@ -122,9 +122,9 @@ func ExamineRest(c *gin.Context) {
 
 // @Summary 新增本人调休申请表信息
 // @Produce  json
-// @Param request_time query string true "RequestTime"
-// @Param type query int true "Type"
-// @Param vacation_type query int true "VacationType"
+// @Param request_time query string true "申请调休时间"
+// @Param type query int true "申请调休类型，0：上午，1：下午，2：全天"
+// @Param vacation_type query int true "申请调休类型，0：调休，1：年休"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rests/addMyRest [post]
 func AddRest(c *gin.Context) {
@@ -193,7 +193,7 @@ func AddRest(c *gin.Context) {
 // @Produce  json
 // @Param  id query int true "Id"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rests/deleteMyRest [post]
+// @Router /api/rests/deleteMyRest{id} [post]
 func DeleteRest(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -226,7 +226,7 @@ func DeleteRest(c *gin.Context) {
 
 // @Summary 获取本人调休申请表信息(未审批/已审批)
 // @Produce  json
-// @Param state query int true "state"
+// @Param state query int true " 0 未审批、1 已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{rest},"msg":"ok"}"
 // @Router /api/rests/getMe [post]
 func GetMyRest(c *gin.Context) {
