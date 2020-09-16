@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="--新增多个接口">
-      <change afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/exchange.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/rest.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/rota.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/rota.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/vacation.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/vacation.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
-    </list>
+    <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="--新增多个接口" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
