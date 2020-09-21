@@ -25,7 +25,7 @@ func InitRouter() *gin.Engine {
 
 	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 2))
 
-	app.Use(jwt.JWT()).Use(jwt.Identification())
+	//app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
 		//获取当月值班表 1
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
@@ -50,7 +50,7 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
 	}
 
-	app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
+	//app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
 	{
 		//新增员工信息表
 		app.POST("/auth/AddAuth", api.AddAuth)
