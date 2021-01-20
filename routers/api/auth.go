@@ -16,6 +16,35 @@ type auth struct {
 	Password string `valid:"Required; MaxSize(50)"`
 }
 
+// @Summary 获取用户名字
+// @Produce  json
+// @Param token query string true "token"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Failure 500 {string} string	 "{"code":500,"data":{},"msg":"ok"}"
+// @Router /api/auth/getName   [post]
+func GetNameByToken(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	token := c.Query("token") //
+
+	username, err := util.DecrpytToken(token)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GENERATE_TOKEN_FAIL, nil)
+		return
+	}
+	auth := auth_service.Auth{Username: username}
+
+	name, _, err := auth.GetNameByUsername()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_NAME_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"name": name,
+	})
+}
+
 // @Summary 新增个人用户
 // @Produce  json
 // @Param username query string true "用户名"

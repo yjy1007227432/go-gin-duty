@@ -49,7 +49,7 @@ func GetAll() ([]DutyRest, error) {
 	return rests, err
 }
 
-func CheckIsExist(datetime, proposer string) (bool, error) {
+func CheckIsExist(datetime, proposer string, type1 int) (bool, error) {
 	var (
 		rest DutyRest
 		err  error
@@ -57,6 +57,7 @@ func CheckIsExist(datetime, proposer string) (bool, error) {
 	err = db.Where(DutyRest{
 		Datetime: datetime,
 		Proposer: proposer,
+		Type:     type1,
 	}).First(&rest).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -168,6 +169,21 @@ func GetRestById(id int) (DutyRest, error) {
 	}
 
 	return rest, nil
+
+}
+func GetAllowedRestByMonth(dateTime string) ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+
+	err = db.Where("response = 2 and datetime like  ?", dateTime+"%").Find(&rests).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rests, nil
 
 }
 

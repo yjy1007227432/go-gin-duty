@@ -20,9 +20,10 @@ var MsgFlags = map[int]string{
 
 	ERROR_BIND_DATA_FAIL: "绑定数据失败失败",
 
-	ERROR_GET_AUTH_FAIL:   "获取个人信息失败",
-	ERROR_NOT_ADMIN:       "无管理员权限",
-	ERROR_EXIST_USER_AUTH: "相同用户已存在",
+	ERROR_GET_AUTH_FAIL:       "获取个人信息失败",
+	ERROR_NOT_ADMIN:           "无管理员权限",
+	ERROR_EXIST_USER_AUTH:     "相同用户已存在",
+	ERROR_GENERATE_TOKEN_FAIL: "TOEKN解码失败",
 
 	ERROR_EXIST_ROTA_FAIL:        "获取已存在值班日期失败",
 	ERROR_EXIST_ROTA:             "已存在该日期值班情况",
@@ -50,6 +51,7 @@ var MsgFlags = map[int]string{
 	ERROR_GET_VACATION_FAIL:    "获取调休信息失败",
 	ERROR_DELETE_VACATION_FAIL: "清空调休信息失败",
 	ERROR_EDIT_VACATION_FAIL:   "修改调休信息失败",
+	ERROR_ADD_RESTS_FAIL:       "新增调休信息失败",
 
 	ERROR_GET_EXCHANGE_FAIL:           "获取换班申请表信息失败",
 	ERROR_NOT_CHANGE_EXCHANGE_FAIL:    "已审批的换班申请无法删除",

@@ -23,10 +23,12 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 2))
+	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 10))
 
 	app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
+		//获取本人姓名
+		app.POST("/auth/getName", api.GetNameByToken)
 		//获取当月值班表 1
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
 		//获取本人调休申请表信息(未审批/已审批) 1
@@ -38,6 +40,8 @@ func InitRouter() *gin.Engine {
 		app.POST("/rests/deleteMyRest", api.DeleteRest)
 		//获取所有调休信息 1
 		app.POST("/vacation/getAll", api.GetAllVacation)
+		//获取所有调休信息(获得审批同意的调休信息)
+		app.POST("/rests/getAllowedByMonth", api.GetAllowedRests)
 		//查看本人的换班请求表(未审批/已审批) 1
 		app.POST("/exchange/myExchange", api.GetMyExchange)
 		//删除本人的未审批换班请求表 1

@@ -11,6 +11,7 @@ import (
 
 // @Summary 获取所有员工的调休信息
 // @Produce  json
+// @Param token query string true "token"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/vacation/getAll [post]
 func GetAllVacation(c *gin.Context) {
@@ -34,6 +35,7 @@ func GetAllVacation(c *gin.Context) {
 
 // @Summary 清空所有调休信息
 // @Produce  json
+// @Param token query string true "token"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/vacation/deleteAll   [post]
 func DeleteAllVacation(c *gin.Context) {
@@ -53,6 +55,7 @@ func DeleteAllVacation(c *gin.Context) {
 
 // @Summary 删除某人调休信息
 // @Produce  json
+// @Param token query string true "token"
 // @Param  name query string true "姓名"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/vacation/deleteByName   [post]
@@ -82,6 +85,7 @@ func DeleteVacationByName(c *gin.Context) {
 
 // @Summary 修改某人调休信息
 // @Produce  json
+// @Param token query string true "token"
 // @Param  name query int true "姓名"
 // @Param  remain_vacation  query float64 true "剩余调休"
 // @Param  remain_annual_vacation query float64 true "剩余年休"

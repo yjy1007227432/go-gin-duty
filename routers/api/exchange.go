@@ -17,6 +17,7 @@ import (
 
 // @Summary 新增本人换班申请表信息
 // @Produce  json
+// @Param token query string true "token"
 // @Param respondent query string true "申请对象"
 // @Param request_time query string true "申请时间"
 // @Param requested_time query string true "被申请时间"
@@ -125,6 +126,7 @@ func AddMyExchange(c *gin.Context) {
 
 // @Summary 查看所有的换班请求表
 // @Produce  json
+// @Param token query string true "token"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/getAll   [post]
 func GetAllExchange(c *gin.Context) {
@@ -148,6 +150,7 @@ func GetAllExchange(c *gin.Context) {
 
 // @Summary 清空所有的换班请求表
 // @Produce  json
+// @Param token query string true "token"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/deleteAll [post]
 func DeleteAllExchange(c *gin.Context) {
@@ -164,6 +167,7 @@ func DeleteAllExchange(c *gin.Context) {
 
 // @Summary 查看本人的换班请求表(未审批/已审批)
 // @Produce  json
+// @Param token query string true "token"
 // @Param  state query int true "状态 0：未审批 1：已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/myExchange [post]
@@ -196,6 +200,7 @@ func GetMyExchange(c *gin.Context) {
 
 // @Summary 查看本人回复的换班申请表信息(未审批/已审批)
 // @Produce  json
+// @Param token query string true "token"
 // @Param state query int true "状态 0：未审批 1：已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/getMyExamine [post]
@@ -228,6 +233,7 @@ func GetNeedExamineExchanges(c *gin.Context) {
 
 // @Summary 删除本人的未审批换班请求表
 // @Produce  json
+// @Param token query string true "token"
 // @Param id query int true "Id"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/deleteMyExchange{id} [post]
@@ -275,6 +281,7 @@ func DeleteExchange(c *gin.Context) {
 
 // @Summary 回复换班申请表
 // @Produce  json
+// @Param token query string true "token"
 // @Param  id query int true "Id"
 // @Param  response query  int true "回复，状态 0为默认、1为拒绝、2为同意"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"

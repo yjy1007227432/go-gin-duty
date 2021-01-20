@@ -12,9 +12,10 @@ import (
 
 // @Summary 获取当月值班表
 // @Produce  json
+// @Param token query string true "token"
 // @Param month query string true "月份，例如：2020-09"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/getMonth{month} [post]
+// @Router /api/rotas/getMonth [post]
 func GetRotaByMonth(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -41,9 +42,10 @@ func GetRotaByMonth(c *gin.Context) {
 
 // @Summary 删除月值班表
 // @Produce  json
+// @Param token query string true "token"
 // @Param month query string true "月份，例如：2020-09"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/deleteMonth{month}   [post]
+// @Router /api/rotas/deleteMonth   [post]
 func DeleteRotaByMonth(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -69,9 +71,10 @@ func DeleteRotaByMonth(c *gin.Context) {
 
 // @Summary 删除日值班表
 // @Produce  json
+// @Param token query string true "token"
 // @Param datetime query string true "日期，例如：2020-09-01"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
-// @Router /api/rotas/deleteDay{datetime}   [post]
+// @Router /api/rotas/deleteDay   [post]
 func DeleteRotaByDay(c *gin.Context) {
 	appG := app.Gin{C: c}
 
@@ -97,6 +100,7 @@ func DeleteRotaByDay(c *gin.Context) {
 
 // @Summary 添加日值班表
 // @Produce  json
+// @Param token query string true "token"
 // @Param datetime query string true "日期"
 // @Param week query string true "星期"
 // @Param billing_late query string true "计费晚班人员"
@@ -152,6 +156,7 @@ func AddRotaByDay(c *gin.Context) {
 
 // @Summary 导入值班表
 // @Produce  json
+// @Param token query string true "token"
 // @Param file query string true "excel表格文件"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rota/import   [post]

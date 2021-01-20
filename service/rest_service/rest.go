@@ -31,12 +31,17 @@ func (t *Rest) Add() error {
 }
 
 func (t *Rest) CheckIsExist() (bool, error) {
-	IsExist, err := models.CheckIsExist(t.Datetime, t.Proposer)
+	IsExist, err := models.CheckIsExist(t.Datetime, t.Proposer, t.Type)
 	return IsExist, err
 }
 
 func (t *Rest) GetAll() ([]models.DutyRest, error) {
 	rests, err := models.GetAll()
+	return rests, err
+}
+
+func (t *Rest) GetAllowedRestByMonth() ([]models.DutyRest, error) {
+	rests, err := models.GetAllowedRestByMonth(t.Datetime)
 	return rests, err
 }
 
