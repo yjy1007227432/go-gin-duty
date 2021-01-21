@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="--修复多个接口">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/duty_exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_exchange.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/exchange.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/rest.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/api/vacation.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/vacation.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -84,8 +80,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="276" column="9" selection-start-line="276" selection-start-column="4" selection-end-line="276" selection-end-column="9" />
+            <state relative-caret-position="60">
+              <caret line="275" column="25" selection-start-line="275" selection-start-column="25" selection-end-line="275" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -131,9 +127,6 @@
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="d3e1807f-729b-4aa7-b610-bf5a6d241c93" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -367,9 +360,17 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23362975" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -377,15 +378,15 @@
       <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.11930586" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.70816493" visible="true" weight="0.24333926" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.70816493" weight="0.651865" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48585287" weight="0.24156305" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49946696" weight="0.329718" />
-      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49946696" weight="0.3285968" />
+      <window_info anchor="bottom" id="Database Changes" order="8" sideWeight="0.49232012" visible="true" weight="0.33570158" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.14765458" weight="0.28774422" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5141471" side_tool="true" weight="0.22557727" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.5076799" side_tool="true" visible="true" weight="0.33570158" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.36135814" weight="0.27708703" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -776,8 +777,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="276" column="9" selection-start-line="276" selection-start-column="4" selection-end-line="276" selection-end-column="9" />
+        <state relative-caret-position="60">
+          <caret line="275" column="25" selection-start-line="275" selection-start-column="25" selection-end-line="275" selection-end-column="25" />
         </state>
       </provider>
     </entry>
