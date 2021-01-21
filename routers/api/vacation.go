@@ -7,6 +7,7 @@ import (
 	"go-gin-duty-master/pkg/app"
 	"go-gin-duty-master/service/duty_vacation"
 	"net/http"
+	"time"
 )
 
 // @Summary 获取所有员工的调休信息
@@ -103,7 +104,8 @@ func EditVacationByName(c *gin.Context) {
 	}
 
 	vaca, err := (&duty_vacation.Vacation{
-		Name: vacation.Name,
+		Name:       vacation.Name,
+		UpdateTime: time.Now(),
 	}).GetByName()
 
 	if err != nil {

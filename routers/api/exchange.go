@@ -307,22 +307,23 @@ func ExamineExchange(c *gin.Context) {
 		Id: id,
 	}).GetExchangeById()
 
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
+		return
+	}
+
 	if exchange.Response != 0 {
 		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXAMINA_EXCHANGE_FAIL, nil)
 		return
 	}
 
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_EXCHANGE_FAIL, nil)
-		return
-	}
 	nowDay := time.Now().Format("2006-01-02")
 	//如果过了八点半，则视为下一天
 	if time.Now().Format("15:04") > "08:30" {
 		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
 	}
 	//只能审批之前的换班申请
-	if exchange.RequestTime <= nowDay || exchange.RequestedTime <= nowDay {
+	if exchange.RequestTime < nowDay || exchange.RequestedTime < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
 		return
 	}

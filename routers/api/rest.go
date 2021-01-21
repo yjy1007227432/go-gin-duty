@@ -120,14 +120,15 @@ func ExamineRest(c *gin.Context) {
 		Id: idInt,
 	}).GetRestById()
 
-	nowDay := time.Now().Format("2006-01-02")
-	if rest.Datetime < nowDay {
-		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
 		return
 	}
 
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
+	nowDay := time.Now().Format("2006-01-02")
+
+	if rest.Datetime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
 		return
 	}
 
@@ -141,9 +142,10 @@ func ExamineRest(c *gin.Context) {
 	}
 
 	err = (&rest_service.Rest{
-		Id:       idInt,
-		Response: response,
-		Checker:  name,
+		Id:         idInt,
+		Response:   response,
+		Checker:    name,
+		ResponseOn: time.Now(),
 	}).Edit()
 
 	if err != nil {
@@ -248,10 +250,17 @@ func DeleteRest(c *gin.Context) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)
 		return
 	}
-	if rest1.Response != 0 {
-		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_CHANGE_RESTS_FAIL, nil)
+
+	nowDay := time.Now().Format("2006-01-02")
+	if rest1.Datetime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
 		return
 	}
+
+	//if rest1.Response != 0 {
+	//	appG.Response(http.StatusInternalServerError, e.ERROR_NOT_CHANGE_RESTS_FAIL, nil)
+	//	return
+	//}
 	err = rest.DeleteById()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_RESTS_FAIL, nil)
@@ -264,7 +273,7 @@ func DeleteRest(c *gin.Context) {
 // @Summary 获取本人调休申请表信息(未审批/已审批)
 // @Produce  json
 // @Param token query string true "token"
-// @Param state query int true " 0 未审批、1 已审批"
+// @Param state query int " 0 未审批、1 已审批"
 // @Success 200 {string} string	 "{"code":200,"data":{rest},"msg":"ok"}"
 // @Router /api/rests/getMe [post]
 func GetMyRest(c *gin.Context) {
@@ -288,6 +297,27 @@ func GetMyRest(c *gin.Context) {
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
 		"rests": rests,
 	})
+}
+
+// @Summary 删除某个员工某天的调休申请表信息
+// @Produce  json
+// @Param token query string true "token"
+// @Param proposer query string true "proposer"
+// @Param datetime query string true "proposer"
+// @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/rests/deleteAll   [post]
+func DeleteRestByProposer(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	restService := rest_service.Rest{}
+
+	err := restService.DeleteAll()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_RESTS_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
 
 // @Summary 删除所有调休申请表信息

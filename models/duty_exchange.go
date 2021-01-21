@@ -180,9 +180,9 @@ func ExchangeTwo(id int, group string, data interface{}) error {
 	err = db.Model(&DutyExchange{}).Where("id = ? ", id).Updates(data).Error
 	err = db.Where("id = ?", id).First(&exchange).Error
 
-	if response == 2 {
+	if err != nil {
 		return err
-	} else {
+	} else if response == 2 {
 		if group == "crm" {
 			if exchange.ExchangeType == 1 || exchange.ExchangeType == 4 {
 				rotaRequest.CrmLate = strings.Replace(rotaRequest.CrmLate, exchange.Proposer, exchange.Respondent, 1)
