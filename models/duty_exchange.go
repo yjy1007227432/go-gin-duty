@@ -48,6 +48,18 @@ func GetExchangeAll() ([]DutyExchange, error) {
 	return exchanges, nil
 }
 
+func UpdateResponseExchange(id, response int) error {
+	var err error
+
+	exchange := DutyExchange{
+		Id: id,
+	}
+	if err = db.Model(&exchange).Update("response", response).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetExchangeByDate(nowDay string) ([]DutyExchange, error) {
 	var (
 		exchanges []DutyExchange
@@ -102,12 +114,12 @@ func GetMyExchange(proposer string, response int) ([]DutyExchange, error) {
 		exchanges []DutyExchange
 		err       error
 	)
-	if response == 0 {
-		if err = db.Where("proposer = ? and response = 0", proposer).Find(&exchanges).Error; err != nil {
+	if response == -1 {
+		if err = db.Where("proposer = ? ", proposer).Find(&exchanges).Error; err != nil {
 			return nil, err
 		}
 	} else {
-		if err = db.Where("proposer = ? and response != 0", proposer).Find(&exchanges).Error; err != nil {
+		if err = db.Where("proposer = ? and response = ?", proposer, response).Find(&exchanges).Error; err != nil {
 			return nil, err
 		}
 	}
@@ -120,12 +132,12 @@ func GetMyExamineExchange(respondent string, response int) ([]DutyExchange, erro
 		exchanges []DutyExchange
 		err       error
 	)
-	if response == 0 {
-		if err = db.Where("respondent = ? and response = 0", respondent).Find(&exchanges).Error; err != nil {
+	if response == -1 {
+		if err = db.Where("respondent = ? ", respondent).Find(&exchanges).Error; err != nil {
 			return nil, err
 		}
 	} else {
-		if err = db.Where("respondent = ? and response != 0", respondent).Find(&exchanges).Error; err != nil {
+		if err = db.Where("respondent = ? and response = ?", respondent, response).Find(&exchanges).Error; err != nil {
 			return nil, err
 		}
 	}

@@ -128,10 +128,10 @@ func GetNameByUsername(username string) (string, string, error) {
 	return "", "", nil
 }
 
-func IsExistUser(name string) (bool, error) {
+func IsExistUser(name, userName string) (bool, error) {
 
 	var auth DutyAuth
-	err := db.Select("id").Where(DutyAuth{Name: name}).First(&auth).Error
+	err := db.Select("id").Where(DutyAuth{Name: name}).Or(DutyAuth{Username: userName}).First(&auth).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err

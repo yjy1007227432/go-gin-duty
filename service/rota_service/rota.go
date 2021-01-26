@@ -265,9 +265,11 @@ func CheckTwoExist(requestMen, requestedMen, requestDay, requestedDay, group str
 	rotaRequest, err := (&Rota{
 		Datetime: requestDay,
 	}).GetRotaByDay()
+
 	rotaRequested, err := (&Rota{
 		Datetime: requestedDay,
 	}).GetRotaByDay()
+
 	if err != nil {
 		return false, err
 	}
@@ -302,4 +304,38 @@ func CheckTwoExist(requestMen, requestedMen, requestDay, requestedDay, group str
 		return IsExist, nil
 	}
 	return false, errors.New("未知错误")
+}
+
+//判断是否存在员工的值班表,且顶班员工在所申请日子无值班
+func CheckExist(requestMen, requestDay, group string, exchangeType int) (bool, error) {
+	rotaRequest, err := (&Rota{
+		Datetime: requestDay,
+	}).GetRotaByDay()
+
+	if err != nil {
+		return false, err
+	}
+	if group == "calculate" {
+		IsExist := strings.Contains(rotaRequest.BillingLate, requestMen) && strings.Contains(rotaRequest.BillingWeekendDay, requestMen)
+		return IsExist, nil
+	}
+
+	if group == "crm" && exchangeType == 1 {
+		IsExist := strings.Contains(rotaRequest.CrmLate, requestMen)
+		return IsExist, nil
+	}
+	if group == "crm" && exchangeType == 2 {
+		IsExist := strings.Contains(rotaRequest.CrmWeekendDay, requestMen)
+		return IsExist, nil
+	}
+
+	if group == "crm" && exchangeType == 4 {
+		IsExist := strings.Contains(rotaRequest.CrmWeekendDay, requestMen) && strings.Contains(rotaRequest.CrmLate, requestMen)
+		return IsExist, nil
+	}
+	if exchangeType == 3 {
+		IsExist := strings.Contains(rotaRequest.CrmDutySpecial, requestMen)
+		return IsExist, nil
+	}
+	return false, errors.New("申请人不存在当前值班")
 }

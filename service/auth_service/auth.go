@@ -47,5 +47,5 @@ func (a *Auth) IsExistName() (bool, error) {
 }
 
 func (a *Auth) IsExistUser() (bool, error) {
-	return models.IsExistUser(a.Name)
+	return models.IsExistUser(a.Name, a.Username)
 }

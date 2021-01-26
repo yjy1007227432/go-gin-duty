@@ -46,11 +46,12 @@ func GetNameByToken(c *gin.Context) {
 }
 
 // @Summary 新增个人用户
+// @Param token query string true "token"
 // @Produce  json
 // @Param username query string true "用户名"
 // @Param password query string true "密码"
-// @Param name query string true "姓名"
-// @Param group query string true "组：crm/calculate"
+// @Param name query string true "姓calculate名"
+// @Param group query string true "组：crm/"
 // @Param telephone query string true "电话"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Failure 500 {string} string	 "{"code":500,"data":{},"msg":"ok"}"
@@ -141,6 +142,7 @@ func GetAuth(c *gin.Context) {
 
 // @Summary 注册个人用户
 // @Produce  json
+// @Param token query string true "token"
 // @Param username query string true "用户名"
 // @Param password query string true "密码"
 // @Param name query string true "名字"

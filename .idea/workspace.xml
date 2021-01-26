@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="" />
+    <list default="true" id="d419617e-5657-4de6-a780-53136bacd50c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/e/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/e/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/e/msg.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go-gin-duty-master.exe" beforeDir="false" afterPath="$PROJECT_DIR$/go-gin-duty-master.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/duty_auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/duty_exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_exchange.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/duty_rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/duty_rest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/exchange.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/rest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/api/rota.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/api/rota.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/auth_service/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/auth_service/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/duty_vacation/vacation.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/duty_vacation/vacation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/exchange_service/exchange.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/exchange_service/exchange.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/rest_service/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/rest_service/rest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/rota_service/rota.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/rota_service/rota.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/timely_task/computeVacation.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/timely_task/computeVacation.go" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routers/api/exchange.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7498">
-              <caret line="339" selection-start-line="339" selection-end-line="339" />
+            <state relative-caret-position="632">
+              <caret line="407" column="19" selection-start-line="407" selection-start-column="19" selection-end-line="407" selection-end-column="19" />
               <folding>
                 <element signature="e#13#326#0" expanded="true" />
               </folding>
@@ -37,28 +59,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/e/code.go">
+        <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/duty_exchange.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4002">
-              <caret line="178" column="17" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routers/api/rota.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2875">
-              <caret line="133" column="32" selection-start-line="133" selection-start-column="32" selection-end-line="133" selection-end-column="32" />
+            <state relative-caret-position="226">
+              <caret line="185" selection-start-line="185" selection-end-line="188" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -66,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routers/router.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="34" column="42" selection-start-line="34" selection-start-column="42" selection-end-line="34" selection-end-column="42" />
+            <state relative-caret-position="138">
+              <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
               <folding>
                 <element signature="e#17#256#0" expanded="true" />
               </folding>
@@ -75,29 +79,29 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/middleware/jwt/timeoutHandler.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="299">
+              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
+        <entry file="file://$PROJECT_DIR$/service/timely_task/computeVacation.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="275" column="25" selection-start-line="275" selection-start-column="25" selection-end-line="275" selection-end-column="25" />
+            <state relative-caret-position="506">
+              <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/e/msg.go">
+        <entry file="file://$PROJECT_DIR$/service/duty_vacation/vacation.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" column="25" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/service/exchange_service/exchange.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1449">
-              <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+            <state relative-caret-position="344">
+              <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -120,6 +124,7 @@
       <find>ERROR_ROTA_REST_FAIL</find>
       <find>获取调休申请表失败</find>
       <find>ERROR_TIME_EARLY_FAIL</find>
+      <find>ERROR_CHECK_ROTAS_EXIST_FAIL</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="C:\Go" />
@@ -130,17 +135,24 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/conf/app.ini" />
-        <option value="$PROJECT_DIR$/routers/api/auth.go" />
-        <option value="$PROJECT_DIR$/e/code.go" />
+        <option value="$PROJECT_DIR$/routers/api/vacation.go" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/service/rest_service/rest.go" />
         <option value="$PROJECT_DIR$/models/duty_rest.go" />
-        <option value="$PROJECT_DIR$/routers/router.go" />
-        <option value="$PROJECT_DIR$/routers/api/vacation.go" />
-        <option value="$PROJECT_DIR$/routers/api/rota.go" />
-        <option value="$PROJECT_DIR$/e/msg.go" />
-        <option value="$PROJECT_DIR$/routers/api/exchange.go" />
-        <option value="$PROJECT_DIR$/models/duty_exchange.go" />
         <option value="$PROJECT_DIR$/routers/api/rest.go" />
+        <option value="$PROJECT_DIR$/routers/api/rota.go" />
+        <option value="$PROJECT_DIR$/routers/router.go" />
+        <option value="$PROJECT_DIR$/routers/api/auth.go" />
+        <option value="$PROJECT_DIR$/service/auth_service/auth.go" />
+        <option value="$PROJECT_DIR$/models/duty_auth.go" />
+        <option value="$PROJECT_DIR$/e/msg.go" />
+        <option value="$PROJECT_DIR$/e/code.go" />
+        <option value="$PROJECT_DIR$/service/rota_service/rota.go" />
+        <option value="$PROJECT_DIR$/models/duty_exchange.go" />
+        <option value="$PROJECT_DIR$/service/exchange_service/exchange.go" />
+        <option value="$PROJECT_DIR$/routers/api/exchange.go" />
+        <option value="$PROJECT_DIR$/service/duty_vacation/vacation.go" />
+        <option value="$PROJECT_DIR$/service/timely_task/computeVacation.go" />
       </list>
     </option>
   </component>
@@ -157,7 +169,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -204,6 +215,24 @@
             <path>
               <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
               <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="pkg" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="pkg" type="462c0819:PsiDirectoryNode" />
+              <item name="gredis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="pkg" type="462c0819:PsiDirectoryNode" />
+              <item name="setting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
               <item name="routers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -211,6 +240,22 @@
               <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
               <item name="routers" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="servers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
+              <item name="go-gin-duty-master" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="timely_task" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="go-gin-duty-master" type="b2602c69:ProjectViewProjectNode" />
@@ -253,6 +298,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -369,22 +415,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23767179" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16087309" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.11930586" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.70816493" weight="0.651865" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48585287" weight="0.24156305" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.497979" visible="true" weight="0.13676731" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6936136" weight="0.60568386" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.47453517" weight="0.27531084" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49946696" weight="0.3285968" />
+      <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.4987874" weight="0.3285968" />
       <window_info anchor="bottom" id="Database Changes" order="8" sideWeight="0.49232012" weight="0.33570158" />
-      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.14765458" weight="0.28774422" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.6394503" side_tool="true" visible="true" weight="0.44404975" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.36054972" visible="true" weight="0.44404975" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.28779304" weight="0.24511546" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.502021" side_tool="true" visible="true" weight="0.13676731" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.5998383" weight="0.07637656" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -473,6 +520,41 @@
           <line>65</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/routers/api/rota.go</url>
+          <line>168</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/routers/api/exchange.go</url>
+          <line>44</line>
+          <properties />
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/routers/api/exchange.go</url>
+          <line>135</line>
+          <properties />
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/service/rota_service/rota.go</url>
+          <line>310</line>
+          <properties />
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/models/duty_exchange.go</url>
+          <line>194</line>
+          <properties />
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/models/duty_exchange.go</url>
+          <line>223</line>
+          <properties />
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -511,25 +593,8 @@
     <entry file="file://$PROJECT_DIR$/docs/swagger.yaml" />
     <entry file="file://$PROJECT_DIR$/docs/swagger.json" />
     <entry file="file://$PROJECT_DIR$/docs/docs.go" />
-    <entry file="file://$PROJECT_DIR$/routers/api/auth.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
-          <folding>
-            <element signature="e#13#233#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/duty.sql">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service/auth_service/auth.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="713">
-          <caret line="33" column="28" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/docs/request.txt">
       <provider selected="true" editor-type-id="text-editor">
@@ -576,51 +641,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/duty_auth.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="115" column="5" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
-          <folding>
-            <element signature="e#16#67#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="30" column="37" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="37" />
-          <folding>
-            <element signature="e#14#243#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/models.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
           <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service/rota_service/rota.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1334">
-          <caret line="72" column="29" selection-start-line="72" selection-start-column="29" selection-end-line="72" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service/rest_service/rest.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/duty_rest.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1288">
-          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -648,24 +672,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service/timely_task/computeVacation.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/middleware/jwt/jwt.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="44" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/middleware/jwt/timeoutHandler.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
@@ -680,13 +690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
           <caret line="262" selection-start-line="262" selection-end-line="262" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../pkg/mod/github.com/gin-gonic/gin@v1.6.3/context.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="161" selection-start-line="161" selection-end-line="161" />
         </state>
       </provider>
     </entry>
@@ -718,65 +721,186 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routers/api/exchange.go">
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7498">
-          <caret line="339" selection-start-line="339" selection-end-line="339" />
+        <state relative-caret-position="-1492">
+          <caret line="385" selection-start-line="385" selection-end-line="385" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/strconv/atoi.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/sync/rwmutex.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/getName.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/duty_rest.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="43">
+          <caret line="145" column="62" selection-start-line="145" selection-start-column="62" selection-end-line="145" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pkg/mod/github.com/gin-gonic/gin@v1.6.3/context.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="250" selection-start-line="250" selection-end-line="250" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/net/http/request.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="1352" column="45" selection-start-line="1352" selection-start-column="45" selection-end-line="1352" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routers/api/rota.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3450">
+          <caret line="158" column="30" selection-start-line="158" selection-start-column="30" selection-end-line="158" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/e/msg.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="66" column="27" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/auth_service/auth.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="49" column="25" selection-start-line="49" selection-start-column="25" selection-end-line="49" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/duty_auth.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="133" column="86" selection-start-line="133" selection-start-column="86" selection-end-line="133" selection-end-column="86" />
           <folding>
-            <element signature="e#13#326#0" expanded="true" />
+            <element signature="e#16#67#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/e/code.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        <state relative-caret-position="221">
+          <caret line="28" column="32" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/rota_service/rota.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="324" selection-start-line="324" selection-end-line="324" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/exchange_service/exchange.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="71" column="26" selection-start-line="71" selection-start-column="26" selection-end-line="71" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routers/api/auth.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="70" column="29" lean-forward="true" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
+          <folding>
+            <element signature="e#13#233#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/rest_service/rest.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/duty_exchange.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4002">
-          <caret line="178" column="17" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
+        <state relative-caret-position="-54">
+          <caret line="211" column="27" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routers/api/rota.go">
+    <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2875">
-          <caret line="133" column="32" selection-start-line="133" selection-start-column="32" selection-end-line="133" selection-end-column="32" />
+        <state relative-caret-position="208">
+          <caret line="19" column="49" lean-forward="true" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
+          <folding>
+            <element signature="e#14#243#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="185" selection-start-line="185" selection-end-line="188" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routers/router.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="34" column="42" selection-start-line="34" selection-start-column="42" selection-end-line="34" selection-end-column="42" />
+        <state relative-caret-position="138">
+          <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
           <folding>
             <element signature="e#17#256#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/e/msg.go">
+    <entry file="file://$PROJECT_DIR$/routers/api/exchange.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="25" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="25" />
+        <state relative-caret-position="632">
+          <caret line="407" column="19" selection-start-line="407" selection-start-column="19" selection-end-line="407" selection-end-column="19" />
+          <folding>
+            <element signature="e#13#326#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service/exchange_service/exchange.go">
+    <entry file="file://$PROJECT_DIR$/middleware/jwt/timeoutHandler.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1449">
-          <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+        <state relative-caret-position="299">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routers/api/rest.go">
+    <entry file="file://$PROJECT_DIR$/service/duty_vacation/vacation.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="275" column="25" selection-start-line="275" selection-start-column="25" selection-end-line="275" selection-end-column="25" />
+        <state relative-caret-position="344">
+          <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/timely_task/computeVacation.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
         </state>
       </provider>
     </entry>

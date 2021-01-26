@@ -20,13 +20,22 @@ import (
 // @Param token query string true "token"
 // @Param respondent query string true "申请对象"
 // @Param request_time query string true "申请时间"
-// @Param requested_time query string true "被申请时间"
-// @Param exchange_type query string true "换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班"
+// @Param requested_time query string false "被申请时间"
+// @Param exchange_type query int true "换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班, 计费只有 1，值班"
+// @Param exchange_form query int true "换班形式，1，换班，2, 顶班"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/addMyExchange [post]
 func AddMyExchange(c *gin.Context) {
 	appG := app.Gin{C: c}
 	respondent := c.Query("respondent")
+
+	exchangeType := c.Query("exchange_type")
+	exchangeForm := c.Query("exchange_form")
+	requestedTime := c.Query("requested_time")
+
+	if requestedTime != "" && exchangeForm == "1" {
+		appG.Response(http.StatusInternalServerError, e.ERROR_REPLACE_DUTY_FAIL, nil)
+	}
 
 	name := (&util.GetName{C: *c}).GetName()
 
@@ -36,8 +45,12 @@ func AddMyExchange(c *gin.Context) {
 	if time.Now().Format("15:04") > "08:30" {
 		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
 	}
-	//只能审批之前的换班申请
-	if c.Query("request_time") <= nowDay || c.Query("requested_time") <= nowDay {
+	//只能新建之前的换班申请
+	if c.Query("request_time") < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
+	if requestedTime != "" && c.Query("requested_time") < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
 		return
 	}
@@ -50,6 +63,11 @@ func AddMyExchange(c *gin.Context) {
 
 	//必须是同组人员才可以换班
 	nameGroup := (&util.GetName{C: *c}).GetGroup()
+
+	if nameGroup == "calculate" && exchangeType != "1" {
+		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_TYPE_FAIL, nil)
+		return
+	}
 
 	respondentGroup, err := (&auth_service.Auth{
 		Name: respondent,
@@ -64,9 +82,11 @@ func AddMyExchange(c *gin.Context) {
 		return
 	}
 
-	var exchange = exchange_service.Exchange{}
-	exchange.Proposer = name
+	var exchange = exchange_service.Exchange{
+		Proposer: name,
+	}
 	err = c.Bind(&exchange)
+
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_BIND_DATA_FAIL, nil)
 		return
@@ -87,31 +107,52 @@ func AddMyExchange(c *gin.Context) {
 	IsExistRequest, err := (&rota_service.Rota{
 		Datetime: exchange.RequestTime,
 	}).ExistByDatetime()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
-		return
-	}
-	IsExistRequested, err := (&rota_service.Rota{
-		Datetime: exchange.RequestedTime,
-	}).ExistByDatetime()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
 		return
 	}
-	if IsExistRequest == false || IsExistRequested == false {
+	if IsExistRequest == false {
 		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
 		return
 	}
-	//换班的日期得的确存在申请人值班与被申请人值班
-	IsExist, err := rota_service.CheckTwoExist(name, respondent, exchange.RequestTime, exchange.RequestedTime, nameGroup, exchange.ExchangeType)
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_CHECK_ROTAS_EXIST_FAIL, nil)
-		return
+
+	if exchangeForm == "1" {
+		IsExistRequested, err := (&rota_service.Rota{
+			Datetime: exchange.RequestedTime,
+		}).ExistByDatetime()
+
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_GET_ROTAS_FAIL, nil)
+			return
+		}
+		if IsExistRequested == false {
+			appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
+			return
+		}
 	}
-	if IsExist != true {
-		appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
-		return
+	var IsExist bool
+	if exchangeForm == "2" {
+		IsExist, err = rota_service.CheckExist(name, exchange.RequestTime, nameGroup, exchange.ExchangeType)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_CHECK_ROTAS_EXIST_FAIL, nil)
+			return
+		}
+		if IsExist != true {
+			appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
+			return
+		}
+	} else {
+		//换班的日期得的确存在申请人值班与被申请人值班
+		IsExist, err = rota_service.CheckTwoExist(name, respondent, exchange.RequestTime, exchange.RequestedTime, nameGroup, exchange.ExchangeType)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_CHECK_ROTAS_EXIST_FAIL, nil)
+			return
+		}
+		if IsExist != true {
+			appG.Response(http.StatusInternalServerError, e.ERROR_NOT_EXIST_ROTA, nil)
+			return
+		}
 	}
 
 	err = exchange.AddExchange()
@@ -168,7 +209,7 @@ func DeleteAllExchange(c *gin.Context) {
 // @Summary 查看本人的换班请求表(未审批/已审批)
 // @Produce  json
 // @Param token query string true "token"
-// @Param  state query int true "状态 0：未审批 1：已审批"
+// @Param  state query int false "状态 0：未审批 1：拒绝 2:同意"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/myExchange [post]
 func GetMyExchange(c *gin.Context) {
@@ -181,6 +222,10 @@ func GetMyExchange(c *gin.Context) {
 	state := c.Query("state")
 
 	response, _ := strconv.Atoi(state)
+
+	if state == "" {
+		response = -1
+	}
 
 	name := (&util.GetName{C: *c}).GetName()
 
@@ -201,7 +246,7 @@ func GetMyExchange(c *gin.Context) {
 // @Summary 查看本人回复的换班申请表信息(未审批/已审批)
 // @Produce  json
 // @Param token query string true "token"
-// @Param state query int true "状态 0：未审批 1：已审批"
+// @Param state query int false "状态 0：未审批 1：同意 2：拒绝"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/getMyExamine [post]
 func GetNeedExamineExchanges(c *gin.Context) {
@@ -214,6 +259,10 @@ func GetNeedExamineExchanges(c *gin.Context) {
 	state := c.Query("state")
 
 	stateInt, _ := strconv.Atoi(state)
+
+	if state == "" {
+		stateInt = -1
+	}
 
 	name := (&util.GetName{C: *c}).GetName()
 
@@ -323,10 +372,16 @@ func ExamineExchange(c *gin.Context) {
 		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
 	}
 	//只能审批之前的换班申请
-	if exchange.RequestTime < nowDay || exchange.RequestedTime < nowDay {
+	if exchange.RequestTime < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
 		return
 	}
+
+	if exchange.RequestedTime != "" && exchange.RequestedTime < nowDay {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
+
 	//只能审批本人的换班申请
 	if exchange.Respondent != name {
 		appG.Response(http.StatusInternalServerError, e.ERROR_RESPONCE_EXCHANGE_FAIL, nil)
@@ -337,14 +392,20 @@ func ExamineExchange(c *gin.Context) {
 		return
 	}
 
-	err = (&exchange_service.Exchange{
-		Id:       id,
-		Response: response,
-	}).ExchangeTwo(group)
-
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
-		return
+	if Response == "1" {
+		err = (&exchange_service.Exchange{
+			Id:       id,
+			Response: response,
+		}).UpdateResponse()
+	} else {
+		err = (&exchange_service.Exchange{
+			Id:       id,
+			Response: response,
+		}).ExchangeTwo(group)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
+			return
+		}
 	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)

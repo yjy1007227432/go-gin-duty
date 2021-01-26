@@ -22,6 +22,11 @@ func (t *Exchange) GetAll() ([]models.DutyExchange, error) {
 	return exchanges, err
 }
 
+func (t *Exchange) UpdateResponse() error {
+	err := models.UpdateResponseExchange(t.Id, t.Response)
+	return err
+}
+
 func (t *Exchange) GetExchangeByDate() ([]models.DutyExchange, error) {
 	exchanges, err := models.GetExchangeByDate(t.RequestTime)
 	return exchanges, err

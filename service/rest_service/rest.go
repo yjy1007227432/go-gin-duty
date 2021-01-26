@@ -88,8 +88,12 @@ func (t *Rest) DeleteAll() error {
 	return err
 }
 
+func (t *Rest) GetRestsByNameState() ([]models.DutyRest, error) {
+	rests, err := models.GetRestByNameState(t.Proposer, t.State)
+	return rests, err
+}
 func (t *Rest) GetRestsByName() ([]models.DutyRest, error) {
-	rests, err := models.GetRestByName(t.Proposer, t.State)
+	rests, err := models.GetRestByName(t.Proposer)
 	return rests, err
 }
 

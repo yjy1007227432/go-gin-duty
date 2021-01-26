@@ -156,8 +156,9 @@ func AddRotaByDay(c *gin.Context) {
 
 // @Summary 导入值班表
 // @Produce  json
+// @Accept multipart/form-data
 // @Param token query string true "token"
-// @Param file query string true "excel表格文件"
+// @Param file formData file true "excel表格文件"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rota/import   [post]
 func ImportRota(c *gin.Context) {

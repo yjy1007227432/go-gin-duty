@@ -273,7 +273,7 @@ func DeleteRest(c *gin.Context) {
 // @Summary 获取本人调休申请表信息(未审批/已审批)
 // @Produce  json
 // @Param token query string true "token"
-// @Param state query int " 0 未审批、1 已审批"
+// @Param state query int false "0 未审批、1 拒绝、 2 同意 "
 // @Success 200 {string} string	 "{"code":200,"data":{rest},"msg":"ok"}"
 // @Router /api/rests/getMe [post]
 func GetMyRest(c *gin.Context) {
@@ -285,10 +285,19 @@ func GetMyRest(c *gin.Context) {
 
 	name := (&util.GetName{C: *c}).GetName()
 
-	rests, err := (&rest_service.Rest{
-		Proposer: name,
-		State:    stateInt,
-	}).GetRestsByName()
+	var rests []models.DutyRest
+	var err error
+
+	if state == "" {
+		rests, err = (&rest_service.Rest{
+			Proposer: name,
+		}).GetRestsByName()
+	} else {
+		rests, err = (&rest_service.Rest{
+			Proposer: name,
+			State:    stateInt,
+		}).GetRestsByNameState()
+	}
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_RESTS_FAIL, nil)

@@ -6,6 +6,8 @@ import (
 	"go-gin-duty-master/service/duty_vacation"
 	"go-gin-duty-master/service/exchange_service"
 	"go-gin-duty-master/service/rest_service"
+	"go-gin-duty-master/service/rota_service"
+	"strings"
 	"time"
 )
 
@@ -26,19 +28,63 @@ func ComputeVacation() {
 		if rest.Type == 2 {
 			err := (&duty_vacation.Vacation{
 				Name: rest.Proposer,
-			}).AddOne(rest.VacationType)
+			}).ReduceOne(rest.VacationType)
 			if err != nil {
 				log.Errorf("ComputeVacation AddOne run error: \v", err)
 			}
 		} else {
 			err := (&duty_vacation.Vacation{
 				Name: rest.Proposer,
-			}).AddHalf(rest.VacationType)
+			}).ReduceHalf(rest.VacationType)
 			if err != nil {
 				log.Errorf("ComputeVacation AddOne run error: \v", err)
 			}
 		}
 	}
+	//计算调休
+	rota, err := (&rota_service.Rota{
+		Datetime: nowDay,
+	}).GetRotaByDay()
+	if err != nil {
+		log.Errorf("ComputeVacation  GetRotaByDay  run error: \v", err)
+	}
+	if rota.Week == "星期六" || rota.Week == "星期日" {
+		err := (&duty_vacation.Vacation{
+			Name: rota.BillingLate,
+		}).AddOneHalf()
+		if err != nil {
+			log.Errorf("ComputeVacation AddOneHalf run error: \v", err)
+		}
+		err = (&duty_vacation.Vacation{
+			Name: rota.CrmLate,
+		}).AddOneHalf()
+		if err != nil {
+			log.Errorf("ComputeVacation AddOneHalf run error: \v", err)
+		}
+		dutyNames := strings.Split(rota.CrmWeekendDay, "、")
+		for _, name := range dutyNames {
+			err = (&duty_vacation.Vacation{
+				Name: name,
+			}).AddOne()
+			if err != nil {
+				log.Errorf("ComputeVacation AddOne run error: \v", err)
+			}
+		}
+	} else {
+		err := (&duty_vacation.Vacation{
+			Name: rota.BillingLate,
+		}).AddHalf()
+		if err != nil {
+			log.Errorf("ComputeVacation AddHalf run error: \v", err)
+		}
+		err = (&duty_vacation.Vacation{
+			Name: rota.CrmLate,
+		}).AddHalf()
+		if err != nil {
+			log.Errorf("ComputeVacation AddHalf run error: \v", err)
+		}
+	}
+
 }
 
 //8:30 同意当天上午的调休以及全天的调休
@@ -83,7 +129,7 @@ func AgreeDay() {
 			}
 			err = (&exchange_service.Exchange{
 				Id:       exchange.Id,
-				Response: 1,
+				Response: 2,
 			}).ExchangeTwo(group)
 		}
 	}

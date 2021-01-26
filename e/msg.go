@@ -63,6 +63,8 @@ var MsgFlags = map[int]string{
 	ERROR_EXIST_EXCHANGE_FAIL:         "已存在涉及相同日期的未处理换班请求表",
 	ERROR_ADD_EXCHANGE_FAIL:           "新增换班请求失败",
 	ERROR_EXCHANGE_SAME_FAIL:          "非同组人员或者本人与本人不能换班",
+	ERROR_EXCHANGE_TYPE_FAIL:          "计费没有这么多换班类型",
+	ERROR_REPLACE_DUTY_FAIL:           "顶班不需要填写被换班日期",
 }
 
 // GetMsg get error information based on Code

@@ -23,9 +23,9 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 10))
+	app := r.Group("/api").Use(jwt.TimeoutMiddleware(time.Second * 100))
 
-	//app.Use(jwt.JWT()).Use(jwt.Identification())
+	app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
 		//获取本人姓名
 		app.POST("/auth/getName", api.GetNameByToken)
@@ -54,7 +54,7 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
 	}
 
-	//app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
+	app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
 	{
 		//新增员工信息表
 		app.POST("/auth/AddAuth", api.AddAuth)

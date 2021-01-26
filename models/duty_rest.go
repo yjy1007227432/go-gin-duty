@@ -138,24 +138,32 @@ func DeleteById(id int) error {
 	return nil
 }
 
-func GetRestByName(name string, state int) ([]DutyRest, error) {
+func GetRestByNameState(name string, state int) ([]DutyRest, error) {
 	var (
 		rests []DutyRest
 		err   error
 	)
-	if state == 0 {
-		err = db.Where("proposer = ? and response = 0", name).Find(&rests).Error
-	} else {
-		err = db.Where("proposer = ? and response != 0", name).Find(&rests).Error
-	}
+	err = db.Where("proposer = ? and response = ?", name, state).Find(&rests).Error
 
 	if err != nil {
 		return nil, err
 	}
-
 	return rests, nil
-
 }
+
+func GetRestByName(name string) ([]DutyRest, error) {
+	var (
+		rests []DutyRest
+		err   error
+	)
+	err = db.Where("proposer = ?", name).Find(&rests).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return rests, nil
+}
+
 func GetRestById(id int) (DutyRest, error) {
 	var (
 		rest DutyRest
