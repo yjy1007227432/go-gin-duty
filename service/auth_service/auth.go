@@ -34,6 +34,10 @@ func (a *Auth) GetNameByUsername() (string, string, error) {
 	return models.GetNameByUsername(a.Username)
 }
 
+func (a *Auth) GetAll() ([]models.DutyAuth, error) {
+	return models.GetAllDuty()
+}
+
 func (a *Auth) IsAdmin() (int, error) {
 	return models.IsAdmin(a.Username)
 }

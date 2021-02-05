@@ -10,6 +10,10 @@ type DutyVacation struct {
 	Name                 string    `xorm:"default '' comment('姓名') VARCHAR(50)"`
 	RemainVacation       float64   `xorm:"default 0 comment('剩余调休天数') INT(10)"`
 	RemainAnnualVacation float64   `xorm:"default 0 comment('剩余年休天数') INT(10)"`
+	DutyData             float64   `      xorm:"default 0 comment('值班天数') INT(10)"`
+	OvertimeData         float64   `xorm:"default 0 comment('加班天数') INT(10)"`
+	UsedVacation         float64   `xorm:"default 0 comment('已使用调休天数') INT(10)"`
+	UsedAnnualVacation   float64   `xorm:"default 0 comment('已使用年休天数') INT(10)"`
 	UpdateTime           time.Time `xorm:"not null default 'CURRENT_TIMESTAMP' comment('更新时间') TIMESTAMP"`
 	Backup1              string    `xorm:"default '' VARCHAR(50)"`
 	Backup2              string    `xorm:"default '' VARCHAR(50)"`

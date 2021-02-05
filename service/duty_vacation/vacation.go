@@ -24,8 +24,10 @@ func (t *Vacation) ReduceOne(vacationType int) error {
 	switch vacationType {
 	case 0:
 		data["remain_vacation"] = vacation.RemainVacation - 1
+		data["used_vacation"] = vacation.UsedVacation + 1
 	case 1:
 		data["remain_annual_vacation"] = vacation.RemainAnnualVacation - 1
+		data["used_annual_vacation"] = vacation.UsedAnnualVacation + 1
 	}
 
 	err := models.EditVacation(vacation.Id, data)
@@ -36,6 +38,7 @@ func (t *Vacation) AddOne() error {
 	vacation, _ := models.GetVacationByName(t.Name)
 	data := make(map[string]interface{})
 	data["remain_vacation"] = vacation.RemainVacation + 1
+	data["duty_data"] = vacation.DutyData + 1
 	err := models.EditVacation(vacation.Id, data)
 	return err
 }
@@ -44,6 +47,7 @@ func (t *Vacation) AddHalf() error {
 	vacation, _ := models.GetVacationByName(t.Name)
 	data := make(map[string]interface{})
 	data["remain_vacation"] = vacation.RemainVacation + 0.5
+	data["duty_data"] = vacation.DutyData + 0.5
 	err := models.EditVacation(vacation.Id, data)
 	return err
 }
@@ -51,6 +55,7 @@ func (t *Vacation) AddOneHalf() error {
 	vacation, _ := models.GetVacationByName(t.Name)
 	data := make(map[string]interface{})
 	data["remain_vacation"] = vacation.RemainVacation + 1.5
+	data["duty_data"] = vacation.DutyData + 1.5
 	err := models.EditVacation(vacation.Id, data)
 	return err
 }
@@ -61,8 +66,10 @@ func (t *Vacation) ReduceHalf(vacationType int) error {
 	switch vacationType {
 	case 0:
 		data["remain_vacation"] = vacation.RemainVacation - 0.5
+		data["used_vacation"] = vacation.UsedVacation + 0.5
 	case 1:
 		data["remain_annual_vacation"] = vacation.RemainAnnualVacation - 0.5
+		data["used_annual_vacation"] = vacation.UsedAnnualVacation + 0.5
 	}
 	err := models.EditVacation(vacation.Id, data)
 	return err

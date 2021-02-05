@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go-gin-duty-master/cors"
 
 	_ "go-gin-duty-master/docs"
 
@@ -18,6 +19,8 @@ func InitRouter() *gin.Engine {
 	// 运行 nsq
 	//	servers.NsqRun()
 	r := gin.Default()
+	r.Use(cors.CorsHandler())
+	r.Use(cors.Cors())
 	r.POST("/auth", api.GetAuth) //
 	r.POST("/register", api.Register)
 
@@ -27,15 +30,18 @@ func InitRouter() *gin.Engine {
 
 	app.Use(jwt.JWT()).Use(jwt.Identification())
 	{
+		//测试接口
+		app.POST("/test", api.Test)
 		//获取本人姓名
 		app.POST("/auth/getName", api.GetNameByToken)
+		//获取所有人信息
+		app.POST("/auth/getAll", api.GetAll)
 		//获取当月值班表 1
 		app.POST("/rotas/getMonth", api.GetRotaByMonth)
 		//获取本人调休申请表信息(未审批/已审批) 1
 		app.POST("/rests/getMe", api.GetMyRest)
 		//新增本人调休申请表信息 //todo
 		app.POST("/rests/addMyRest", api.AddRest)
-		//todo  周末和法定节假日
 		//删除本人未审批调休申请表信息 1
 		app.POST("/rests/deleteMyRest", api.DeleteRest)
 		//获取所有调休信息 1
@@ -52,6 +58,8 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/getMyExamine", api.GetNeedExamineExchanges)
 		//新增本人换班申请表信息 1
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
+		//新增本人加班申请表信息 //todo
+		app.POST("/overtime/addMyOvertime", api.AddOvertime)
 	}
 
 	app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())

@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"go-gin-duty-master/e"
+	"go-gin-duty-master/models"
 	"go-gin-duty-master/pkg/app"
 	"go-gin-duty-master/service/auth_service"
 	"go-gin-duty-master/util"
@@ -14,6 +15,24 @@ import (
 type auth struct {
 	Username string `valid:"Required; MaxSize(50)"`
 	Password string `valid:"Required; MaxSize(50)"`
+}
+
+func GetAll(c *gin.Context) {
+
+	appG := app.Gin{C: c}
+	auth := auth_service.Auth{}
+
+	auths, err := auth.GetAll()
+
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_GET_NAME_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string][]models.DutyAuth{
+		"auths": auths,
+	})
+
 }
 
 // @Summary 获取用户名字
@@ -34,14 +53,15 @@ func GetNameByToken(c *gin.Context) {
 	}
 	auth := auth_service.Auth{Username: username}
 
-	name, _, err := auth.GetNameByUsername()
+	name, group, err := auth.GetNameByUsername()
 
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_GET_NAME_FAIL, nil)
 		return
 	}
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
-		"name": name,
+		"name":  name,
+		"group": group,
 	})
 }
 

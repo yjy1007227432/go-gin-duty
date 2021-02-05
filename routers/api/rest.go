@@ -183,7 +183,7 @@ func AddRest(c *gin.Context) {
 		return
 	}
 
-	if rota.Week == "星期六" || rota.Week == "星期日" {
+	if rota.CrmDutySpecial == "周末" || rota.CrmDutySpecial == "假日" {
 		appG.Response(http.StatusInternalServerError, e.ERROR_REST_WEEKEND_FAIL, nil)
 		return
 	}

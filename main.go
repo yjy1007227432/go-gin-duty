@@ -15,14 +15,14 @@ import (
 func main() {
 	//定时任务
 
-	gredis.Setup()
+	_ = gredis.Setup()
 	c := cron.New() // 新建一个定时任务对象
-	c.AddFunc("0 0 23 * * ?", timely_task.ComputeVacation)
-	c.AddFunc("0 30 8 * * ?", timely_task.AgreeMorningAndFullDay)
-	c.AddFunc("0 0 14 * * ?", timely_task.AgreeAfternoon)
+	_ = c.AddFunc("0 0 23 * * ?", timely_task.ComputeVacation)
+	_ = c.AddFunc("0 0 22 * * ?", timely_task.AgreeMorningAndFullDay)
+	// _  = c.AddFunc("0 0 14 * * ?", timely_task.AgreeAfternoon)
 
-	c.AddFunc("0 30 8 * * ?", timely_task.AgreeDay)
-	c.AddFunc("0 30 17 * * ?", timely_task.AgreeLate)
+	//_ = c.AddFunc("0 30 8 * * ?", timely_task.AgreeDay)
+	_ = c.AddFunc("0 0 22 * * ?", timely_task.AgreeLate)
 	c.Start()
 	defer c.Stop()
 
@@ -44,6 +44,6 @@ func main() {
 
 	log.Printf("[info] start http server listening %s", endPoint)
 
-	server.ListenAndServe()
+	_ = server.ListenAndServe()
 
 }

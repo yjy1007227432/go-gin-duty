@@ -12,7 +12,7 @@ import (
 )
 
 //每天晚上23点跑定时任务
-//todo 年休计算
+
 func ComputeVacation() {
 	nowDay := time.Now().Format("2006-01-02")
 
@@ -21,7 +21,7 @@ func ComputeVacation() {
 	}).GetRestByDayAgree()
 
 	if err != nil {
-		log.Errorf("ComputeVacation  GetRestByDay  run error: \v", err)
+		//	log.Errorf("ComputeVacation  GetRestByDay  run error: \v", err)
 	}
 
 	for _, rest := range rests {
@@ -48,7 +48,7 @@ func ComputeVacation() {
 	if err != nil {
 		log.Errorf("ComputeVacation  GetRotaByDay  run error: \v", err)
 	}
-	if rota.Week == "星期六" || rota.Week == "星期日" {
+	if rota.CrmDutySpecial == "周末" {
 		err := (&duty_vacation.Vacation{
 			Name: rota.BillingLate,
 		}).AddOneHalf()
@@ -57,7 +57,7 @@ func ComputeVacation() {
 		}
 		err = (&duty_vacation.Vacation{
 			Name: rota.CrmLate,
-		}).AddOneHalf()
+		}).AddHalf()
 		if err != nil {
 			log.Errorf("ComputeVacation AddOneHalf run error: \v", err)
 		}
@@ -87,7 +87,7 @@ func ComputeVacation() {
 
 }
 
-//8:30 同意当天上午的调休以及全天的调休
+//8:30 同意所有调休
 func AgreeMorningAndFullDay() {
 	nowDay := time.Now().Format("2006-01-02")
 	err := (&rest_service.Rest{
@@ -107,7 +107,7 @@ func AgreeAfternoon() {
 	}).AgreeAfternoon()
 
 	if err != nil {
-		log.Errorf("AgreeAfternoon run error: \v", err)
+		//	log.Errorf("AgreeAfternoon run error: \v", err)
 	}
 }
 
@@ -124,7 +124,7 @@ func AgreeDay() {
 				Username: exchange.Proposer,
 			}).GetNameByUsername()
 			if err != nil {
-				log.Errorf("AgreeDay run error: \v", err)
+				//		log.Errorf("AgreeDay run error: \v", err)
 				return
 			}
 			err = (&exchange_service.Exchange{
@@ -134,7 +134,7 @@ func AgreeDay() {
 		}
 	}
 	if err != nil {
-		log.Errorf("AgreeDay run error: \v", err)
+		//	log.Errorf("AgreeDay run error: \v", err)
 		return
 	}
 	return
@@ -148,19 +148,17 @@ func AgreeLate() {
 	}).GetExchangeByDate()
 
 	for _, exchange := range exchanges {
-		if exchange.ExchangeType == 1 {
-			_, group, err := (&auth_service.Auth{
-				Username: exchange.Proposer,
-			}).GetNameByUsername()
-			if err != nil {
-				log.Errorf("AgreeDay run error: \v", err)
-				return
-			}
-			err = (&exchange_service.Exchange{
-				Id:       exchange.Id,
-				Response: 1,
-			}).ExchangeTwo(group)
+		_, group, err := (&auth_service.Auth{
+			Username: exchange.Proposer,
+		}).GetNameByUsername()
+		if err != nil {
+			log.Errorf("AgreeDay run error: \v", err)
+			return
 		}
+		err = (&exchange_service.Exchange{
+			Id:       exchange.Id,
+			Response: 2,
+		}).ExchangeTwo(group)
 	}
 	if err != nil {
 		log.Errorf("AgreeDay run error: \v", err)

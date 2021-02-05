@@ -113,6 +113,17 @@ func CheckAuth(username, password string) (bool, error) {
 	return false, nil
 }
 
+func GetAllDuty() ([]DutyAuth, error) {
+	var auths []DutyAuth
+	err := db.Find(&auths).Error
+
+	if err != nil {
+		return nil, err
+	} else {
+		return auths, nil
+	}
+}
+
 func GetNameByUsername(username string) (string, string, error) {
 	var auth DutyAuth
 	err := db.Select("id,name,telephone,`group`").Where(&DutyAuth{Username: username}).First(&auth).Error

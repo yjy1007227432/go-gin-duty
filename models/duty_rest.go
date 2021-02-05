@@ -26,8 +26,8 @@ func AddDutyRest(data map[string]interface{}) error {
 		Proposer:     data["proposer"].(string),
 		Checker:      data["checker"].(string),
 		VacationType: data["vacation_type"].(int),
-		CreatedOn:    time.Now(),
 		Response:     0,
+		CreatedOn:    time.Now(),
 	}
 	if err := db.Create(&rest).Error; err != nil {
 		return err
@@ -201,7 +201,7 @@ func GetRestByDayAgree(dateTime string) ([]DutyRest, error) {
 		err   error
 	)
 
-	err = db.Where("dateTime = ? and response = 1", dateTime).Find(&rests).Error
+	err = db.Where("dateTime = ? and response = 2", dateTime).Find(&rests).Error
 
 	if err != nil {
 		return nil, err
@@ -212,7 +212,7 @@ func GetRestByDayAgree(dateTime string) ([]DutyRest, error) {
 }
 
 func AgreeMorningAndFullDay(dateTime string, data interface{}) error {
-	if err := db.Model(&DutyRest{}).Where("datetime = ? and `type` != 1 and response = 0", dateTime).Updates(data).Error; err != nil {
+	if err := db.Model(&DutyRest{}).Where("datetime = ?  and response = 0", dateTime).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil

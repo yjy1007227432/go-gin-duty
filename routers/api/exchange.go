@@ -21,7 +21,7 @@ import (
 // @Param respondent query string true "申请对象"
 // @Param request_time query string true "申请时间"
 // @Param requested_time query string false "被申请时间"
-// @Param exchange_type query int true "换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班, 计费只有 1，值班"
+// @Param exchange_type query int true "换班类型，1，晚班，2,周末白班，3，crm工作日特殊班，4，周末全天班, 计费只有 1,4，值班"
 // @Param exchange_form query int true "换班形式，1，换班，2, 顶班"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/exchange/addMyExchange [post]
@@ -33,7 +33,7 @@ func AddMyExchange(c *gin.Context) {
 	exchangeForm := c.Query("exchange_form")
 	requestedTime := c.Query("requested_time")
 
-	if requestedTime != "" && exchangeForm == "1" {
+	if requestedTime != "" && exchangeForm == "2" {
 		appG.Response(http.StatusInternalServerError, e.ERROR_REPLACE_DUTY_FAIL, nil)
 	}
 
@@ -41,10 +41,10 @@ func AddMyExchange(c *gin.Context) {
 
 	nowDay := time.Now().Format("2006-01-02")
 
-	//如果过了八点半，则视为下一天
-	if time.Now().Format("15:04") > "08:30" {
-		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
-	}
+	////如果过了八点半，则视为下一天
+	//if time.Now().Format("15:04") > "08:30" {
+	//	nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
+	//}
 	//只能新建之前的换班申请
 	if c.Query("request_time") < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
@@ -64,7 +64,7 @@ func AddMyExchange(c *gin.Context) {
 	//必须是同组人员才可以换班
 	nameGroup := (&util.GetName{C: *c}).GetGroup()
 
-	if nameGroup == "calculate" && exchangeType != "1" {
+	if nameGroup == "calculate" && (exchangeType == "2" || exchangeType == "3") {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXCHANGE_TYPE_FAIL, nil)
 		return
 	}
@@ -367,10 +367,10 @@ func ExamineExchange(c *gin.Context) {
 	}
 
 	nowDay := time.Now().Format("2006-01-02")
-	//如果过了八点半，则视为下一天
-	if time.Now().Format("15:04") > "08:30" {
-		nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
-	}
+	////如果过了八点半，则视为下一天
+	//if time.Now().Format("15:04") > "08:30" {
+	//	nowDay = time.Now().AddDate(0, 0, 1).Format("2006-01-02")
+	//}
 	//只能审批之前的换班申请
 	if exchange.RequestTime < nowDay {
 		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
@@ -402,6 +402,7 @@ func ExamineExchange(c *gin.Context) {
 			Id:       id,
 			Response: response,
 		}).ExchangeTwo(group)
+
 		if err != nil {
 			appG.Response(http.StatusInternalServerError, e.ERROR_UPDATE_EXCHANGE_FAIL, nil)
 			return

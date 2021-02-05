@@ -187,32 +187,20 @@ func (t *Rota) Import(r io.Reader, name string) error {
 
 		for irow, row := range rows {
 			if irow > 1 {
-				for i := 0; i < 5; i++ {
+				for i := 0; i < 6; i++ {
 					if row[i] == "" {
 						return errors.New("表格内容不能为空")
 					}
 				}
 				var rota = Rota{}
-				if row[1] == "星期六" || row[1] == "星期日" {
-					rota = Rota{
-						Datetime:          convertToFormatDay(row[0]),
-						Week:              row[1],
-						BillingLate:       row[2],
-						BillingWeekendDay: row[2],
-						CrmLate:           row[3],
-						CrmWeekendDay:     row[3] + "、" + row[4],
-						CrmDutySpecial:    "",
-					}
-				} else {
-					rota = Rota{
-						Datetime:          convertToFormatDay(row[0]),
-						Week:              row[1],
-						BillingLate:       row[2],
-						BillingWeekendDay: "",
-						CrmLate:           row[3],
-						CrmWeekendDay:     "",
-						CrmDutySpecial:    row[4],
-					}
+				rota = Rota{
+					Datetime:          convertToFormatDay(row[0]),
+					Week:              row[1],
+					BillingLate:       row[2],
+					BillingWeekendDay: row[2],
+					CrmLate:           row[3],
+					CrmWeekendDay:     row[3] + "、" + row[4],
+					CrmDutySpecial:    row[5],
 				}
 				exists, err := rota.ExistByDatetime()
 
@@ -253,8 +241,8 @@ func convertToFormatDay(excelDaysString string) string {
 }
 
 func correctTitle(str1, str2 []string) bool {
-	title1 := []string{"日期", "星期", "计费组", "CRM/OSS组", ""}
-	title2 := []string{"", "", "晚班", "晚班", "值班"}
+	title1 := []string{"日期", "星期", "计费组", "CRM/OSS组", "", ""}
+	title2 := []string{"", "", "晚班", "晚班", "白班", "特殊班"}
 
 	return reflect.DeepEqual(str1, title1) && reflect.DeepEqual(str2, title2)
 

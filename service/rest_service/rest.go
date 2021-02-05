@@ -8,8 +8,8 @@ import (
 type Rest struct {
 	Id           int       `form:"id"  json:"id"`
 	Datetime     string    `form:"datetime"  json:"datetime" `
-	Type         int       ` form:"type"   json:"type"  `
-	VacationType int       ` form:"vacation_type"   json:"vacation_type"  `
+	Type         int       `form:"type"   json:"type"  `
+	VacationType int       `form:"vacation_type"   json:"vacation_type"  `
 	Proposer     string    `form:"proposer"   json:"proposer" `
 	Checker      string    `form:"checker"  json:"checker" `
 	Response     int       `form:"response"  json:"response" `

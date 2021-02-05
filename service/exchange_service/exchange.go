@@ -37,7 +37,7 @@ func (t *Exchange) AddExchange() error {
 }
 
 func (t *Exchange) IsExistDay() (bool, error) {
-	isExist, err := models.IsExistDay(t.RequestTime, t.RequestedTime)
+	isExist, err := models.IsExistDay(t.RequestTime, t.RequestedTime, t.Respondent, t.Proposer)
 	return isExist, err
 }
 
