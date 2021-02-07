@@ -65,6 +65,12 @@ var MsgFlags = map[int]string{
 	ERROR_EXCHANGE_SAME_FAIL:          "非同组人员或者本人与本人不能换班",
 	ERROR_EXCHANGE_TYPE_FAIL:          "计费没有这么多换班类型",
 	ERROR_REPLACE_DUTY_FAIL:           "顶班不需要填写被换班日期",
+
+	ERROR_ADD_OVERTIME_FAIL:         "新增加班请求失败",
+	ERROR_GET_OVERTIME_FAIL:         "获取加班申请表信息失败",
+	ERROR_NOT_EXAMINA_OVERTIME_FAIL: "已审批的加班申请无法重复审批",
+	ERROR_UPDATE_DUTYOVERTIME_FAIL:  "更新加班申请表失败",
+	ERROR_DELETE_OVERTIME_FAIL:      "删除加班申请失败",
 }
 
 // GetMsg get error information based on Code

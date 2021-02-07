@@ -60,6 +60,10 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/addMyExchange", api.AddMyExchange)
 		//新增本人加班申请表信息 //todo
 		app.POST("/overtime/addMyOvertime", api.AddOvertime)
+		//获取本人加班申请表信息
+		app.POST("/overtime/getMe", api.GetMyOvertime)
+		//删除本人加班调休申请表信息 1
+		app.POST("/overtime/deleteMyOvertime", api.DeleteOvertime)
 	}
 
 	app.Use(jwt.JWT()).Use(jwt.ADMIN()).Use(jwt.Identification())
@@ -92,6 +96,12 @@ func InitRouter() *gin.Engine {
 		app.POST("/exchange/getAll", api.GetAllExchange)
 		//清空所有的换班请求表 1
 		app.POST("/exchange/deleteAll", api.DeleteAllExchange)
+		//查看需要审核的未审核加班申请表信息
+		app.POST("/overtime/getNeedExamine", api.GetNeedExamineOvertime)
+		//审批加班申请表信息 //todo
+		app.POST("/overtime/examineOvertime", api.ExamineOverTime)
+		//查看需要审核的未审核加班申请表信息
+		app.POST("/overtime/getAll", api.GetALLOvertime)
 
 	}
 

@@ -190,7 +190,7 @@ func AddRest(c *gin.Context) {
 
 	name := (&util.GetName{C: *c}).GetName()
 
-	if strings.Contains(rota.BillingLate, name) || strings.Contains(rota.CrmDutySpecial, name) || strings.Contains(rota.CrmLate, name) {
+	if strings.Contains(rota.CrmDutySpecial, name) || strings.Contains(rota.CrmWeekendDay, name) {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ROTA_REST_FAIL, nil)
 		return
 	}
@@ -257,10 +257,15 @@ func DeleteRest(c *gin.Context) {
 		return
 	}
 
+	if time.Now().Hour() > 23 {
+		appG.Response(http.StatusInternalServerError, e.ERROR_TIME_EARLY_FAIL, nil)
+		return
+	}
 	//if rest1.Response != 0 {
 	//	appG.Response(http.StatusInternalServerError, e.ERROR_NOT_CHANGE_RESTS_FAIL, nil)
 	//	return
 	//}
+
 	err = rest.DeleteById()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_DELETE_RESTS_FAIL, nil)
@@ -312,7 +317,7 @@ func GetMyRest(c *gin.Context) {
 // @Produce  json
 // @Param token query string true "token"
 // @Param proposer query string true "proposer"
-// @Param datetime query string true "proposer"
+// @Param datetime query string true "datetime"
 // @Success 200 {string} string	 "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/rests/deleteAll   [post]
 func DeleteRestByProposer(c *gin.Context) {

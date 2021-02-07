@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type DutyOverTime struct {
+type DutyOvertime struct {
 	Id         int       `xorm:"not null pk autoincr INT(10)"`
 	Quantity   float64   `xorm:"default 0 comment('加班天数') INT(10)"`
 	Proposer   string    `xorm:"default '' comment('申请人') VARCHAR(50)"`
@@ -16,7 +16,7 @@ type DutyOverTime struct {
 }
 
 func AddDutyOverTime(data map[string]interface{}) error {
-	dutyOverTime := DutyOverTime{
+	dutyOverTime := DutyOvertime{
 		Quantity:  data["quantity"].(float64),
 		Proposer:  data["proposer"].(string),
 		Reason:    data["reason"].(string),
@@ -33,7 +33,7 @@ func AddDutyOverTime(data map[string]interface{}) error {
 func UpdateResponseOverTime(id, response int) error {
 	var err error
 
-	dutyOverTime := DutyOverTime{
+	dutyOverTime := DutyOvertime{
 		Id: id,
 	}
 	if err = db.Model(&dutyOverTime).Update("response", response).Error; err != nil {
@@ -42,23 +42,23 @@ func UpdateResponseOverTime(id, response int) error {
 	return nil
 }
 
-func GetOverTimeById(id int) (DutyOverTime, error) {
+func GetOverTimeById(id int) (DutyOvertime, error) {
 	var (
-		dutyOverTime DutyOverTime
+		dutyOverTime DutyOvertime
 		err          error
 	)
 
 	err = db.Where("id = ?", id).Find(&dutyOverTime).Error
 
 	if err != nil {
-		return DutyOverTime{}, err
+		return DutyOvertime{}, err
 	}
 	return dutyOverTime, nil
 }
 
-func GetMyDutyOverTime(proposer string) ([]DutyOverTime, error) {
+func GetMyDutyOverTime(proposer string) ([]DutyOvertime, error) {
 	var (
-		dutyOverTimes []DutyOverTime
+		dutyOverTimes []DutyOvertime
 		err           error
 	)
 	if err = db.Where("proposer = ? ", proposer).Find(&dutyOverTimes).Error; err != nil {
@@ -68,9 +68,9 @@ func GetMyDutyOverTime(proposer string) ([]DutyOverTime, error) {
 	return dutyOverTimes, nil
 }
 
-func GetOverTimeAll() ([]DutyOverTime, error) {
+func GetOverTimeAll() ([]DutyOvertime, error) {
 	var (
-		dutyOverTimes []DutyOverTime
+		dutyOverTimes []DutyOvertime
 		err           error
 	)
 
@@ -83,10 +83,62 @@ func GetOverTimeAll() ([]DutyOverTime, error) {
 	return dutyOverTimes, nil
 
 }
+func GetOverTimeAllNeedExamine() ([]DutyOvertime, error) {
+	var (
+		dutyOverTimes []DutyOvertime
+		err           error
+	)
+
+	err = db.Where("response != 0").Find(&dutyOverTimes).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return dutyOverTimes, nil
+}
 
 func EditOverTime(id int, data interface{}) error {
-	if err := db.Model(&DutyOverTime{}).Where("id = ? ", id).Updates(data).Error; err != nil {
+	if err := db.Model(&DutyOvertime{}).Where("id = ? ", id).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil
+}
+
+func DeleteOvertimeById(id int) error {
+	var (
+		overtime DutyOvertime
+		err      error
+	)
+
+	err = db.Where("id = ?", id).Delete(&overtime).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AgreeAll() error {
+
+	nowDay := time.Now().Format("2006-01-02")
+	if err := db.Model(&DutyOvertime{}).Where("response = 0 and created_on like ? ", nowDay+"%").Update("response", 2).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetAllNowDay() ([]DutyOvertime, error) {
+
+	nowDay := time.Now().Format("2006-01-02")
+
+	var (
+		overtimes []DutyOvertime
+		err       error
+	)
+
+	if err = db.Find(&overtimes).Where("response = 2 and created_on like ? ", nowDay+"%").Error; err != nil {
+		return nil, err
+	}
+	return overtimes, err
 }

@@ -3,6 +3,7 @@ package timely_task
 import (
 	"github.com/prometheus/common/log"
 	"go-gin-duty-master/service/auth_service"
+	"go-gin-duty-master/service/duty_overtime"
 	"go-gin-duty-master/service/duty_vacation"
 	"go-gin-duty-master/service/exchange_service"
 	"go-gin-duty-master/service/rest_service"
@@ -20,8 +21,19 @@ func ComputeVacation() {
 		Datetime: nowDay,
 	}).GetRestByDayAgree()
 
+	overtimes, _ := (&duty_overtime.DutyOverTime{}).GetAllNowDay()
+
 	if err != nil {
-		//	log.Errorf("ComputeVacation  GetRestByDay  run error: \v", err)
+		log.Errorf("ComputeVacation  GetRestByDay  run error: \v", err)
+	}
+
+	for _, overtime := range overtimes {
+		err := (&duty_vacation.Vacation{
+			Name: overtime.Proposer,
+		}).Add(overtime.Quantity)
+		if err != nil {
+			log.Errorf("ComputeVacation AddOne run error: \v", err)
+		}
 	}
 
 	for _, rest := range rests {
@@ -87,12 +99,14 @@ func ComputeVacation() {
 
 }
 
-//8:30 同意所有调休
+//8:30 同意所有调休/加班
 func AgreeMorningAndFullDay() {
 	nowDay := time.Now().Format("2006-01-02")
 	err := (&rest_service.Rest{
 		Datetime: nowDay,
 	}).AgreeMorningAndFullDay()
+
+	err = (&duty_overtime.DutyOverTime{}).AgreeAll()
 
 	if err != nil {
 		log.Errorf("AgreeMorningAndFullDay run error: \v", err)

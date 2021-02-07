@@ -9,15 +9,20 @@ type DutyOverTime struct {
 	Id         int
 	Quantity   float64
 	Proposer   string
-	Reason     string
+	Reason     string `form:"reason"   json:"reason" `
 	Checker    string
 	Response   int
 	CreatedOn  time.Time
 	ResponseOn time.Time
 }
 
-func (t *DutyOverTime) GetAll() ([]models.DutyOverTime, error) {
+func (t *DutyOverTime) GetAll() ([]models.DutyOvertime, error) {
 	dutyOverTimes, err := models.GetOverTimeAll()
+	return dutyOverTimes, err
+}
+
+func (t *DutyOverTime) GetAllNeedExamine() ([]models.DutyOvertime, error) {
+	dutyOverTimes, err := models.GetOverTimeAllNeedExamine()
 	return dutyOverTimes, err
 }
 
@@ -27,11 +32,11 @@ func (t *DutyOverTime) AddOverTime() error {
 	m["quantity"] = t.Quantity
 	m["proposer"] = t.Proposer
 	m["reason"] = t.Reason
-	err := models.AddDutyRest(m)
+	err := models.AddDutyOverTime(m)
 	return err
 }
 
-func (t *DutyOverTime) GetOverTimeById() (models.DutyOverTime, error) {
+func (t *DutyOverTime) GetOverTimeById() (models.DutyOvertime, error) {
 	dutyOvertime, err := models.GetOverTimeById(t.Id)
 	return dutyOvertime, err
 }
@@ -43,7 +48,22 @@ func (t *DutyOverTime) Edit() error {
 	return models.EditOverTime(t.Id, data)
 }
 
-func (t *DutyOverTime) GetRestsByName() ([]models.DutyOverTime, error) {
+func (t *DutyOverTime) GetOvertimesByName() ([]models.DutyOvertime, error) {
 	dutyOvertimes, err := models.GetMyDutyOverTime(t.Proposer)
 	return dutyOvertimes, err
+}
+
+func (t *DutyOverTime) DeleteOvertimeById() error {
+	err := models.DeleteOvertimeById(t.Id)
+	return err
+}
+
+func (t *DutyOverTime) AgreeAll() error {
+	err := models.AgreeAll()
+	return err
+}
+
+func (t *DutyOverTime) GetAllNowDay() ([]models.DutyOvertime, error) {
+	overtimes, err := models.GetAllNowDay()
+	return overtimes, err
 }

@@ -111,3 +111,12 @@ func (t *Vacation) Edit() error {
 	data["update_time"] = time.Now()
 	return models.EditVacation(t.Id, data)
 }
+
+func (t *Vacation) Add(quantity float64) error {
+	vacation, _ := models.GetVacationByName(t.Name)
+	data := make(map[string]interface{})
+	data["remain_vacation"] = vacation.RemainVacation + quantity
+	data["overtime_data"] = vacation.OvertimeData + quantity
+	err := models.EditVacation(vacation.Id, data)
+	return err
+}
